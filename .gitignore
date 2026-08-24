@@ -1,0 +1,17 @@
+# Google Drive 系統檔
+desktop.ini
+*.tmp
+~$*
+
+# 敏感資料
+.env
+*.key
+credentials.*
+
+# Claude / AntiGravity 本地設定
+.claude/
+.gemini/
+
+# Node.js
+node_modules/
+package-lock.json
