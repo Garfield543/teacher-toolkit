@@ -1,0 +1,1956 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#f59e0b">
+  <title>的得大挑戰 🎒👩‍🏫 — 國小低年級語文遊戲</title>
+  <!-- Firebase SDK (Compat mode for standalone single-file deployment) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <style>
+    :root {
+      --ink: #292524;
+      --muted: #78716c;
+      --amber: #f59e0b;
+      --amber-dark: #d97706;
+      --amber-light: #fef3c7;
+      --violet: #8b5cf6;
+      --violet-dark: #6d28d9;
+      --violet-light: #ede9fe;
+      --teal: #10b981;
+      --teal-dark: #047857;
+      --teal-light: #d1fae5;
+      --rose: #f43f5e;
+      --rose-dark: #be123c;
+      --rose-light: #ffe4e6;
+      --sky: #0ea5e9;
+      --sky-light: #e0f2fe;
+      --white: #ffffff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
+      --shadow-lg: 0 18px 36px rgba(0,0,0,0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+    }
+
+    body.device-mobile {
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      min-height: 100%;
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 10% 12%, rgba(254, 243, 199, 0.7) 0%, transparent 28%),
+        radial-gradient(circle at 90% 18%, rgba(237, 233, 254, 0.8) 0%, transparent 32%),
+        radial-gradient(circle at 50% 85%, rgba(209, 250, 229, 0.6) 0%, transparent 40%),
+        linear-gradient(160deg, #fffbeb 0%, #f5f3ff 50%, #f0fdf4 100%);
+      user-select: none;
+      -webkit-user-select: none;
+      overflow-x: hidden;
+    }
+
+    button {
+      border: 0;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+
+    button:focus-visible {
+      outline: 4px solid rgba(245, 158, 11, 0.4);
+      outline-offset: 3px;
+    }
+
+    .app-shell {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 16px;
+      position: relative;
+    }
+
+    body.device-mobile .app-shell {
+      max-width: 480px;
+      padding: 10px;
+    }
+
+    /* 頂部功能列 */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 52px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      color: var(--amber-dark);
+    }
+
+    .brand-mark {
+      font-size: 1.7rem;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      color: #92400e;
+    }
+
+    .brand-title small {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--amber-light);
+      color: var(--amber-dark);
+      margin-left: 4px;
+      vertical-align: middle;
+      font-weight: 800;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .top-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      backdrop-filter: blur(4px);
+    }
+
+    .top-pill-btn:hover {
+      background: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .top-pill-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* 視窗容器切換 */
+    .screen {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: var(--radius-lg);
+      padding: clamp(20px, 4vw, 36px);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(8px);
+    }
+
+    /* 首頁英雄區 */
+    .hero {
+      text-align: center;
+      padding: 12px 10px 24px;
+    }
+
+    .hero .eyebrow {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      margin: 8px 0;
+      font-size: clamp(2.4rem, 6.5vw, 3.8rem);
+      font-weight: 1000;
+      color: #78350f;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 4px rgba(120, 53, 15, 0.08);
+    }
+
+    .hero .subtitle {
+      font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+      color: var(--muted);
+      margin: 0 auto 20px;
+      max-width: 600px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .concept-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 720px;
+      margin: 0 auto 24px;
+      text-align: left;
+    }
+
+    @media (max-width: 640px) {
+      .concept-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    .concept-card {
+      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      background: white;
+      border: 3px solid transparent;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .concept-card.bag {
+      border-color: #fde68a;
+      background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
+    }
+
+    .concept-card.teacher {
+      border-color: #ddd6fe;
+      background: linear-gradient(145deg, #ffffff 0%, #f5f3ff 100%);
+    }
+
+    .concept-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .concept-card-icon {
+      font-size: 2rem;
+    }
+
+    .concept-card-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--ink);
+    }
+
+    .concept-card-body {
+      font-size: 0.95rem;
+      color: #57534e;
+      line-height: 1.55;
+    }
+
+    .concept-card-example {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.04);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      font-weight: 900;
+      font-size: clamp(1.2rem, 3.2vw, 1.5rem);
+      padding: 16px 36px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.32);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .primary-button:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.4);
+    }
+
+    .primary-button:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .secondary-button {
+      background: white;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 2px solid #e7e5e4;
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .secondary-button:hover {
+      background: #fafaf9;
+      border-color: #d6d3d1;
+      transform: translateY(-1px);
+    }
+
+    .secondary-button:active {
+      transform: translateY(1px);
+    }
+
+    .info-strip {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .info-chip {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-chip strong {
+      color: var(--ink);
+    }
+
+    /* 遊戲進行畫面 */
+    .game-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .game-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--amber-light);
+      color: var(--amber-dark);
+      font-weight: 900;
+      font-size: 1rem;
+    }
+
+    .game-score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--violet-light);
+      color: var(--violet-dark);
+      font-weight: 900;
+      font-size: 1rem;
+    }
+
+    /* 彩虹計時條 */
+    .timer-container {
+      width: 100%;
+      height: 14px;
+      background: #e7e5e4;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .timer-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #10b981 0%, #f59e0b 60%, #ef4444 100%);
+      border-radius: 999px;
+      transform-origin: left;
+      transition: transform 0.1s linear;
+    }
+
+    /* 題目卡片 */
+    .question-card {
+      background: white;
+      border: 3px solid #fde68a;
+      border-radius: var(--radius-lg);
+      padding: clamp(24px, 5vw, 40px) 20px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .question-instruction {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .question-sentence {
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      font-weight: 1000;
+      color: #451a03;
+      letter-spacing: 0.05em;
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+    }
+
+    .blank-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(64px, 11vw, 96px);
+      height: clamp(64px, 11vw, 96px);
+      border: 4px dashed #f59e0b;
+      border-radius: 18px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: clamp(2rem, 6vw, 3.6rem);
+      font-weight: 1000;
+      margin: 0 4px;
+      animation: pulseBlank 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseBlank {
+      0%, 100% { transform: scale(1); border-color: #f59e0b; }
+      50% { transform: scale(1.05); border-color: #d97706; background: #fde68a; }
+    }
+
+    /* 巨型二選一按鈕 */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .de-button {
+      padding: clamp(20px, 4vw, 32px) 16px;
+      border-radius: var(--radius-lg);
+      font-weight: 1000;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      border: 4px solid transparent;
+      cursor: pointer;
+    }
+
+    .de-button.btn-de1 {
+      background: linear-gradient(145deg, #fef3c7 0%, #fde68a 100%);
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .de-button.btn-de1:hover {
+      background: linear-gradient(145deg, #fde68a 0%, #fcd34d 100%);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(245, 158, 11, 0.25);
+    }
+
+    .de-button.btn-de1:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .de-button.btn-de2 {
+      background: linear-gradient(145deg, #ede9fe 0%, #ddd6fe 100%);
+      border-color: #8b5cf6;
+      color: #5b21b6;
+    }
+
+    .de-button.btn-de2:hover {
+      background: linear-gradient(145deg, #ddd6fe 0%, #c4b5fd 100%);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(139, 92, 246, 0.25);
+    }
+
+    .de-button.btn-de2:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .de-button .char {
+      font-size: clamp(4rem, 12vw, 6.5rem);
+      line-height: 1;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+
+    .de-button .cue {
+      font-size: clamp(1rem, 2.6vw, 1.25rem);
+      font-weight: 800;
+      opacity: 0.9;
+    }
+
+    /* 答題回饋視窗（教學解說與下一題） */
+    .feedback-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 24, 20, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .feedback-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .feedback-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: clamp(24px, 5vw, 36px);
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.25);
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    .feedback-overlay.open .feedback-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .feedback-icon {
+      font-size: 4rem;
+      margin-bottom: 8px;
+      animation: popIn 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .feedback-title {
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      font-weight: 1000;
+      margin-bottom: 8px;
+    }
+
+    .feedback-title.correct {
+      color: #059669;
+    }
+
+    .feedback-title.wrong {
+      color: #dc2626;
+    }
+
+    .feedback-sentence {
+      font-size: clamp(1.4rem, 3.8vw, 1.8rem);
+      font-weight: 900;
+      color: var(--ink);
+      background: #f5f5f4;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin: 12px 0 16px;
+    }
+
+    .feedback-sentence span.highlight {
+      color: #d97706;
+      font-weight: 1000;
+      text-decoration: underline;
+    }
+
+    .feedback-explanation {
+      font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+      color: #44403c;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: left;
+      background: #fefce8;
+      border: 2px solid #fef08a;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+    }
+
+    .feedback-explanation strong {
+      color: #b45309;
+    }
+
+    /* 結算畫面 */
+    .result-card {
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: center;
+      padding: clamp(20px, 4vw, 36px);
+    }
+
+    .result-emoji {
+      font-size: 4.5rem;
+      animation: floaty 3s ease-in-out infinite;
+      margin-bottom: 8px;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .result-title {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 1000;
+      color: #78350f;
+      margin-bottom: 6px;
+    }
+
+    .result-stars {
+      font-size: 2.5rem;
+      letter-spacing: 0.15em;
+      color: #f59e0b;
+      margin: 8px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 500px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-box {
+      background: white;
+      border: 2px solid #f5f5f4;
+      border-radius: var(--radius-md);
+      padding: 14px 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+      font-weight: 1000;
+      color: var(--ink);
+    }
+
+    .stat-value.highlight {
+      color: var(--amber-dark);
+    }
+
+    /* 結算座號上傳區 */
+    .upload-box {
+      background: #fafaf9;
+      border: 2px dashed #d6d3d1;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 20px 0;
+    }
+
+    .upload-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #44403c;
+      margin-bottom: 8px;
+    }
+
+    /* 排行榜 / 座號 Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 24, 20, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .modal-close {
+      background: #f5f5f4;
+      border: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: #e7e5e4;
+      color: var(--ink);
+    }
+
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 480px) {
+      .seat-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    .seat-btn {
+      padding: 12px 4px;
+      border-radius: 12px;
+      background: #f5f5f4;
+      border: 2px solid #e7e5e4;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+
+    .seat-btn:hover {
+      background: var(--amber-light);
+      border-color: var(--amber);
+      color: var(--amber-dark);
+      transform: scale(1.05);
+    }
+
+    .seat-btn.active {
+      background: var(--amber);
+      border-color: var(--amber-dark);
+      color: white;
+      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.35);
+    }
+
+    /* 排行榜頁籤與表格 */
+    .leaderboard-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f5f5f4;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .tab-btn.active {
+      background: var(--amber);
+      color: white;
+    }
+
+    .board-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .board-table th, .board-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid #f5f5f4;
+      font-size: 0.92rem;
+    }
+
+    .board-table th {
+      background: #fafaf9;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .board-table td.rank-1 { color: #d97706; font-weight: 1000; }
+    .board-table td.rank-2 { color: #64748b; font-weight: 900; }
+    .board-table td.rank-3 { color: #b45309; font-weight: 900; }
+
+    .class-wall {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .class-wall {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .seat-status-card {
+      padding: 10px 6px;
+      border-radius: 12px;
+      background: #f5f5f4;
+      border: 1px solid #e7e5e4;
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    .seat-status-card.completed {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+
+    .seat-status-num {
+      font-weight: 900;
+      font-size: 1rem;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* 紙花 Canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    .footnote {
+      margin: 20px 0 6px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <main class="app-shell">
+    <!-- 頂部功能列 -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">🎒👩‍🏫</span>
+        <span class="brand-title">的得大挑戰 <small>低年級互動版</small></span>
+      </div>
+      <div class="top-actions">
+        <button id="btn-seat" class="top-pill-btn" data-action="open-seat-modal" title="點擊切換座號">
+          <span>👤</span> <strong id="top-seat-label">未選座號</strong>
+        </button>
+        <button id="btn-sound" class="top-pill-btn" data-action="toggle-sound" title="切換音效">
+          <span id="sound-icon">🔊</span> <span>音效</span>
+        </button>
+        <button id="btn-device" class="top-pill-btn" data-action="toggle-device" title="切換手機/平板模式">
+          <span id="device-icon">💻</span> <span>平板版</span>
+        </button>
+        <button class="top-pill-btn" data-action="open-leaderboard" title="查看排行榜">
+          <span>🏆</span> <span>排行榜</span>
+        </button>
+        <button class="top-pill-btn" data-action="home" title="回到首頁">
+          <span>🏠</span> <span>首頁</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 首頁畫面 -->
+    <section id="home-screen" class="screen active">
+      <div class="panel">
+        <div class="hero">
+          <p class="eyebrow">🎒 百寶袋 vs 👩‍🏫 打分數小老師</p>
+          <h1>的得大挑戰</h1>
+          <p class="subtitle">專為國小低年級設計！看懂句子中的百寶袋與小老師，輕鬆學會「的」與「得」的用法！</p>
+
+          <!-- 核心口訣卡片 -->
+          <div class="concept-cards">
+            <div class="concept-card bag">
+              <div class="concept-card-header">
+                <span class="concept-card-icon">🎒</span>
+                <span class="concept-card-title">「的」百寶袋</span>
+              </div>
+              <div class="concept-card-body">
+                像背包裝著人、事、物（物品/名詞）。<br>
+                後面是<strong>具體的東西</strong>就選「的」！
+              </div>
+              <div class="concept-card-example">例：我的書包、紅紅的蘋果 🍎</div>
+            </div>
+
+            <div class="concept-card teacher">
+              <div class="concept-card-header">
+                <span class="concept-card-icon">👩‍🏫</span>
+                <span class="concept-card-title">「得」打分數小老師</span>
+              </div>
+              <div class="concept-card-body">
+                小老師在幫動作打分數。<br>
+                前面是<strong>動作</strong>，後面是<strong>表現如何</strong>就選「得」！
+              </div>
+              <div class="concept-card-example">例：跑得很快 🏃、唱得好聽 🎵</div>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-button" data-action="start-challenge">
+              <span>🏆</span> 開始 20 題競速挑戰！
+            </button>
+            <button class="secondary-button" data-action="open-teaching">
+              <span>📖</span> 看詳細口訣與例句
+            </button>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-chip"><strong>🎯 題庫</strong>80+ 題精選題庫隨機抽取</div>
+            <div class="info-chip"><strong>⏱️ 競速</strong>8秒計時，答得越快分數越高</div>
+            <div class="info-chip"><strong>📊 班級</strong>即時排行榜與 1~30 號進度牆</div>
+          </div>
+        </div>
+        <p class="footnote">提示：若使用平板或電子白板，可開啟「平板版」以獲得超大按鈕操作體驗。</p>
+      </div>
+    </section>
+
+    <!-- 詳細教學與例句畫面 -->
+    <section id="teaching-screen" class="screen">
+      <div class="panel">
+        <div style="text-align:center; margin-bottom: 20px;">
+          <p class="eyebrow">📖 語文小達人教室</p>
+          <h2 style="font-size:clamp(1.8rem, 4vw, 2.4rem); color:#78350f; margin:6px 0;">「的」與「得」的魔法口訣</h2>
+          <p style="color:var(--muted);">記住這兩個好朋友，以後造句寫作永遠不會寫錯！</p>
+        </div>
+
+        <div style="display:grid; gap:16px; max-width:760px; margin:0 auto 24px;">
+          <!-- 的教學 -->
+          <div class="concept-card bag" style="padding:22px;">
+            <h3 style="margin:0 0 10px; color:#92400e; font-size:1.4rem;">🎒 1.「的」的百寶袋法（名詞 / 物品）</h3>
+            <p style="font-size:1.05rem; line-height:1.6; color:#44403c;">
+              百寶袋用來「裝東西」或表示「擁有」。當你要形容一個<strong>東西、人物、地方</strong>時，中間都用「的」！
+            </p>
+            <ul style="margin:8px 0; padding-left:24px; line-height:1.8; font-weight:700; color:#78350f;">
+              <li>🌟 <strong>我的書包</strong>（書包是物品）</li>
+              <li>🌟 <strong>美麗的花朵</strong>（花朵是植物/東西）</li>
+              <li>🌟 <strong>跑得快的跑車</strong>（雖然跑得快，但後面是「跑車」這台車子，所以用「的」！）</li>
+              <li>🌟 <strong>輕輕的踢</strong>（修飾踢的動作）</li>
+            </ul>
+          </div>
+
+          <!-- 得教學 -->
+          <div class="concept-card teacher" style="padding:22px;">
+            <h3 style="margin:0 0 10px; color:#5b21b6; font-size:1.4rem;">👩‍🏫 2.「得」的打分數法（動詞後程度）</h3>
+            <p style="font-size:1.05rem; line-height:1.6; color:#44403c;">
+              小老師在旁邊「打分數」，看看你的動作做得很棒還是做得很慢。當<strong>動詞後面接著形容程度</strong>時，就要用「得」！
+            </p>
+            <ul style="margin:8px 0; padding-left:24px; line-height:1.8; font-weight:700; color:#4c1d95;">
+              <li>🌟 <strong>跑得真快</strong>（在幫「跑」打分數：非常快！）</li>
+              <li>🌟 <strong>跳得很高</strong>（在幫「跳」打分數：好高喔！）</li>
+              <li>🌟 <strong>笑得合不攏嘴</strong>（形容「笑」的樣子與程度）</li>
+              <li>🌟 <strong>我覺得、變得、記得</strong>（固定詞彙用法）</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="primary-button" data-action="start-challenge">
+            <span>🚀</span> 我懂了！開始挑戰
+          </button>
+          <button class="secondary-button" data-action="home">
+            <span>↩</span> 回到首頁
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 遊戲進行畫面 -->
+    <section id="game-screen" class="screen">
+      <div class="panel">
+        <div class="game-header">
+          <div class="game-badge">
+            <span>📝 第 <span id="current-q-index">1</span> / 20 題</span>
+          </div>
+          <div class="game-score-badge">
+            <span>✨ 總分：<span id="current-total-score">0</span> 分</span>
+          </div>
+        </div>
+
+        <!-- 彩虹倒數計時條 -->
+        <div class="timer-container" title="答題倒數時間">
+          <div id="timer-bar" class="timer-bar"></div>
+        </div>
+
+        <!-- 題目區域 -->
+        <div class="question-card">
+          <div class="question-instruction">請選出空格中正確的字：</div>
+          <div id="question-sentence" class="question-sentence">
+            <!-- 動態填入題目，如：我 <span class="blank-slot">？</span> 書包 -->
+          </div>
+        </div>
+
+        <!-- 巨型二選一按鈕 -->
+        <div class="choice-grid">
+          <button class="de-button btn-de1" data-action="choose" data-choice="的">
+            <span class="char">的</span>
+            <span class="cue">🎒 百寶袋（物品）</span>
+          </button>
+          <button class="de-button btn-de2" data-action="choose" data-choice="得">
+            <span class="char">得</span>
+            <span class="cue">👩‍🏫 打分數（程度）</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 結算畫面 -->
+    <section id="result-screen" class="screen">
+      <div class="panel">
+        <div class="result-card">
+          <div id="result-emoji" class="result-emoji">🎉</div>
+          <h2 id="result-title" class="result-title">太厲害了！闖關成功！</h2>
+          <div id="result-stars" class="result-stars">⭐⭐⭐⭐⭐</div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-label">答對題數</div>
+              <div id="res-accuracy" class="stat-value highlight">20 / 20</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">總耗時</div>
+              <div id="res-time" class="stat-value">32.4 秒</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">競速總分</div>
+              <div id="res-score" class="stat-value highlight">3420 分</div>
+            </div>
+          </div>
+
+          <!-- 上傳排行榜區塊 -->
+          <div class="upload-box">
+            <div class="upload-title">🏆 班級排行榜紀錄</div>
+            <p style="color:var(--muted); font-size:0.9rem; margin:4px 0 12px;">
+              目前以「<strong id="result-seat-label" style="color:var(--amber-dark);">未選座號 (訪客)</strong>」登錄，點擊下方按鈕可選擇座號並同步至雲端排行榜！
+            </p>
+            <div class="button-row" style="margin-top:0;">
+              <button class="secondary-button" data-action="open-seat-modal" style="padding:10px 20px; font-size:0.95rem;">
+                <span>👤</span> 變更座號
+              </button>
+              <button class="primary-button" data-action="upload-score" id="btn-upload-score" style="padding:10px 24px; font-size:0.95rem;">
+                <span>☁️</span> 同步上傳成績
+              </button>
+            </div>
+            <div id="upload-status" style="font-size:0.85rem; color:#059669; font-weight:700; margin-top:8px;" hidden>
+              ✅ 成績已成功同步至全班排行榜！
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-button" data-action="start-challenge">
+              <span>🔄</span> 再挑戰一次（新題目）
+            </button>
+            <button class="secondary-button" data-action="open-leaderboard">
+              <span>🏆</span> 查看班級排行榜
+            </button>
+            <button class="secondary-button" data-action="home">
+              <span>🏠</span> 回到首頁
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 答題回饋視窗 Modal (手動下一題，確保學生能閱讀教學) -->
+  <div id="feedback-modal" class="feedback-overlay">
+    <div class="feedback-card">
+      <div id="fb-icon" class="feedback-icon">🎉</div>
+      <div id="fb-title" class="feedback-title correct">答對了！太棒了！</div>
+      <div id="fb-sentence" class="feedback-sentence">
+        我的<span class="highlight">書包</span>
+      </div>
+      <div id="fb-explanation" class="feedback-explanation">
+        💡 <strong>百寶袋提示</strong>：後面是「書包」，是具體的物品喔，所以用「的」！
+      </div>
+      <div class="button-row">
+        <button id="btn-next-question" class="primary-button" data-action="next-question" style="width:100%; justify-content:center;">
+          <span>➡️</span> 下一題
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 座號選擇彈窗 Modal -->
+  <div id="seat-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">👤 選擇你的座號 (1~30 號)</h3>
+        <button class="modal-close" data-action="close-modal">✕</button>
+      </div>
+      <p style="color:var(--muted); font-size:0.92rem; margin-top:-6px; margin-bottom:14px;">
+        點選你的座號，闖關成績將自動記錄到全班排行榜中！（自由選擇，可隨時更換）
+      </p>
+      <div class="seat-grid" id="seat-grid">
+        <!-- 1~30 號按鈕由 JS 產生 -->
+      </div>
+      <div class="button-row" style="margin-top:14px;">
+        <button class="secondary-button" data-action="set-guest-seat" style="min-height:42px; font-size:0.95rem;">
+          我是訪客（不綁定座號）
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 排行榜彈窗 Modal -->
+  <div id="leaderboard-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🏆 班級「的得大挑戰」排行榜</h3>
+        <button class="modal-close" data-action="close-modal">✕</button>
+      </div>
+      <div class="leaderboard-tabs">
+        <button class="tab-btn active" data-tab="challenge-rank" data-action="switch-tab">🏆 競速英雄榜</button>
+        <button class="tab-btn" data-tab="class-status" data-action="switch-tab">📊 全班進度牆</button>
+      </div>
+      
+      <!-- 英雄榜視窗 -->
+      <div id="tab-challenge-rank" class="tab-pane">
+        <div style="font-size:0.86rem; color:var(--muted); margin-bottom:8px;">
+          依答對題數、競速總分與總耗時排序（答得又快又準名次越高）：
+        </div>
+        <table class="board-table">
+          <thead>
+            <tr>
+              <th>名次</th>
+              <th>座號</th>
+              <th>競速得分</th>
+              <th>答對率</th>
+              <th>耗時</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <!-- 排行榜動態載入 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 全班進度牆 -->
+      <div id="tab-class-status" class="tab-pane" style="display:none;">
+        <div style="font-size:0.86rem; color:var(--muted); margin-bottom:8px;">
+          即時掌握 1~30 號同學的最新挑戰紀錄：
+        </div>
+        <div class="class-wall" id="class-wall-grid">
+          <!-- 1~30 號卡片 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       1. 海量精選題庫池（約 80 題，涵蓋名詞、程度、特殊用法）
+       ========================================================= */
+    const allQuestionsPool = [
+      // --- 「的」百寶袋系列（名詞 / 代名詞 / 物品 / 擁有）---
+      { prefix: '我', answer: '的', suffix: '書包', type: 'bag', exp: '後面是「書包」，是具體的物品，要用「的」百寶袋！' },
+      { prefix: '漂亮', answer: '的', suffix: '花朵', type: 'bag', exp: '後面是「花朵」，是具體的植物與名詞，要用「的」百寶袋！' },
+      { prefix: '媽媽', answer: '的', suffix: '愛心', type: 'bag', exp: '表示「媽媽所擁有的」，後面接名詞愛心，要用「的」！' },
+      { prefix: '紅紅', answer: '的', suffix: '蘋果', type: 'bag', exp: '後面是「蘋果」，是好吃的東西（名詞），要用「的」！' },
+      { prefix: '藍色', answer: '的', suffix: '天空', type: 'bag', exp: '後面是「天空」（名詞），形容天空的顏色，要用「的」！' },
+      { prefix: '弟弟', answer: '的', suffix: '玩具', type: 'bag', exp: '後面是「玩具」，是弟弟擁有的物品，要用「的」！' },
+      { prefix: '學校', answer: '的', suffix: '操場', type: 'bag', exp: '後面是「操場」，是學校的地方（名詞），要用「的」！' },
+      { prefix: '乾淨', answer: '的', suffix: '教室', type: 'bag', exp: '後面是「教室」，是地方與空間，要用「的」！' },
+      { prefix: '美味', answer: '的', suffix: '蛋糕', type: 'bag', exp: '後面是「蛋糕」，是好吃的甜點物品，要用「的」！' },
+      { prefix: '溫暖', answer: '的', suffix: '太陽', type: 'bag', exp: '後面是「太陽」，是天上的天體名詞，要用「的」！' },
+      { prefix: '快樂', answer: '的', suffix: '童年', type: 'bag', exp: '後面是「童年」（名詞），形容美好的時光，要用「的」！' },
+      { prefix: '綠色', answer: '的', suffix: '草地', type: 'bag', exp: '後面是「草地」，是名詞，要用「的」！' },
+      { prefix: '跑得快', answer: '的', suffix: '跑車', type: 'bag', exp: '【陷阱題】雖然前面有跑得快，但整句最後是「跑車」這台車子（名詞），所以要選「的」！' },
+      { prefix: '會飛', answer: '的', suffix: '小鳥', type: 'bag', exp: '後面是「小鳥」這種動物（名詞），要用「的」！' },
+      { prefix: '唱得好聽', answer: '的', suffix: '歌曲', type: 'bag', exp: '【陷阱題】最後修飾的是「歌曲」這首歌（名詞），所以要選「的」！' },
+      { prefix: '跳得很高', answer: '的', suffix: '青蛙', type: 'bag', exp: '【陷阱題】最後指的是「青蛙」這隻動物，所以要選「的」！' },
+      { prefix: '新買', answer: '的', suffix: '鉛筆', type: 'bag', exp: '後面是「鉛筆」，是文具物品，要用「的」百寶袋！' },
+      { prefix: '盛開', answer: '的', suffix: '櫻花', type: 'bag', exp: '後面是「櫻花」（名詞），要用「的」！' },
+      { prefix: '圓圓', answer: '的', suffix: '月亮', type: 'bag', exp: '後面是「月亮」，是名詞，要用「的」！' },
+      { prefix: '老師', answer: '的', suffix: '微笑', type: 'bag', exp: '表示老師臉上的表情（名詞），要用「的」！' },
+      { prefix: '聰明', answer: '的', suffix: '狐狸', type: 'bag', exp: '後面是「狐狸」動物，要用「的」！' },
+      { prefix: '善良', answer: '的', suffix: '心腸', type: 'bag', exp: '後面是「心腸」（名詞），要用「的」！' },
+      { prefix: '爸爸', answer: '的', suffix: '手錶', type: 'bag', exp: '後面是「手錶」物品，要用「的」！' },
+      { prefix: '有趣', answer: '的', suffix: '故事書', type: 'bag', exp: '後面是「故事書」書籍物品，要用「的」！' },
+      { prefix: '冰涼', answer: '的', suffix: '西瓜', type: 'bag', exp: '後面是「西瓜」水果，要用「的」！' },
+      { prefix: '可愛', answer: '的', suffix: '小狗', type: 'bag', exp: '後面是「小狗」寵物名詞，要用「的」！' },
+      { prefix: '高大', answer: '的', suffix: '樹木', type: 'bag', exp: '後面是「樹木」植物，要用「的」！' },
+      { prefix: '閃亮', answer: '的', suffix: '星星', type: 'bag', exp: '後面是「星星」名詞，要用「的」！' },
+      { prefix: '甜甜', answer: '的', suffix: '草莓', type: 'bag', exp: '後面是「草莓」水果，要用「的」！' },
+      { prefix: '飛快', answer: '的', suffix: '火車', type: 'bag', exp: '後面是「火車」交通工具，要用「的」！' },
+      { prefix: '白白', answer: '的', suffix: '雲朵', type: 'bag', exp: '後面是「雲朵」名詞，要用「的」！' },
+      { prefix: '鋒利', answer: '的', suffix: '剪刀', type: 'bag', exp: '後面是「剪刀」工具，要用「的」！' },
+      { prefix: '精彩', answer: '的', suffix: '表演', type: 'bag', exp: '後面是「表演」活動名詞，要用「的」！' },
+      { prefix: '頑皮', answer: '的', suffix: '小貓', type: 'bag', exp: '後面是「小貓」動物，要用「的」！' },
+      { prefix: '漂亮', answer: '的', suffix: '衣服', type: 'bag', exp: '後面是「衣服」穿著物品，要用「的」！' },
+      { prefix: '溫柔', answer: '的', suffix: '微風', type: 'bag', exp: '後面是「微風」自然現象名詞，要用「的」！' },
+      { prefix: '輕快', answer: '的', suffix: '音樂', type: 'bag', exp: '後面是「音樂」名詞，要用「的」！' },
+      { prefix: '勤勞', answer: '的', suffix: '蜜蜂', type: 'bag', exp: '後面是「蜜蜂」昆蟲動物，要用「的」！' },
+      { prefix: '雄偉', answer: '的', suffix: '高山', type: 'bag', exp: '後面是「高山」地理名詞，要用「的」！' },
+      { prefix: '清澈', answer: '的', suffix: '溪水', type: 'bag', exp: '後面是「溪水」名詞，要用「的」！' },
+      { prefix: '是我叫你起床', answer: '的', suffix: '。', type: 'bag', exp: '句尾語氣助詞，表確認事實，固定使用「的」！' },
+
+      // --- 「得」小老師打分數系列（動詞後接程度 / 評價 / 狀態）---
+      { prefix: '跑', answer: '得', suffix: '真快', type: 'teacher', exp: '前面是動作「跑」，小老師幫跑打分數：好快！要用「得」！' },
+      { prefix: '跳', answer: '得', suffix: '很高', type: 'teacher', exp: '前面是動作「跳」，後面是跳的高度（程度），要用「得」！' },
+      { prefix: '唱', answer: '得', suffix: '好聽', type: 'teacher', exp: '前面是動作「唱」，小老師打分數：很好聽！要用「得」！' },
+      { prefix: '飛', answer: '得', suffix: '很高', type: 'teacher', exp: '前面是動作「飛」，形容飛的程度，要用「得」！' },
+      { prefix: '走', answer: '得', suffix: '很慢', type: 'teacher', exp: '前面是動作「走」，形容走的速度，要用「得」！' },
+      { prefix: '游', answer: '得', suffix: '真快', type: 'teacher', exp: '前面是動作「游」，形容游泳的速度，要用「得」！' },
+      { prefix: '笑', answer: '得', suffix: '很開心', type: 'teacher', exp: '前面是動作「笑」，形容笑的開心程度，要用「得」！' },
+      { prefix: '哭', answer: '得', suffix: '好傷心', type: 'teacher', exp: '前面是動作「哭」，形容傷心的程度，要用「得」！' },
+      { prefix: '寫', answer: '得', suffix: '很工整', type: 'teacher', exp: '前面是動作「寫」，小老師打分數：字體真工整！要用「得」！' },
+      { prefix: '讀', answer: '得', suffix: '很認真', type: 'teacher', exp: '前面是動作「讀」，形容讀書的專注程度，要用「得」！' },
+      { prefix: '煮', answer: '得', suffix: '很好吃', type: 'teacher', exp: '前面是動作「煮」，打分數：好好吃！要用「得」！' },
+      { prefix: '睡', answer: '得', suffix: '很香', type: 'teacher', exp: '前面是動作「睡」，形容睡眠的狀態與程度，要用「得」！' },
+      { prefix: '痛', answer: '得', suffix: '不得了', type: 'teacher', exp: '前面是感覺「痛」，後面形容痛得非常厲害（程度），要用「得」！' },
+      { prefix: '氣', answer: '得', suffix: '火冒三丈', type: 'teacher', exp: '前面是情緒「氣」，後面形容生氣的極高程度，要用「得」！' },
+      { prefix: '累', answer: '得', suffix: '走不動', type: 'teacher', exp: '前面是狀態「累」，後面形容疲累的程度，要用「得」！' },
+      { prefix: '玩', answer: '得', suffix: '很高興', type: 'teacher', exp: '前面是動作「玩」，形容玩樂的愉悅程度，要用「得」！' },
+      { prefix: '掃', answer: '得', suffix: '很乾淨', type: 'teacher', exp: '前面是動作「掃」，小老師打分數：好乾淨！要用「得」！' },
+      { prefix: '洗', answer: '得', suffix: '真乾淨', type: 'teacher', exp: '前面是動作「洗」，形容洗滌乾淨的程度，要用「得」！' },
+      { prefix: '吃', answer: '得', suffix: '好飽', type: 'teacher', exp: '前面是動作「吃」，形容吃飽的程度，要用「得」！' },
+      { prefix: '爬', answer: '得', suffix: '很高', type: 'teacher', exp: '前面是動作「爬」，形容爬的高度程度，要用「得」！' },
+      { prefix: '畫', answer: '得', suffix: '真漂亮', type: 'teacher', exp: '前面是動作「畫」，打分數：真漂亮！要用「得」！' },
+      { prefix: '考', answer: '得', suffix: '非常好', type: 'teacher', exp: '前面是動作「考」，打分數：非常好！要用「得」！' },
+      { prefix: '算', answer: '得', suffix: '很快速', type: 'teacher', exp: '前面是動作「算」，形容計算速度，要用「得」！' },
+      { prefix: '說', answer: '得', suffix: '很清楚', type: 'teacher', exp: '前面是動作「說」，形容表達清楚的程度，要用「得」！' },
+      { prefix: '聽', answer: '得', suffix: '很入迷', type: 'teacher', exp: '前面是動作「聽」，形容專注聆聽的程度，要用「得」！' },
+      { prefix: '站', answer: '得', suffix: '很挺', type: 'teacher', exp: '前面是動作「站」，形容站立的姿勢標準度，要用「得」！' },
+      { prefix: '坐', answer: '得', suffix: '很端正', type: 'teacher', exp: '前面是動作「坐」，打分數：姿勢真端正！要用「得」！' },
+      { prefix: '熱', answer: '得', suffix: '滿頭大汗', type: 'teacher', exp: '前面是感覺「熱」，後面形容流汗的程度，要用「得」！' },
+      { prefix: '冷', answer: '得', suffix: '直發抖', type: 'teacher', exp: '前面是感覺「冷」，後面形容發抖的程度，要用「得」！' },
+      { prefix: '忙', answer: '得', suffix: '團團轉', type: 'teacher', exp: '前面是狀態「忙」，形容忙碌的程度，要用「得」！' },
+      { prefix: '嚇', answer: '得', suffix: '臉色發白', type: 'teacher', exp: '前面是動作「嚇」，形容受驚嚇的程度，要用「得」！' },
+      { prefix: '痛', answer: '得', suffix: '哇哇大叫', type: 'teacher', exp: '前面是感覺「痛」，形容痛的表現程度，要用「得」！' },
+      { prefix: '樂', answer: '得', suffix: '合不攏嘴', type: 'teacher', exp: '前面是心情「樂」，形容高興笑開懷的程度，要用「得」！' },
+      { prefix: '餓', answer: '得', suffix: '肚子咕咕叫', type: 'teacher', exp: '前面是感覺「餓」，形容肚子叫的飢餓程度，要用「得」！' },
+      { prefix: '演', answer: '得', suffix: '活靈活現', type: 'teacher', exp: '前面是動作「演」，打分數：演得生動逼真！要用「得」！' },
+      { prefix: '漂亮', answer: '得', suffix: '讓人捨不得眨眼', type: 'teacher', exp: '形容美麗程度極高，讓人都捨不得眨眼，要用「得」！' },
+      { prefix: '飛', answer: '得', suffix: '看不見蹤影', type: 'teacher', exp: '前面是動作「飛」，形容飛得很遠很遠的程度，要用「得」！' },
+      { prefix: '說', answer: '得', suffix: '頭頭是道', type: 'teacher', exp: '前面是動作「說」，形容說話很有道理的程度，要用「得」！' },
+
+      // --- 特殊詞性與固定用法系列 ---
+      { prefix: '輕輕', answer: '的', suffix: '踢', type: 'bag', exp: '【特殊用法】「輕輕的」是副詞修飾後面的動作踢，要用「的」！' },
+      { prefix: '慢慢', answer: '的', suffix: '走', type: 'bag', exp: '【特殊用法】「慢慢的」用來修飾走路，要用「的」！' },
+      { prefix: '悄悄', answer: '的', suffix: '說', type: 'bag', exp: '【特殊用法】「悄悄的」修飾說話的動作，要用「的」！' },
+      { prefix: '靜靜', answer: '的', suffix: '聽', type: 'bag', exp: '【特殊用法】「靜靜的」修飾聆聽的動作，要用「的」！' },
+      { prefix: '快快樂樂', answer: '的', suffix: '上學去', type: 'bag', exp: '【特殊用法】四字疊詞修飾上學動作，要用「的」！' },
+      { prefix: '我覺', answer: '得', suffix: '很好玩', type: 'teacher', exp: '【固定詞彙】「覺得」是固定詞語，表示心裡的想法，要用「得」！' },
+      { prefix: '變', answer: '得', suffix: '更聰明了', type: 'teacher', exp: '【固定詞彙】「變得」是固定詞語，表示轉變後的程度，要用「得」！' },
+      { prefix: '我記', answer: '得', suffix: '這件事', type: 'teacher', exp: '【固定詞彙】「記得」是固定詞語，表示留在記憶中，要用「得」！' },
+      { prefix: '捨不', answer: '得', suffix: '分開', type: 'teacher', exp: '【固定詞彙】「捨不得」是固定用法，要用「得」！' },
+      { prefix: '懂', answer: '得', suffix: '分享的人最快樂', type: 'teacher', exp: '【固定詞彙】「懂得」是固定詞語，要用「得」！' }
+    ];
+
+    /* =========================================================
+       2. Web Audio API 音效合成引擎 (輕快清脆、無外部依賴)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = localStorage.getItem('de_sound_enabled') !== 'false';
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playTone(freq, type = 'sine', duration = 0.15, startTime = 0, gainLevel = 0.25) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + startTime);
+
+        gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime + startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + startTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(this.ctx.currentTime + startTime);
+        osc.stop(this.ctx.currentTime + startTime + duration);
+      }
+
+      correct() {
+        // 經典叮咚叮咚 E5-C5-E5-C5 四連音
+        const e5 = 659.25;
+        const c5 = 523.25;
+        this.playTone(e5, 'sine', 0.1, 0, 0.28);
+        this.playTone(c5, 'sine', 0.12, 0.09, 0.25);
+        this.playTone(e5, 'sine', 0.1, 0.20, 0.3);
+        this.playTone(c5, 'sine', 0.22, 0.29, 0.32);
+      }
+
+      wrong() {
+        // 喔喔 (Uh-oh) 雙音節下滑 (A3 -> F3)
+        this.playTone(220.00, 'triangle', 0.16, 0, 0.25);
+        this.playTone(174.61, 'triangle', 0.25, 0.14, 0.28);
+      }
+
+      star() {
+        // 星星獲得琶音 (C5 -> E5 -> G5 -> C6)
+        this.playTone(523.25, 'sine', 0.08, 0, 0.2);
+        this.playTone(659.25, 'sine', 0.08, 0.06, 0.22);
+        this.playTone(783.99, 'sine', 0.08, 0.12, 0.24);
+        this.playTone(1046.50, 'sine', 0.22, 0.18, 0.28);
+      }
+
+      victory() {
+        // 通關號角
+        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          this.playTone(freq, 'triangle', 0.16, idx * 0.11, 0.28);
+        });
+      }
+
+      click() {
+        this.playTone(480, 'sine', 0.04, 0, 0.15);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* =========================================================
+       3. 彩色紙花 Confetti 特效
+       ========================================================= */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiAnimId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti(count = 50) {
+      resizeCanvas();
+      const colors = ['#f59e0b', '#8b5cf6', '#10b981', '#f43f5e', '#0ea5e9', '#fbbf24'];
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: canvas.width / 2 + (Math.random() * 240 - 120),
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.9) * 16,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 12,
+          alpha: 1
+        });
+      }
+      if (!confettiAnimId) renderConfetti();
+    }
+
+    function renderConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiParticles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.45;
+        p.rotation += p.vRot;
+        p.alpha -= 0.012;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      });
+
+      confettiParticles = confettiParticles.filter(p => p.alpha > 0);
+      if (confettiParticles.length > 0) {
+        confettiAnimId = requestAnimationFrame(renderConfetti);
+      } else {
+        cancelAnimationFrame(confettiAnimId);
+        confettiAnimId = null;
+      }
+    }
+
+    /* =========================================================
+       4. Firebase Firestore 班級連線設定
+       ========================================================= */
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3Z-NJkvnzGwWVF_8tw8M07ghoTdZs_TI",
+      authDomain: "teacherstudy-12846.firebaseapp.com",
+      projectId: "teacherstudy-12846",
+      storageBucket: "teacherstudy-12846.firebasestorage.app",
+      messagingSenderId: "676416832399",
+      appId: "1:676416832399:web:ecbd0a2bfe96224ee541fa"
+    };
+
+    let db = null;
+    try {
+      if (window.firebase) {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+      }
+    } catch (e) {
+      console.warn('Firebase init offline fallback mode:', e);
+    }
+
+    /* =========================================================
+       5. 遊戲狀態管理
+       ========================================================= */
+    const state = {
+      seatNumber: localStorage.getItem('de_seat_num') || null, // 1~30 或 null
+      isMobileLayout: localStorage.getItem('de_device_mode') === 'mobile',
+      
+      screen: 'home-screen',
+      questions: [],
+      currentIndex: 0,
+      correctCount: 0,
+      totalScore: 0,
+      
+      // 每題計時器（8 秒）
+      perQuestionTimeLimit: 8000,
+      questionStartTime: 0,
+      questionTimerId: null,
+      
+      // 總耗時統計
+      challengeStartTime: 0,
+      totalElapsedMs: 0,
+      
+      locked: false,
+      uploaded: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function setScreen(screenId) {
+      state.screen = screenId;
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      const target = $(screenId);
+      if (target) target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       6. 遊戲流程控制
+       ========================================================= */
+    function startChallenge() {
+      sound.click();
+      state.questions = shuffle(allQuestionsPool).slice(0, 20);
+      state.currentIndex = 0;
+      state.correctCount = 0;
+      state.totalScore = 0;
+      state.uploaded = false;
+      $('upload-status').hidden = true;
+      $('btn-upload-score').disabled = false;
+      $('btn-upload-score').textContent = '☁️ 同步上傳成績';
+
+      state.challengeStartTime = Date.now();
+      setScreen('game-screen');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      if (state.currentIndex >= state.questions.length) {
+        finishChallenge();
+        return;
+      }
+
+      state.locked = false;
+      const q = state.questions[state.currentIndex];
+      $('current-q-index').textContent = state.currentIndex + 1;
+      $('current-total-score').textContent = state.totalScore;
+
+      // 渲染去答案化的題幹，例：我 [ ？ ] 書包
+      $('question-sentence').innerHTML = `
+        <span>${q.prefix}</span>
+        <span class="blank-slot">？</span>
+        <span>${q.suffix}</span>
+      `;
+
+      // 啟動 8 秒彩虹計時條
+      startQuestionTimer();
+    }
+
+    function startQuestionTimer() {
+      if (state.questionTimerId) clearInterval(state.questionTimerId);
+      state.questionStartTime = Date.now();
+      const timerBar = $('timer-bar');
+      timerBar.style.transform = 'scaleX(1)';
+
+      state.questionTimerId = setInterval(() => {
+        const elapsed = Date.now() - state.questionStartTime;
+        const remainRatio = Math.max(0, 1 - (elapsed / state.perQuestionTimeLimit));
+        timerBar.style.transform = `scaleX(${remainRatio})`;
+
+        if (elapsed >= state.perQuestionTimeLimit) {
+          clearInterval(state.questionTimerId);
+          state.questionTimerId = null;
+          handleTimeout();
+        }
+      }, 50);
+    }
+
+    function stopQuestionTimer() {
+      if (state.questionTimerId) {
+        clearInterval(state.questionTimerId);
+        state.questionTimerId = null;
+      }
+    }
+
+    function handleChoice(userChoice) {
+      if (state.locked) return;
+      state.locked = true;
+      stopQuestionTimer();
+
+      const q = state.questions[state.currentIndex];
+      const elapsed = Date.now() - state.questionStartTime;
+      const isCorrect = userChoice === q.answer;
+
+      if (isCorrect) {
+        // 計算競速分數：基礎分 100 + 速度加分（每剩餘 1 秒獎勵 15 分，最高加 120 分）
+        const remainSec = Math.max(0, (state.perQuestionTimeLimit - elapsed) / 1000);
+        const speedBonus = Math.round(remainSec * 15);
+        const earnedScore = 100 + speedBonus;
+        state.totalScore += earnedScore;
+        state.correctCount++;
+
+        sound.correct();
+        showFeedback(true, q, earnedScore);
+      } else {
+        sound.wrong();
+        showFeedback(false, q, 0);
+      }
+    }
+
+    function handleTimeout() {
+      if (state.locked) return;
+      state.locked = true;
+      const q = state.questions[state.currentIndex];
+      sound.wrong();
+      showFeedback(false, q, 0, true);
+    }
+
+    function showFeedback(isCorrect, q, earnedScore, isTimeout = false) {
+      const fullSentence = `${q.prefix}<span class="highlight">${q.answer}</span>${q.suffix}`;
+      $('fb-sentence').innerHTML = fullSentence;
+      $('fb-explanation').innerHTML = `💡 <strong>${q.type === 'bag' ? '百寶袋法' : '打分數法'}</strong>：${q.exp}`;
+
+      if (isCorrect) {
+        $('fb-icon').textContent = '🎉';
+        $('fb-title').className = 'feedback-title correct';
+        $('fb-title').textContent = `答對了！+${earnedScore} 分！`;
+      } else {
+        $('fb-icon').textContent = isTimeout ? '⏰' : '😅';
+        $('fb-title').className = 'feedback-title wrong';
+        $('fb-title').textContent = isTimeout ? '時間到囉！要記得把握時間喔！' : '哎呀，選錯囉！看一看提示：';
+      }
+
+      $('feedback-modal').classList.add('open');
+    }
+
+    function nextQuestion() {
+      sound.click();
+      $('feedback-modal').classList.remove('open');
+      state.currentIndex++;
+      renderQuestion();
+    }
+
+    function finishChallenge() {
+      stopQuestionTimer();
+      state.totalElapsedMs = Date.now() - state.challengeStartTime;
+      const elapsedSec = (state.totalElapsedMs / 1000).toFixed(1);
+
+      // 星星評等
+      const ratio = state.correctCount / 20;
+      let stars = '⭐⭐⭐⭐⭐';
+      if (ratio < 0.6) stars = '⭐⭐';
+      else if (ratio < 0.8) stars = '⭐⭐⭐';
+      else if (ratio < 1) stars = '⭐⭐⭐⭐';
+
+      sound.victory();
+      triggerConfetti(60);
+
+      $('result-emoji').textContent = ratio >= 0.9 ? '👑' : (ratio >= 0.7 ? '🎉' : '🌱');
+      $('result-title').textContent = ratio >= 0.9 ? '太神了！你是的得小達人！' : (ratio >= 0.7 ? '表現很棒！闖關成功！' : '再接再厲！多練習就會更厲害！');
+      $('result-stars').textContent = stars;
+      $('res-accuracy').textContent = `${state.correctCount} / 20`;
+      $('res-time').textContent = `${elapsedSec} 秒`;
+      $('res-score').textContent = `${state.totalScore} 分`;
+      $('result-seat-label').textContent = state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')} 號` : '未選座號 (訪客)';
+
+      // 若已有座號則自動上傳
+      if (state.seatNumber && db) {
+        uploadScoreToFirestore();
+      }
+
+      setScreen('result-screen');
+    }
+
+    /* =========================================================
+       7. Firebase 上傳與排行榜查詢
+       ========================================================= */
+    function uploadScoreToFirestore() {
+      if (!db || state.uploaded) return;
+      const elapsedSec = (state.totalElapsedMs / 1000).toFixed(1);
+      
+      const payload = {
+        seatNumber: state.seatNumber ? Number(state.seatNumber) : null,
+        seatLabel: state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')}號` : '訪客',
+        score: state.totalScore,
+        correctCount: state.correctCount,
+        total: 20,
+        timeMs: state.totalElapsedMs,
+        timeFormatted: `${elapsedSec}秒`,
+        stars: state.correctCount >= 20 ? 5 : (state.correctCount >= 16 ? 4 : (state.correctCount >= 12 ? 3 : 2)),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection('chinese_de_game_scores').add(payload)
+        .then(() => {
+          state.uploaded = true;
+          $('upload-status').hidden = false;
+          $('btn-upload-score').textContent = '✅ 成績已同步';
+          $('btn-upload-score').disabled = true;
+        })
+        .catch(err => {
+          console.warn('Score upload error:', err);
+        });
+    }
+
+    function openLeaderboard() {
+      sound.click();
+      $('leaderboard-modal').classList.add('open');
+      loadLeaderboardData();
+    }
+
+    function loadLeaderboardData() {
+      const tbody = $('leaderboard-tbody');
+      tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:var(--muted);">正在讀取最新戰報...</td></tr>';
+      
+      // 繪製 1~30 號預設卡片
+      const wall = $('class-wall-grid');
+      wall.innerHTML = Array.from({ length: 30 }, (_, i) => i + 1).map(num => `
+        <div class="seat-status-card" id="seat-card-${num}">
+          <span class="seat-status-num">${String(num).padStart(2, '0')}號</span>
+          <span class="seat-status-stars" style="color:#a8a29e;">未挑戰</span>
+        </div>
+      `).join('');
+
+      if (!db) {
+        tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:#be123c;">離線模式：尚未連接雲端資料庫</td></tr>';
+        return;
+      }
+
+      // 查詢英雄榜（以得分高、耗時少排序）
+      db.collection('chinese_de_game_scores')
+        .orderBy('score', 'desc')
+        .orderBy('timeMs', 'asc')
+        .limit(20)
+        .get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:var(--muted);">目前還沒有挑戰紀錄，快來搶下第一名！</td></tr>';
+          } else {
+            let rank = 1;
+            tbody.innerHTML = snapshot.docs.map(doc => {
+              const d = doc.data();
+              const rankClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
+              const rankIcon = rank === 1 ? '🥇 1' : (rank === 2 ? '🥈 2' : (rank === 3 ? '🥉 3' : rank));
+              const html = `<tr>
+                <td class="${rankClass}">${rankIcon}</td>
+                <td><strong>${d.seatLabel || '訪客'}</strong></td>
+                <td style="color:#d97706; font-weight:900;">${d.score || 0} 分</td>
+                <td>${d.correctCount || 0} / ${d.total || 20}</td>
+                <td style="color:var(--muted); font-size:0.86rem;">${d.timeFormatted || '--'}</td>
+              </tr>`;
+              rank++;
+              return html;
+            }).join('');
+          }
+        })
+        .catch(err => {
+          console.warn('Leaderboard query error:', err);
+          tbody.innerHTML = '<tr><td colspan="5" style="padding:20px; color:#be123c;">讀取失敗，請確認網路連線</td></tr>';
+        });
+
+      // 查詢全班 1~30 號進度牆
+      db.collection('chinese_de_game_scores')
+        .orderBy('timestamp', 'desc')
+        .limit(60)
+        .get()
+        .then(snapshot => {
+          const seatBest = {};
+          snapshot.forEach(doc => {
+            const d = doc.data();
+            if (d.seatNumber && !seatBest[d.seatNumber]) {
+              seatBest[d.seatNumber] = d;
+            }
+          });
+          Object.keys(seatBest).forEach(num => {
+            const d = seatBest[num];
+            const card = document.getElementById(`seat-card-${num}`);
+            if (card) {
+              card.classList.add('completed');
+              card.querySelector('.seat-status-stars').innerHTML = `
+                <span style="color:#059669; font-weight:800;">${d.score}分</span><br>
+                <small>${d.correctCount}題 / ${d.timeFormatted}</small>
+              `;
+            }
+          });
+        });
+    }
+
+    /* =========================================================
+       8. 座號與介面設定
+       ========================================================= */
+    function initSeatModal() {
+      const grid = $('seat-grid');
+      grid.innerHTML = Array.from({ length: 30 }, (_, i) => i + 1).map(num => `
+        <button class="seat-btn${state.seatNumber === num ? ' active' : ''}" data-action="select-seat" data-seat="${num}">
+          ${String(num).padStart(2, '0')}
+        </button>
+      `).join('');
+    }
+
+    function updateSeatUI() {
+      $('top-seat-label').textContent = state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')} 號` : '未選座號';
+      $('btn-seat').title = state.seatNumber ? `目前座號：${state.seatNumber} 號（點擊更換）` : '點擊選擇座號';
+      const resSeat = $('result-seat-label');
+      if (resSeat) {
+        resSeat.textContent = state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')} 號` : '未選座號 (訪客)';
+      }
+      initSeatModal();
+    }
+
+    function updateSoundUI() {
+      $('sound-icon').textContent = sound.enabled ? '🔊' : '🔇';
+      $('btn-sound').title = sound.enabled ? '音效開啟中（點擊靜音）' : '音效已靜音（點擊開啟）';
+    }
+
+    function updateDeviceUI() {
+      if (state.isMobileLayout) {
+        document.body.classList.add('device-mobile');
+        $('device-icon').textContent = '📱';
+        $('btn-device').querySelector('span:last-child').textContent = '手機版';
+      } else {
+        document.body.classList.remove('device-mobile');
+        $('device-icon').textContent = '💻';
+        $('btn-device').querySelector('span:last-child').textContent = '平板版';
+      }
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('open'));
+    }
+
+    /* =========================================================
+       9. 全域事件委派
+       ========================================================= */
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-action]');
+      if (!target) return;
+      const action = target.dataset.action;
+
+      if (action === 'home') {
+        sound.click();
+        stopQuestionTimer();
+        setScreen('home-screen');
+      }
+      if (action === 'open-teaching') {
+        sound.click();
+        setScreen('teaching-screen');
+      }
+      if (action === 'start-challenge') {
+        startChallenge();
+      }
+      if (action === 'choose') {
+        handleChoice(target.dataset.choice);
+      }
+      if (action === 'next-question') {
+        nextQuestion();
+      }
+      if (action === 'open-seat-modal') {
+        sound.click();
+        initSeatModal();
+        $('seat-modal').classList.add('open');
+      }
+      if (action === 'select-seat') {
+        sound.click();
+        state.seatNumber = Number(target.dataset.seat);
+        localStorage.setItem('de_seat_num', state.seatNumber);
+        updateSeatUI();
+        closeModal();
+      }
+      if (action === 'set-guest-seat') {
+        sound.click();
+        state.seatNumber = null;
+        localStorage.removeItem('de_seat_num');
+        updateSeatUI();
+        closeModal();
+      }
+      if (action === 'upload-score') {
+        sound.click();
+        if (!state.seatNumber) {
+          initSeatModal();
+          $('seat-modal').classList.add('open');
+        } else {
+          uploadScoreToFirestore();
+        }
+      }
+      if (action === 'open-leaderboard') {
+        openLeaderboard();
+      }
+      if (action === 'close-modal') {
+        sound.click();
+        closeModal();
+      }
+      if (action === 'switch-tab') {
+        sound.click();
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
+        const tab = target.dataset.tab;
+        $('tab-challenge-rank').style.display = tab === 'challenge-rank' ? 'block' : 'none';
+        $('tab-class-status').style.display = tab === 'class-status' ? 'block' : 'none';
+      }
+      if (action === 'toggle-sound') {
+        sound.enabled = !sound.enabled;
+        localStorage.setItem('de_sound_enabled', sound.enabled);
+        updateSoundUI();
+        if (sound.enabled) sound.star();
+      }
+      if (action === 'toggle-device') {
+        sound.click();
+        state.isMobileLayout = !state.isMobileLayout;
+        localStorage.setItem('de_device_mode', state.isMobileLayout ? 'mobile' : 'tablet');
+        updateDeviceUI();
+      }
+    });
+
+    // 初始化啟動
+    updateSeatUI();
+    updateSoundUI();
+    updateDeviceUI();
+  </script>
+</body>
+</html>
