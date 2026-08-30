@@ -5,7 +5,7 @@
 
 ## ⏯️ 目前進度 / 上次做到哪
 - 已將互動遊戲之核心規格（注音開關、電腦/手機/平板三端響應式排版、Web Audio 音效、Firebase 班級排行榜與進度牆）封裝為全域專案技能 `classroom-game-builder`（國小班級互動教學遊戲建置器）。
-- 已部署至 AntiGravity (`~/.gemini/config/skills/classroom-game-builder`) 與 Claude (`~/.claude/skills/classroom-game-builder`)。
+- 已部署至 AntiGravity (`~/.gemini/config/skills/classroom-game-builder`)、Codex (`~/.codex/skills/classroom-game-builder`) 與 Claude (`~/.claude/skills/classroom-game-builder`, `~/.claude-skills/classroom-game-builder`)。
 - 「語文遊戲（的得大挑戰）」線上版：[https://garfield543.github.io/teacher-toolkit/語文遊戲/](https://garfield543.github.io/teacher-toolkit/%E8%AA%9E%E6%96%87%E9%81%8A%E6%88%B2/)。
 
 ## ➡️ 下一步建議 (Next Steps)
