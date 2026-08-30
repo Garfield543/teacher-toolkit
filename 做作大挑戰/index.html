@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>做作大挑戰 🖐️💡 — 「做」與「作」魔法分辨術</title>
+  <meta name="description" content="專為國小一年級與低年級設計的『做』與『作』語文辨析闖關遊戲。動手做vs動腦作、注音開關、8秒彩虹競速與班級排行榜！">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK (Compat mode) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .font-brand {
+      font-family: 'Fredoka', 'Noto Sans TC', cursive, sans-serif;
+    }
+    
+    /* Ruby Zhuyin styling */
+    ruby {
+      display: inline-flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      vertical-align: bottom;
+      line-height: 1;
+      margin: 0 1px;
+    }
+    rt {
+      display: block;
+      font-size: 0.48em;
+      line-height: 1;
+      text-align: center;
+      color: #6366f1;
+      font-weight: 700;
+      letter-spacing: 0px;
+      margin-bottom: 2px;
+      user-select: none;
+    }
+    .no-zhuyin rt {
+      display: none !important;
+    }
+
+    /* Pulse & Bounce animations */
+    @keyframes gentle-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-gentle-bounce {
+      animation: gentle-bounce 2s ease-in-out infinite;
+    }
+
+    .btn-press {
+      transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-press:active {
+      transform: scale(0.96);
+    }
+
+    /* Modal Backdrop */
+    .modal-backdrop {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Rainbow Timer Animation Bar */
+    .timer-bar {
+      transition: width 0.1s linear, background-color 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-indigo-50/40 to-sky-50 min-h-screen text-slate-800 flex flex-col justify-between overflow-x-hidden">
+
+  <!-- 頂部通用導覽列 -->
+  <header class="bg-white/85 backdrop-blur-md border-b border-indigo-100 sticky top-0 z-40 px-3 py-2.5 sm:px-6 shadow-sm">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo & Title -->
+      <a href="#" onclick="showScreen('home-screen')" class="flex items-center space-x-2 group">
+        <span class="text-2xl sm:text-3xl transition-transform group-hover:scale-110">🖐️💡</span>
+        <div>
+          <h1 class="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight flex items-center gap-1.5">
+            做作大挑戰 <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-bold hidden sm:inline">v1.0</span>
+          </h1>
+          <p class="text-[10px] sm:text-xs text-slate-500 font-medium">國小語文魔法分辨術</p>
+        </div>
+      </a>
+
+      <!-- 右側工具切換鈕 -->
+      <div class="flex items-center space-x-1.5 sm:space-x-2">
+        <!-- 注音開關 -->
+        <button id="btn-zhuyin-toggle" onclick="toggleZhuyin()" class="px-2.5 py-1.5 sm:px-3 text-xs sm:text-sm font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl border border-indigo-200 transition flex items-center gap-1">
+          <span>🔤</span> <span id="zhuyin-status-text">注音：開</span>
+        </button>
+
+        <!-- 音效開關 -->
+        <button id="btn-sound-toggle" onclick="toggleSound()" class="p-1.5 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-bold bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-xl border border-amber-200 transition flex items-center gap-1">
+          <span id="sound-icon">🔊</span> <span class="hidden sm:inline" id="sound-status-text">音效</span>
+        </button>
+
+        <!-- 大廳連結 -->
+        <a href="../" class="px-2.5 py-1.5 sm:px-3 text-xs sm:text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl transition flex items-center gap-1">
+          <span>🏠</span> <span class="hidden sm:inline">遊戲大廳</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要內容區（單頁畫面切換） -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-6 flex flex-col justify-center">
+
+    <!-- ======================================================== -->
+    <!-- 畫面 1：首頁 (Home Screen) -->
+    <!-- ======================================================== -->
+    <div id="home-screen" class="screen flex flex-col items-center text-center my-auto py-4">
+      
+      <!-- 標題徽章 -->
+      <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-indigo-100 text-slate-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full mb-3 shadow-sm border border-white">
+        <span>✨ 動手做 🖐️ vs 動腦作 💡</span>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-800 mb-3 tracking-tight font-brand">
+        「做」與「作」魔法分辨挑戰
+      </h2>
+      <p class="text-xs sm:text-base text-slate-600 max-w-xl mb-6 leading-relaxed">
+        手腳動一動、動手做事選「<strong class="text-amber-600 font-bold">做</strong>」！<br>
+        腦袋轉一轉、動腦創作選「<strong class="text-indigo-600 font-bold">作</strong>」！
+      </p>
+
+      <!-- 角色口訣卡預覽 -->
+      <div class="grid grid-cols-2 gap-3 sm:gap-6 w-full max-w-md mb-6">
+        <div class="bg-white rounded-2xl p-3 sm:p-4 border-2 border-amber-200 shadow-sm text-center">
+          <div class="text-3xl sm:text-4xl mb-1">🖐️</div>
+          <div class="font-black text-amber-700 text-base sm:text-lg mb-0.5">動手「做」</div>
+          <div class="text-[11px] sm:text-xs text-slate-500 font-medium">體力・家事・做物品</div>
+        </div>
+        <div class="bg-white rounded-2xl p-3 sm:p-4 border-2 border-indigo-200 shadow-sm text-center">
+          <div class="text-3xl sm:text-4xl mb-1">💡</div>
+          <div class="font-black text-indigo-700 text-base sm:text-lg mb-0.5">動腦「作」</div>
+          <div class="text-[11px] sm:text-xs text-slate-500 font-medium">創作・文章・固定詞</div>
+        </div>
+      </div>
+
+      <!-- 座號選擇區 (1~30 號彩色網格) -->
+      <div class="bg-white/90 backdrop-blur rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-md w-full max-w-xl mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-slate-700 text-xs sm:text-sm flex items-center gap-1.5">
+            <span>👤</span> 選擇座號（免打字直接點選）：
+          </span>
+          <span id="current-seat-display" class="text-xs font-black text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">
+            尚未選擇（訪客模式）
+          </span>
+        </div>
+        
+        <!-- 1~30 座號按鈕網格 -->
+        <div id="seat-grid" class="grid grid-cols-6 sm:grid-cols-10 gap-1.5 sm:gap-2 mb-3">
+          <!-- 由 JS 動態生成 1~30 號按鈕 -->
+        </div>
+
+        <div class="flex justify-between items-center text-[11px] sm:text-xs text-slate-500">
+          <span>💡 點選座號可自動將戰績上傳至班級排行榜</span>
+          <button onclick="selectGuest()" class="text-indigo-600 hover:underline font-bold">以訪客身分玩</button>
+        </div>
+      </div>
+
+      <!-- 主操作按鈕群 -->
+      <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+        <button onclick="startGame()" class="btn-press flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-lg sm:text-xl py-3.5 px-6 rounded-2xl shadow-lg shadow-orange-200 flex items-center justify-center gap-2">
+          <span>🚀</span> 開始魔法挑戰！
+        </button>
+        <button onclick="showScreen('rules-screen')" class="btn-press bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm sm:text-base py-3 px-5 rounded-2xl border-2 border-slate-200 shadow-sm flex items-center justify-center gap-1.5">
+          <span>📖</span> 魔法口訣
+        </button>
+        <button onclick="showLeaderboard()" class="btn-press bg-white hover:bg-slate-50 text-indigo-700 font-bold text-sm sm:text-base py-3 px-5 rounded-2xl border-2 border-indigo-200 shadow-sm flex items-center justify-center gap-1.5">
+          <span>🏆</span> 英雄榜
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 畫面 2：魔法口訣教學 (Rules Screen) -->
+    <!-- ======================================================== -->
+    <div id="rules-screen" class="screen hidden flex flex-col max-w-2xl mx-auto w-full py-4">
+      <div class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-2 border-indigo-100 mb-6">
+        
+        <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
+          <h3 class="text-2xl sm:text-3xl font-black text-slate-800 flex items-center gap-2">
+            <span>📖</span> 「做」與「作」魔法分辨術
+          </h3>
+          <button onclick="showScreen('home-screen')" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1">✕</button>
+        </div>
+
+        <!-- 兩大核心口訣卡 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          
+          <!-- 做 -->
+          <div class="bg-amber-50/80 rounded-2xl p-4 border border-amber-200">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-3xl">🖐️</span>
+              <h4 class="text-xl font-black text-amber-800">動手「做」</h4>
+            </div>
+            <div class="bg-white/90 p-2.5 rounded-xl text-xs font-bold text-amber-900 mb-2.5 border border-amber-100">
+              📢 口訣：「做事要認真，手腳動一動！」
+            </div>
+            <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside font-medium">
+              <li><strong class="text-amber-800">具體動作/體力</strong>：做家事、做運動、做體操</li>
+              <li><strong class="text-amber-800">製作物品/食物</strong>：做飯、做手工、做衣服、做麵包</li>
+              <li><strong class="text-amber-800">擔任身分/職務</strong>：做官、做朋友、做人、做事</li>
+            </ul>
+          </div>
+
+          <!-- 作 -->
+          <div class="bg-indigo-50/80 rounded-2xl p-4 border border-indigo-200">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-3xl">💡</span>
+              <h4 class="text-xl font-black text-indigo-800">動腦「作」</h4>
+            </div>
+            <div class="bg-white/90 p-2.5 rounded-xl text-xs font-bold text-indigo-900 mb-2.5 border border-indigo-100">
+              📢 口訣：「作品很精彩，腦袋轉一轉！」
+            </div>
+            <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside font-medium">
+              <li><strong class="text-indigo-800">文學與藝術創作</strong>：作文、作家、作品、作曲、作詩</li>
+              <li><strong class="text-indigo-800">抽象發想/狀態</strong>：創作、作夢、振作、作戰</li>
+              <li><strong class="text-indigo-800">固定詞語</strong>：工作、合作、作業、動作、作用</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- 易混淆對比區 -->
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6">
+          <h5 class="font-bold text-slate-800 text-sm mb-2.5 flex items-center gap-1.5">
+            <span>🔍</span> 魔法小偵探：常見容易搞混的詞彙
+          </h5>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+              <div class="font-bold text-amber-700 mb-1">做工 vs 工作</div>
+              <p class="text-slate-600 text-[11px]">做工是「動手出體力」；工作是「固定的職業」。</p>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+              <div class="font-bold text-indigo-700 mb-1">做手工 vs 製作</div>
+              <p class="text-slate-600 text-[11px]">做手工是「剪貼美勞」；製作是「企劃構思並製成成品」。</p>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+              <div class="font-bold text-emerald-700 mb-1">做衣服 vs 作畫</div>
+              <p class="text-slate-600 text-[11px]">做衣服是「動手縫裁」；作畫/作詩是「動腦藝術創作」。</p>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="startGame()" class="w-full btn-press bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black py-3.5 rounded-2xl shadow-md text-base">
+          我懂了，馬上挑戰！🚀
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 畫面 3：遊戲進行中 (Game Screen) -->
+    <!-- ======================================================== -->
+    <div id="game-screen" class="screen hidden flex flex-col items-center max-w-xl mx-auto w-full py-2 sm:py-4">
+      
+      <!-- 頂部進度與計分資訊列 -->
+      <div class="w-full flex items-center justify-between mb-3 px-2">
+        <!-- 題號進度 -->
+        <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-600 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+          <span>📝 題號：</span>
+          <span id="question-progress" class="text-indigo-600 font-black font-brand text-sm sm:text-base">1 / 20</span>
+        </div>
+
+        <!-- 連擊數 (Combo) -->
+        <div id="combo-badge" class="hidden flex items-center gap-1 text-xs font-black text-amber-700 bg-amber-100 px-3 py-1 rounded-full border border-amber-200 animate-bounce">
+          <span>🔥</span> <span id="combo-count">2</span> COMBO
+        </div>
+
+        <!-- 即時得分 -->
+        <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-600 bg-white/80 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+          <span>⭐ 分數：</span>
+          <span id="current-score" class="text-amber-600 font-black font-brand text-sm sm:text-base">0</span>
+        </div>
+      </div>
+
+      <!-- 彩虹競速倒數計時條 (8 秒) -->
+      <div class="w-full bg-slate-200/80 rounded-full h-3.5 mb-5 p-0.5 shadow-inner overflow-hidden border border-slate-300/60">
+        <div id="timer-progress-bar" class="timer-bar h-full bg-emerald-500 rounded-full w-full shadow-sm"></div>
+      </div>
+
+      <!-- 核心題目卡 -->
+      <div class="w-full bg-white rounded-3xl p-6 sm:p-10 shadow-xl border-2 border-indigo-100 flex flex-col items-center text-center relative overflow-hidden mb-6">
+        
+        <!-- 背景裝飾 -->
+        <div class="absolute -right-8 -top-8 w-28 h-28 bg-indigo-50/60 rounded-full -z-0"></div>
+        <div class="absolute -left-8 -bottom-8 w-28 h-28 bg-amber-50/60 rounded-full -z-0"></div>
+
+        <!-- 情境 Emoji -->
+        <div id="question-emoji" class="text-6xl sm:text-7xl mb-3 animate-gentle-bounce relative z-10">
+          📝
+        </div>
+
+        <!-- 挖空文字題幹（支援 Ruby 注音） -->
+        <div id="question-text-container" class="text-3xl sm:text-5xl font-black text-slate-800 my-3 tracking-wide leading-relaxed relative z-10 flex items-center justify-center flex-wrap gap-1 min-h-[90px]">
+          <!-- 由 JS 動態注入帶 Ruby 的題目 -->
+        </div>
+
+        <p class="text-xs text-slate-400 font-medium mt-1">
+          請判斷空格應該填入「做」還是「作」？
+        </p>
+      </div>
+
+      <!-- 超大雙選按鈕區 -->
+      <div class="grid grid-cols-2 gap-4 sm:gap-6 w-full mb-4">
+        
+        <!-- 左邊：做 (動手做) -->
+        <button id="btn-choose-zuo1" onclick="handleAnswer('做')" class="btn-press bg-gradient-to-b from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 active:bg-orange-700 text-white rounded-3xl p-4 sm:p-6 shadow-xl shadow-orange-200 border-4 border-amber-200 flex flex-col items-center justify-center gap-1 group">
+          <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">🖐️</span>
+          <span class="text-3xl sm:text-4xl font-black tracking-wider">做</span>
+          <span class="text-[11px] sm:text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full mt-1">動手・動作</span>
+          <span class="text-[10px] text-amber-100 hidden sm:inline">( 鍵盤: ← 或 1 )</span>
+        </button>
+
+        <!-- 右邊：作 (動腦作) -->
+        <button id="btn-choose-zuo2" onclick="handleAnswer('作')" class="btn-press bg-gradient-to-b from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:bg-purple-800 text-white rounded-3xl p-4 sm:p-6 shadow-xl shadow-indigo-200 border-4 border-indigo-200 flex flex-col items-center justify-center gap-1 group">
+          <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform">💡</span>
+          <span class="text-3xl sm:text-4xl font-black tracking-wider">作</span>
+          <span class="text-[11px] sm:text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full mt-1">動腦・創作</span>
+          <span class="text-[10px] text-indigo-100 hidden sm:inline">( 鍵盤: → 或 2 )</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 答錯即時教學彈窗 (Feedback Modal) -->
+    <!-- ======================================================== -->
+    <div id="feedback-modal" class="fixed inset-0 modal-backdrop z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-rose-200 transform transition-all text-center animate-gentle-bounce">
+        
+        <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+          💡
+        </div>
+
+        <h4 class="text-xl sm:text-2xl font-black text-slate-800 mb-1">
+          答錯了沒關係！學起來：
+        </h4>
+
+        <!-- 正確答案展示卡 -->
+        <div class="bg-rose-50/70 rounded-2xl p-4 border border-rose-200 my-4">
+          <div class="text-xs text-rose-700 font-bold mb-1">正確詞語是：</div>
+          <div id="feedback-correct-word" class="text-2xl sm:text-3xl font-black text-rose-800 mb-2">
+            <!-- JS 注入 -->
+          </div>
+          <p id="feedback-hint-text" class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+            <!-- JS 注入 -->
+          </p>
+        </div>
+
+        <button onclick="proceedNextQuestion()" class="w-full btn-press bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3.5 px-6 rounded-2xl shadow-lg shadow-indigo-200 text-base flex items-center justify-center gap-1.5">
+          我知道了，下一題 ➡️
+        </button>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 畫面 4：結算畫面 (Result Screen) -->
+    <!-- ======================================================== -->
+    <div id="result-screen" class="screen hidden flex flex-col items-center text-center max-w-lg mx-auto w-full py-4">
+      
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-indigo-100 w-full mb-6 relative overflow-hidden">
+        
+        <!-- 結算徽章 -->
+        <div id="result-badge" class="inline-flex items-center gap-1.5 bg-amber-100 text-amber-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full mb-3 shadow-sm">
+          🏆 挑戰完成！
+        </div>
+
+        <h3 id="result-title" class="text-2xl sm:text-4xl font-black text-slate-800 mb-2 font-brand">
+          太棒了！魔法大師！
+        </h3>
+
+        <!-- 星星評等 -->
+        <div id="result-stars" class="text-4xl sm:text-5xl my-3 text-amber-400 space-x-1">
+          ⭐⭐⭐
+        </div>
+
+        <!-- 數據儀表板 -->
+        <div class="grid grid-cols-2 gap-3 my-5">
+          <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-100">
+            <div class="text-xs text-amber-700 font-bold mb-0.5">總分</div>
+            <div id="result-score" class="text-2xl sm:text-3xl font-black text-amber-600 font-brand">0</div>
+          </div>
+          <div class="bg-indigo-50 p-3.5 rounded-2xl border border-indigo-100">
+            <div class="text-xs text-indigo-700 font-bold mb-0.5">正確率</div>
+            <div id="result-accuracy" class="text-2xl sm:text-3xl font-black text-indigo-600 font-brand">100%</div>
+          </div>
+        </div>
+
+        <!-- 座號與雲端上傳提示 -->
+        <div id="result-upload-status" class="bg-slate-50 rounded-2xl p-3 text-xs text-slate-600 border border-slate-200 mb-2 flex items-center justify-between">
+          <span id="result-seat-info">👤 座號：未設定</span>
+          <span id="result-sync-tag" class="text-emerald-600 font-bold">✅ 已同步至排行榜</span>
+        </div>
+
+      </div>
+
+      <!-- 結算按鈕群 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md">
+        <button onclick="startGame()" class="btn-press bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 text-white font-black py-3.5 rounded-2xl shadow-md text-base flex items-center justify-center gap-2">
+          <span>🔄</span> 再挑戰一次
+        </button>
+        <button onclick="showLeaderboard()" class="btn-press bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-2xl shadow-md text-base flex items-center justify-center gap-2">
+          <span>🏆</span> 查看班級進度牆
+        </button>
+        <button onclick="showScreen('rules-screen')" class="btn-press bg-white hover:bg-slate-50 text-slate-700 font-bold py-3 rounded-2xl border-2 border-slate-200 shadow-sm text-sm sm:col-span-2 flex items-center justify-center gap-1.5">
+          <span>📖</span> 複習魔法口訣
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 畫面 5：排行榜與進度牆 (Leaderboard Screen) -->
+    <!-- ======================================================== -->
+    <div id="leaderboard-screen" class="screen hidden flex flex-col max-w-3xl mx-auto w-full py-4">
+      
+      <div class="bg-white rounded-3xl p-5 sm:p-8 shadow-xl border-2 border-indigo-100 mb-6">
+        
+        <!-- 頂部標題 -->
+        <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="text-3xl">🏆</span>
+            <div>
+              <h3 class="text-xl sm:text-2xl font-black text-slate-800">做作大挑戰 — 班級排行榜</h3>
+              <p class="text-xs text-slate-500 font-medium">全班 1~30 號即時闖關進度與英雄榜</p>
+            </div>
+          </div>
+          <button onclick="showScreen('home-screen')" class="text-slate-400 hover:text-slate-600 text-2xl font-bold p-1">✕</button>
+        </div>
+
+        <!-- 標籤頁切換 -->
+        <div class="flex bg-slate-100 p-1 rounded-2xl mb-6">
+          <button id="tab-seat-wall" onclick="switchLeaderboardTab('seat-wall')" class="flex-1 py-2.5 text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-sm transition">
+            📊 1~30 號即時進度牆
+          </button>
+          <button id="tab-hero-rank" onclick="switchLeaderboardTab('hero-rank')" class="flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-600 rounded-xl hover:text-slate-800 transition">
+            🏆 競速英雄榜 (Top 10)
+          </button>
+        </div>
+
+        <!-- 內容區 1：1~30 號進度牆 -->
+        <div id="view-seat-wall" class="grid grid-cols-5 sm:grid-cols-6 gap-2 sm:gap-3">
+          <!-- 由 JS 渲染 30 個座號格子 -->
+        </div>
+
+        <!-- 內容區 2：Top 10 英雄榜 -->
+        <div id="view-hero-rank" class="hidden space-y-2">
+          <!-- 由 JS 渲染 Top 10 列表 -->
+        </div>
+
+      </div>
+
+      <button onclick="showScreen('home-screen')" class="btn-press bg-slate-200 hover:bg-slate-300 text-slate-700 font-black py-3 rounded-2xl text-center text-sm w-full max-w-xs mx-auto">
+        返回首頁 🏠
+      </button>
+
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="bg-white/60 border-t border-slate-200 py-3 text-center text-xs text-slate-400">
+    老師班級工具箱 🧰 · 做與作魔法分辨術 · 支援三端自適應與注音開關
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- 核心遊戲邏輯腳本 (JavaScript) -->
+  <!-- ======================================================== -->
+  <script>
+    /* =========================================================
+       1. 題庫資料池 (67 題)
+       ========================================================= */
+    const QUESTION_POOL = [{"word": "做功課", "type": "做", "missing_idx": 0, "emoji": "📝", "zhuyin": ["ㄗㄨㄛˋ", "ㄍㄨㄥ", "ㄎㄜˋ"], "hint": "動手拿起筆寫作業，手腳動一動，選「做」！"}, {"word": "做家事", "type": "做", "missing_idx": 0, "emoji": "🧹", "zhuyin": ["ㄗㄨㄛˋ", "ㄐㄧㄚ", "ㄕˋ"], "hint": "拿掃把抹布打掃家裡，要花體力，選「做」！"}, {"word": "做飯", "type": "做", "missing_idx": 0, "emoji": "🍳", "zhuyin": ["ㄗㄨㄛˋ", "ㄈㄢˋ"], "hint": "在廚房動手切菜煮料理，動手烹飪，選「做」！"}, {"word": "做手工", "type": "做", "missing_idx": 0, "emoji": "✂️", "zhuyin": ["ㄗㄨㄛˋ", "ㄕㄡˇ", "ㄍㄨㄥ"], "hint": "拿剪刀膠水親自動手剪貼美勞，選「做」！"}, {"word": "做衣服", "type": "做", "missing_idx": 0, "emoji": "👗", "zhuyin": ["ㄗㄨㄛˋ", "ㄧ", "ㄈㄨˊ"], "hint": "量尺寸剪裁布料動手縫製，具體製作物品，選「做」！"}, {"word": "做麵包", "type": "做", "missing_idx": 0, "emoji": "🍞", "zhuyin": ["ㄗㄨㄛˋ", "ㄇㄧㄢˋ", "ㄅㄠ"], "hint": "動手揉麵團烤出香噴噴麵包，選「做」！"}, {"word": "做運動", "type": "做", "missing_idx": 0, "emoji": "🏃", "zhuyin": ["ㄗㄨㄛˋ", "ㄩㄣˋ", "ㄉㄨㄥˋ"], "hint": "跑跑步、跳跳繩，全身手腳動一動，選「做」！"}, {"word": "做體操", "type": "做", "missing_idx": 0, "emoji": "🤸", "zhuyin": ["ㄗㄨㄛˋ", "ㄊㄧˇ", "ㄘㄠ"], "hint": "活動筋骨伸展手腳，體力活動，選「做」！"}, {"word": "做遊戲", "type": "做", "missing_idx": 0, "emoji": "🎮", "zhuyin": ["ㄗㄨㄛˋ", "ㄧㄡˊ", "ㄒㄧˋ"], "hint": "大家一起動手動腳玩遊戲，選「做」！"}, {"word": "做鬼臉", "type": "做", "missing_idx": 0, "emoji": "😜", "zhuyin": ["ㄗㄨㄛˋ", "ㄍㄨㄟˇ", "ㄌㄧㄢˇ"], "hint": "臉部做出搞笑滑稽的表情動作，選「做」！"}, {"word": "做朋友", "type": "做", "missing_idx": 0, "emoji": "🤝", "zhuyin": ["ㄗㄨㄛˋ", "ㄆㄥˊ", "ㄧㄡˇ"], "hint": "互相打招呼認識、結為好友，選「做」！"}, {"word": "做人", "type": "做", "missing_idx": 0, "emoji": "🧑", "zhuyin": ["ㄗㄨㄛˋ", "ㄖㄣˊ"], "hint": "待人處事要誠懇，人品態度，選「做」！"}, {"word": "做事", "type": "做", "missing_idx": 0, "emoji": "💼", "zhuyin": ["ㄗㄨㄛˋ", "ㄕˋ"], "hint": "認真執行一件任務或事情，選「做」！"}, {"word": "做工", "type": "做", "missing_idx": 0, "emoji": "🔨", "zhuyin": ["ㄗㄨㄛˋ", "ㄍㄨㄥ"], "hint": "從事具體的體力勞動與建造，選「做」！（注意：固定職業叫工作）"}, {"word": "做生意", "type": "做", "missing_idx": 0, "emoji": "🏪", "zhuyin": ["ㄗㄨㄛˋ", "ㄕㄥ", "ㄧˋ"], "hint": "開店買賣商品，從事商業活動，選「做」！"}, {"word": "做官", "type": "做", "missing_idx": 0, "emoji": "🏛️", "zhuyin": ["ㄗㄨㄛˋ", "ㄍㄨㄢ"], "hint": "擔任職務或政府官員的身分，選「做」！"}, {"word": "做主", "type": "做", "missing_idx": 0, "emoji": "⚖️", "zhuyin": ["ㄗㄨㄛˋ", "ㄓㄨˇ"], "hint": "負責主持決定大事，選「做」！"}, {"word": "做臉", "type": "做", "missing_idx": 0, "emoji": "💆", "zhuyin": ["ㄗㄨㄛˋ", "ㄌㄧㄢˇ"], "hint": "動手進行臉部美容保養，選「做」！"}, {"word": "做實驗", "type": "做", "missing_idx": 0, "emoji": "🧪", "zhuyin": ["ㄗㄨㄛˋ", "ㄕˊ", "ㄧㄢˋ"], "hint": "動手操作試管儀器進行科學實驗，選「做」！"}, {"word": "做點心", "type": "做", "missing_idx": 0, "emoji": "🧁", "zhuyin": ["ㄗㄨㄛˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "hint": "動手烘焙可口的餅乾甜點，選「做」！"}, {"word": "做早操", "type": "做", "missing_idx": 0, "emoji": "☀️", "zhuyin": ["ㄗㄨㄛˋ", "ㄗㄠˇ", "ㄘㄠ"], "hint": "清晨伸展筋骨做早操，手腳動一動，選「做」！"}, {"word": "做卡片", "type": "做", "missing_idx": 0, "emoji": "💌", "zhuyin": ["ㄗㄨㄛˋ", "ㄎㄚˇ", "ㄆㄧㄢˋ"], "hint": "動手畫畫寫字做出心意卡片，選「做」！"}, {"word": "做模型", "type": "做", "missing_idx": 0, "emoji": "✈️", "zhuyin": ["ㄗㄨㄛˋ", "ㄇㄛˊ", "ㄒㄧㄥˊ"], "hint": "動手拼裝飛機與汽車模型，選「做」！"}, {"word": "做風箏", "type": "做", "missing_idx": 0, "emoji": "🪁", "zhuyin": ["ㄗㄨㄛˋ", "ㄈㄥ", "ㄓㄥ"], "hint": "動手綁竹條貼紙製作風箏，選「做」！"}, {"word": "說到做到", "type": "做", "missing_idx": 2, "emoji": "🗣️", "zhuyin": ["ㄕㄨㄛ", "ㄉㄠˋ", "ㄗㄨㄛˋ", "ㄉㄠˋ"], "hint": "說出口的話一定要親自動手實踐，選「做」！"}, {"word": "好吃懶做", "type": "做", "missing_idx": 3, "emoji": "🛋️", "zhuyin": ["ㄏㄠˋ", "ㄔ", "ㄌㄢˇ", "ㄗㄨㄛˋ"], "hint": "只愛吃卻懶得動手勞動，選「做」！"}, {"word": "敢做敢當", "type": "做", "missing_idx": 1, "emoji": "🦸", "zhuyin": ["ㄍㄢˇ", "ㄗㄨㄛˋ", "ㄍㄢˇ", "ㄉㄤ"], "hint": "自己做的事情勇敢承擔責任，選「做」！"}, {"word": "白做工", "type": "做", "missing_idx": 1, "emoji": "⏳", "zhuyin": ["ㄅㄞˊ", "ㄗㄨㄛˋ", "ㄍㄨㄥ"], "hint": "白白花費力氣卻沒有成果，選「做」！"}, {"word": "做雪人", "type": "做", "missing_idx": 0, "emoji": "⛄", "zhuyin": ["ㄗㄨㄛˋ", "ㄒㄩㄝˇ", "ㄖㄣˊ"], "hint": "動手滾雪球堆出可愛雪人，選「做」！"}, {"word": "做勞作", "type": "做", "missing_idx": 0, "emoji": "🎨", "zhuyin": ["ㄗㄨㄛˋ", "ㄌㄠˊ", "ㄗㄨㄛˋ"], "hint": "動手動腳完成勞作課任務，前面動手選「做」！"}, {"word": "做蛋糕", "type": "做", "missing_idx": 0, "emoji": "🎂", "zhuyin": ["ㄗㄨㄛˋ", "ㄉㄢˋ", "ㄍㄠ"], "hint": "打蛋攪拌烤出甜美生日蛋糕，動手製作，選「做」！"}, {"word": "做手提袋", "type": "做", "missing_idx": 0, "emoji": "👜", "zhuyin": ["ㄗㄨㄛˋ", "ㄕㄡˇ", "ㄊㄧˊ", "ㄉㄞˋ"], "hint": "動手縫製環保手提袋，選「做」！"}, {"word": "做買賣", "type": "做", "missing_idx": 0, "emoji": "🛒", "zhuyin": ["ㄗㄨㄛˋ", "ㄇㄞˇ", "ㄇㄞˋ"], "hint": "從事商品交易買賣，選「做」！"}, {"word": "作文", "type": "作", "missing_idx": 0, "emoji": "✍️", "zhuyin": ["ㄗㄨㄛˋ", "ㄨㄣˊ"], "hint": "動腦發揮文筆寫出精彩文章，創作選「作」！"}, {"word": "作品", "type": "作", "missing_idx": 0, "emoji": "🖼️", "zhuyin": ["ㄗㄨㄛˋ", "ㄆㄧㄣˇ"], "hint": "發揮創意完成的心血藝術結晶，選「作」！"}, {"word": "作家", "type": "作", "missing_idx": 0, "emoji": "📚", "zhuyin": ["ㄗㄨㄛˋ", "ㄐㄧㄚ"], "hint": "從事文學動腦寫書的專業創作者，選「作」！"}, {"word": "創作", "type": "作", "missing_idx": 1, "emoji": "🎨", "zhuyin": ["ㄔㄨㄤˋ", "ㄗㄨㄛˋ"], "hint": "動腦發揮想像力發明新事物，選「作」！"}, {"word": "製作", "type": "作", "missing_idx": 1, "emoji": "🎬", "zhuyin": ["ㄓˋ", "ㄗㄨㄛˋ"], "hint": "動腦企劃構思並完成影音、節目或作品，選「作」！"}, {"word": "著作", "type": "作", "missing_idx": 1, "emoji": "📖", "zhuyin": ["ㄓㄨˋ", "ㄗㄨㄛˋ"], "hint": "作者嘔心瀝血寫出的書籍文集，選「作」！"}, {"word": "寫作", "type": "作", "missing_idx": 1, "emoji": "🖋️", "zhuyin": ["ㄒㄧㄝˇ", "ㄗㄨㄛˋ"], "hint": "動腦構思文字情節的創作過程，選「作」！"}, {"word": "作曲", "type": "作", "missing_idx": 0, "emoji": "🎵", "zhuyin": ["ㄗㄨㄛˋ", "ㄑㄩˇ"], "hint": "腦海發想出優美的音樂旋律，音樂創作選「作」！"}, {"word": "作詩", "type": "作", "missing_idx": 0, "emoji": "📜", "zhuyin": ["ㄗㄨㄛˋ", "ㄕ"], "hint": "動腦構思優美有意境的詩篇，選「作」！"}, {"word": "作畫", "type": "作", "missing_idx": 0, "emoji": "🖌️", "zhuyin": ["ㄗㄨㄛˋ", "ㄏㄨㄚˋ"], "hint": "揮灑藝術靈感畫出動人畫作，選「作」！"}, {"word": "工作", "type": "作", "missing_idx": 1, "emoji": "💼", "zhuyin": ["ㄍㄨㄥ", "ㄗㄨㄛˋ"], "hint": "固定的職業、事業與職務，固定名詞選「作」！"}, {"word": "合作", "type": "作", "missing_idx": 1, "emoji": "🤝", "zhuyin": ["ㄏㄜˊ", "ㄗㄨㄛˋ"], "hint": "大家齊心動腦、共同協力完成目標，選「作」！"}, {"word": "作業", "type": "作", "missing_idx": 0, "emoji": "🎒", "zhuyin": ["ㄗㄨㄛˋ", "ㄧㄝˋ"], "hint": "老師指派的課業與學習任務，固定詞選「作」！"}, {"word": "動作", "type": "作", "missing_idx": 1, "emoji": "🤸", "zhuyin": ["ㄉㄨㄥˋ", "ㄗㄨㄛˋ"], "hint": "身體展現出的姿態或特定動作，固定詞選「作」！"}, {"word": "振作", "type": "作", "missing_idx": 1, "emoji": "🌟", "zhuyin": ["ㄓㄣˋ", "ㄗㄨㄛˋ"], "hint": "打起精神、提振心智，心理狀態選「作」！"}, {"word": "作用", "type": "作", "missing_idx": 0, "emoji": "⚙️", "zhuyin": ["ㄗㄨㄛˋ", "ㄩㄣˋ"], "hint": "產生特定的功能、效果或影響力，選「作」！"}, {"word": "作證", "type": "作", "missing_idx": 0, "emoji": "⚖️", "zhuyin": ["ㄗㄨㄛˋ", "ㄓㄥˋ"], "hint": "在法庭或大家面前提供真實證據，選「作」！"}, {"word": "佳作", "type": "作", "missing_idx": 1, "emoji": "🏆", "zhuyin": ["ㄐㄧㄚ", "ㄗㄨㄛˋ"], "hint": "表現優秀出色、讓人讚賞的好作品，選「作」！"}, {"word": "作弊", "type": "作", "missing_idx": 0, "emoji": "🚫", "zhuyin": ["ㄗㄨㄛˋ", "ㄅㄧˋ"], "hint": "不誠實的違規投機行為，選「作」！"}, {"word": "作亂", "type": "作", "missing_idx": 0, "emoji": "⚔️", "zhuyin": ["ㄗㄨㄛˋ", "ㄌㄨㄢˋ"], "hint": "故意製造動盪與混亂，選「作」！"}, {"word": "作戰", "type": "作", "missing_idx": 0, "emoji": "🛡️", "zhuyin": ["ㄗㄨㄛˋ", "ㄓㄢˋ"], "hint": "軍隊動腦策劃並進行戰鬥，選「作」！"}, {"word": "習作", "type": "作", "missing_idx": 1, "emoji": "📘", "zhuyin": ["ㄒㄧˊ", "ㄗㄨㄛˋ"], "hint": "學校課堂練習用的練習簿，固定詞選「作」！"}, {"word": "作夢", "type": "作", "missing_idx": 0, "emoji": "🌙", "zhuyin": ["ㄗㄨㄛˋ", "ㄇㄥˋ"], "hint": "睡眠中大腦產生的奇妙夢境，動腦想像選「作」！"}, {"word": "作息", "type": "作", "missing_idx": 0, "emoji": "⏰", "zhuyin": ["ㄗㄨㄛˋ", "ㄒㄧˊ"], "hint": "規律的工作與休息時間安排，選「作」！"}, {"word": "作法", "type": "作", "missing_idx": 0, "emoji": "🧙", "zhuyin": ["ㄗㄨㄛˋ", "ㄈㄚˇ"], "hint": "處理事情的方式策略或施展法術，選「作」！"}, {"word": "作風", "type": "作", "missing_idx": 0, "emoji": "👔", "zhuyin": ["ㄗㄨㄛˋ", "ㄈㄥ"], "hint": "為人處事的態度與特有風格，選「作」！"}, {"word": "作為", "type": "作", "missing_idx": 0, "emoji": "🏅", "zhuyin": ["ㄗㄨㄛˋ", "ㄨㄟˊ"], "hint": "展現出的良好行為、成就或貢獻，選「作」！"}, {"word": "自作聰明", "type": "作", "missing_idx": 1, "emoji": "🦊", "zhuyin": ["ㄗˋ", "ㄗㄨㄛˋ", "ㄘㄨㄥ", "ㄇㄧㄥˊ"], "hint": "自以為動腦很聰明其實不然，成語選「作」！"}, {"word": "自作自受", "type": "作", "missing_idx": 1, "emoji": "🤦", "zhuyin": ["ㄗˋ", "ㄗㄨㄛˋ", "ㄗˋ", "ㄕㄡˋ"], "hint": "自己動腦闖出的禍由自己承擔，成語選「作」！"}, {"word": "裝模作樣", "type": "作", "missing_idx": 2, "emoji": "🎭", "zhuyin": ["ㄓㄨㄤ", "ㄇㄛˊ", "ㄗㄨㄛˋ", "ㄧㄤˋ"], "hint": "故意擺出虛假姿態、裝腔作勢，選「作」！"}, {"word": "作怪", "type": "作", "missing_idx": 0, "emoji": "👻", "zhuyin": ["ㄗㄨㄛˋ", "ㄍㄨㄞˋ"], "hint": "調皮搗蛋、故意鬧鬼作怪，選「作」！"}, {"word": "大有作為", "type": "作", "missing_idx": 2, "emoji": "🚀", "zhuyin": ["ㄉㄚˋ", "ㄧㄡˇ", "ㄗㄨㄛˋ", "ㄨㄟˊ"], "hint": "未來能做出一番偉大的事業成就，選「作」！"}, {"word": "興風作浪", "type": "作", "missing_idx": 2, "emoji": "🌊", "zhuyin": ["ㄒㄧㄥ", "ㄈㄥ", "ㄗㄨㄛˋ", "ㄌㄤˋ"], "hint": "故意挑起事端與風波，成語選「作」！"}, {"word": "發作", "type": "作", "missing_idx": 1, "emoji": "💥", "zhuyin": ["ㄈㄚ", "ㄗㄨㄛˋ"], "hint": "情緒爆發或疾病突然顯現，狀態轉變選「作」！"}];
+
+    /* =========================================================
+       2. Web Audio 即時音效引擎 (合成器無外鏈音檔)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // 答對叮咚四連音 (E5-C5-E5-C5)
+      playCorrect() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [659.25, 523.25, 659.25, 523.25]; // E5, C5, E5, C5
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+          
+          gain.gain.setValueAtTime(0, this.ctx.currentTime + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.3, this.ctx.currentTime + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.18);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.start(this.ctx.currentTime + idx * 0.08);
+          osc.stop(this.ctx.currentTime + idx * 0.08 + 0.2);
+        });
+      }
+
+      // 答錯喔喔下滑音 (A3 降至 F3)
+      playWrong() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        
+        osc.frequency.setValueAtTime(220, this.ctx.currentTime); // A3
+        osc.frequency.exponentialRampToValueAtTime(174.61, this.ctx.currentTime + 0.25); // F3
+        
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.36);
+      }
+
+      // 通關號角 (Fanfare)
+      playFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.12);
+          
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.12 + 0.4);
+          
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          
+          osc.start(this.ctx.currentTime + idx * 0.12);
+          osc.stop(this.ctx.currentTime + idx * 0.12 + 0.45);
+        });
+      }
+
+      // 按鈕微反饋
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.07);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* =========================================================
+       3. Firebase Firestore 連線配置
+       ========================================================= */
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3Z-NJkvnzGwWVF_8tw8M07ghoTdZs_TI",
+      authDomain: "teacherstudy-12846.firebaseapp.com",
+      projectId: "teacherstudy-12846",
+      storageBucket: "teacherstudy-12846.firebasestorage.app",
+      messagingSenderId: "676416832399",
+      appId: "1:676416832399:web:ecbd0a2bfe96224ee541fa"
+    };
+
+    let db = null;
+    try {
+      if (window.firebase) {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+      }
+    } catch (e) {
+      console.warn('Firebase 離線 fallback 模式:', e);
+    }
+
+    /* =========================================================
+       4. 遊戲全域狀態
+       ========================================================= */
+    const state = {
+      showZhuyin: localStorage.getItem('zuo_zhuyin_enabled') !== 'false',
+      soundEnabled: localStorage.getItem('zuo_sound_enabled') !== 'false',
+      selectedSeat: localStorage.getItem('zuo_seat_number') || null, // 1~30 或 null
+      
+      // 局內狀態
+      roundQuestions: [],
+      currentIndex: 0,
+      score: 0,
+      combo: 0,
+      maxCombo: 0,
+      correctCount: 0,
+      wrongCount: 0,
+      
+      // 計時器
+      timer: null,
+      timeLeft: 8.0,
+      maxTime: 8.0,
+      isAnsweringLocked: false,
+      
+      // 本地離線排行榜快取
+      leaderboardData: []
+    };
+
+    sound.enabled = state.soundEnabled;
+
+    /* =========================================================
+       5. 畫面切換與導覽
+       ========================================================= */
+    function showScreen(screenId) {
+      sound.playClick();
+      clearInterval(state.timer);
+      
+      document.querySelectorAll('.screen').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      if (screenId === 'home-screen') {
+        renderSeatGrid();
+        updateSeatDisplay();
+      }
+    }
+
+    /* =========================================================
+       6. 注音與音效開關切換
+       ========================================================= */
+    function toggleZhuyin() {
+      state.showZhuyin = !state.showZhuyin;
+      localStorage.setItem('zuo_zhuyin_enabled', state.showZhuyin);
+      updateZhuyinUI();
+      sound.playClick();
+    }
+
+    function updateZhuyinUI() {
+      const btn = document.getElementById('btn-zhuyin-toggle');
+      const text = document.getElementById('zhuyin-status-text');
+      if (state.showZhuyin) {
+        document.body.classList.remove('no-zhuyin');
+        text.innerText = '注音：開';
+        btn.classList.add('bg-indigo-50', 'text-indigo-700');
+        btn.classList.remove('bg-slate-100', 'text-slate-500');
+      } else {
+        document.body.classList.add('no-zhuyin');
+        text.innerText = '注音：關';
+        btn.classList.remove('bg-indigo-50', 'text-indigo-700');
+        btn.classList.add('bg-slate-100', 'text-slate-500');
+      }
+      
+      // 若在遊戲中，重新渲染題目以更新注音
+      if (!document.getElementById('game-screen').classList.contains('hidden')) {
+        renderCurrentQuestion();
+      }
+    }
+
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      sound.enabled = state.soundEnabled;
+      localStorage.setItem('zuo_sound_enabled', state.soundEnabled);
+      const icon = document.getElementById('sound-icon');
+      const text = document.getElementById('sound-status-text');
+      if (state.soundEnabled) {
+        icon.innerText = '🔊';
+        text.innerText = '音效';
+      } else {
+        icon.innerText = '🔇';
+        text.innerText = '靜音';
+      }
+      sound.playClick();
+    }
+
+    /* =========================================================
+       7. 座號選擇系統 (1~30 號)
+       ========================================================= */
+    function renderSeatGrid() {
+      const grid = document.getElementById('seat-grid');
+      grid.innerHTML = '';
+      for (let i = 1; i <= 30; i++) {
+        const btn = document.createElement('button');
+        const isSelected = state.selectedSeat === String(i);
+        btn.className = `btn-press py-2 rounded-xl text-xs sm:text-sm font-black border transition ${
+          isSelected 
+            ? 'bg-indigo-600 text-white border-indigo-700 shadow-md scale-105' 
+            : 'bg-slate-50 hover:bg-indigo-50 text-slate-700 border-slate-200'
+        }`;
+        btn.innerText = `${i}號`;
+        btn.onclick = () => selectSeat(i);
+        grid.appendChild(btn);
+      }
+    }
+
+    function selectSeat(num) {
+      state.selectedSeat = String(num);
+      localStorage.setItem('zuo_seat_number', state.selectedSeat);
+      sound.playClick();
+      renderSeatGrid();
+      updateSeatDisplay();
+    }
+
+    function selectGuest() {
+      state.selectedSeat = null;
+      localStorage.removeItem('zuo_seat_number');
+      sound.playClick();
+      renderSeatGrid();
+      updateSeatDisplay();
+    }
+
+    function updateSeatDisplay() {
+      const display = document.getElementById('current-seat-display');
+      if (state.selectedSeat) {
+        display.innerText = `已選擇：${state.selectedSeat} 號`;
+        display.className = 'text-xs font-black text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-lg border border-indigo-300';
+      } else {
+        display.innerText = '訪客模式（未選座號）';
+        display.className = 'text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200';
+      }
+    }
+
+    /* =========================================================
+       8. 題目抽取與遊戲啟動
+       ========================================================= */
+    function startGame() {
+      sound.init();
+      sound.playClick();
+      
+      // 從題庫中隨機洗牌挑選 20 題
+      const shuffled = [...QUESTION_POOL].sort(() => 0.5 - Math.random());
+      state.roundQuestions = shuffled.slice(0, 20);
+      state.currentIndex = 0;
+      state.score = 0;
+      state.combo = 0;
+      state.maxCombo = 0;
+      state.correctCount = 0;
+      state.wrongCount = 0;
+      state.isAnsweringLocked = false;
+
+      document.getElementById('feedback-modal').classList.add('hidden');
+      showScreen('game-screen');
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      if (state.currentIndex >= state.roundQuestions.length) {
+        endGame();
+        return;
+      }
+
+      state.isAnsweringLocked = false;
+      state.timeLeft = 8.0;
+      updateUIHeader();
+      renderCurrentQuestion();
+      startTimer();
+    }
+
+    function updateUIHeader() {
+      document.getElementById('question-progress').innerText = `${state.currentIndex + 1} / ${state.roundQuestions.length}`;
+      document.getElementById('current-score').innerText = state.score;
+      
+      const comboBadge = document.getElementById('combo-badge');
+      if (state.combo >= 2) {
+        comboBadge.classList.remove('hidden');
+        document.getElementById('combo-count').innerText = state.combo;
+      } else {
+        comboBadge.classList.add('hidden');
+      }
+    }
+
+    /* =========================================================
+       9. 題卡渲染 (含 Ruby 注音)
+       ========================================================= */
+    function renderCurrentQuestion() {
+      const q = state.roundQuestions[state.currentIndex];
+      document.getElementById('question-emoji').innerText = q.emoji;
+      
+      const container = document.getElementById('question-text-container');
+      container.innerHTML = '';
+
+      const chars = q.word.split('');
+      chars.forEach((char, idx) => {
+        const zhuyin = q.zhuyin[idx] || '';
+        
+        if (idx === q.missing_idx) {
+          // 挖空的字
+          const blankSpan = document.createElement('span');
+          blankSpan.className = 'inline-flex flex-col items-center mx-1';
+          blankSpan.innerHTML = `
+            <span class="px-3 sm:px-4 py-1 bg-amber-100 text-amber-800 border-2 border-dashed border-amber-400 rounded-2xl font-black text-2xl sm:text-4xl animate-pulse">
+              ？
+            </span>
+          `;
+          container.appendChild(blankSpan);
+        } else {
+          // 正常的字帶 Ruby 注音
+          const rubyEl = document.createElement('ruby');
+          rubyEl.className = 'inline-flex flex-col-reverse items-center mx-0.5';
+          rubyEl.innerHTML = `
+            ${char}
+            <rt>${zhuyin}</rt>
+          `;
+          container.appendChild(rubyEl);
+        }
+      });
+    }
+
+    /* =========================================================
+       10. 彩虹計時器 (8 秒)
+       ========================================================= */
+    function startTimer() {
+      clearInterval(state.timer);
+      const bar = document.getElementById('timer-progress-bar');
+      
+      state.timer = setInterval(() => {
+        state.timeLeft -= 0.05;
+        if (state.timeLeft <= 0) {
+          state.timeLeft = 0;
+          clearInterval(state.timer);
+          handleTimeOut();
+        }
+        
+        // 更新進度條寬度與顏色
+        const percent = (state.timeLeft / state.maxTime) * 100;
+        bar.style.width = `${percent}%`;
+        
+        if (percent > 60) {
+          bar.className = 'timer-bar h-full bg-emerald-500 rounded-full shadow-sm';
+        } else if (percent > 30) {
+          bar.className = 'timer-bar h-full bg-amber-500 rounded-full shadow-sm';
+        } else {
+          bar.className = 'timer-bar h-full bg-rose-500 rounded-full shadow-sm animate-pulse';
+        }
+      }, 50);
+    }
+
+    /* =========================================================
+       11. 答案判定與回饋
+       ========================================================= */
+    function handleAnswer(choice) {
+      if (state.isAnsweringLocked) return;
+      state.isAnsweringLocked = true;
+      clearInterval(state.timer);
+
+      const q = state.roundQuestions[state.currentIndex];
+      const isCorrect = (choice === q.type);
+
+      if (isCorrect) {
+        // 答對邏輯
+        sound.playCorrect();
+        state.correctCount++;
+        state.combo++;
+        if (state.combo > state.maxCombo) {
+          state.maxCombo = state.combo;
+        }
+
+        // 計分：基礎分 100 + 競速加分 (0~120) + 連擊加分 (combo * 10)
+        const speedBonus = Math.round((state.timeLeft / state.maxTime) * 120);
+        const comboBonus = Math.min(state.combo * 10, 50);
+        const earned = 100 + speedBonus + comboBonus;
+        state.score += earned;
+
+        // 噴出迷你紙花
+        confetti({
+          particleCount: 25,
+          spread: 50,
+          origin: { y: 0.7 }
+        });
+
+        updateUIHeader();
+
+        // 0.6 秒後自動前進下一題
+        setTimeout(() => {
+          state.currentIndex++;
+          nextQuestion();
+        }, 600);
+
+      } else {
+        // 答錯邏輯
+        sound.playWrong();
+        state.wrongCount++;
+        state.combo = 0;
+        updateUIHeader();
+        showFeedbackModal(q);
+      }
+    }
+
+    function handleTimeOut() {
+      if (state.isAnsweringLocked) return;
+      state.isAnsweringLocked = true;
+      sound.playWrong();
+      state.wrongCount++;
+      state.combo = 0;
+      updateUIHeader();
+      
+      const q = state.roundQuestions[state.currentIndex];
+      showFeedbackModal(q, '時間到囉！');
+    }
+
+    function showFeedbackModal(q, extraTitle) {
+      const modal = document.getElementById('feedback-modal');
+      const correctWordEl = document.getElementById('feedback-correct-word');
+      const hintTextEl = document.getElementById('feedback-hint-text');
+
+      correctWordEl.innerHTML = '';
+      q.word.split('').forEach((char, i) => {
+        const zh = q.zhuyin[i] || '';
+        const isTarget = (i === q.missing_idx);
+        const ruby = document.createElement('ruby');
+        ruby.className = isTarget ? 'text-rose-600 font-black scale-110' : '';
+        ruby.innerHTML = `${char}<rt>${zh}</rt>`;
+        correctWordEl.appendChild(ruby);
+      });
+
+      hintTextEl.innerText = `${q.hint}`;
+      modal.classList.remove('hidden');
+    }
+
+    function proceedNextQuestion() {
+      sound.playClick();
+      document.getElementById('feedback-modal').classList.add('hidden');
+      state.currentIndex++;
+      nextQuestion();
+    }
+
+    /* =========================================================
+       12. 鍵盤快速鍵支援 (← / 1 選 做，→ / 2 選 作)
+       ========================================================= */
+    window.addEventListener('keydown', (e) => {
+      if (document.getElementById('game-screen').classList.contains('hidden')) return;
+      
+      // 答錯彈窗顯示時，空白鍵或 Enter 關閉彈窗
+      if (!document.getElementById('feedback-modal').classList.contains('hidden')) {
+        if (e.key === ' ' || e.key === 'Enter') {
+          proceedNextQuestion();
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowLeft' || e.key === '1') {
+        handleAnswer('做');
+      } else if (e.key === 'ArrowRight' || e.key === '2') {
+        handleAnswer('作');
+      }
+    });
+
+    /* =========================================================
+       13. 結算與雲端排行上傳
+       ========================================================= */
+    function endGame() {
+      clearInterval(state.timer);
+      sound.playFanfare();
+
+      // 大量彩色紙花慶祝
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+
+      const total = state.roundQuestions.length;
+      const accuracy = Math.round((state.correctCount / total) * 100);
+
+      document.getElementById('result-score').innerText = state.score;
+      document.getElementById('result-accuracy').innerText = `${accuracy}% (${state.correctCount}/${total})`;
+
+      const starsEl = document.getElementById('result-stars');
+      const titleEl = document.getElementById('result-title');
+      const badgeEl = document.getElementById('result-badge');
+
+      if (accuracy >= 90) {
+        starsEl.innerText = '⭐⭐⭐';
+        titleEl.innerText = '太神了！語文小神童！';
+        badgeEl.innerText = '🏆 滿星榮譽';
+      } else if (accuracy >= 70) {
+        starsEl.innerText = '⭐⭐';
+        titleEl.innerText = '表現優異！辨析小達人！';
+        badgeEl.innerText = '🌟 優秀通關';
+      } else {
+        starsEl.innerText = '⭐';
+        titleEl.innerText = '再接再厲！多看口訣會更棒！';
+        badgeEl.innerText = '💪 努力不懈';
+      }
+
+      // 檢查座號與自動上傳
+      const seatInfo = document.getElementById('result-seat-info');
+      const syncTag = document.getElementById('result-sync-tag');
+
+      if (state.selectedSeat) {
+        seatInfo.innerText = `👤 座號：${state.selectedSeat} 號`;
+        syncTag.innerText = '⏳ 正在上傳至雲端排行榜...';
+        uploadScore(state.selectedSeat, state.score, accuracy);
+      } else {
+        seatInfo.innerText = '👤 訪客模式（未選座號）';
+        syncTag.innerText = 'ℹ️ 建議選擇座號以記錄成績';
+      }
+
+      showScreen('result-screen');
+    }
+
+    function uploadScore(seatNum, score, accuracy) {
+      const syncTag = document.getElementById('result-sync-tag');
+      const record = {
+        seat: Number(seatNum),
+        score: score,
+        accuracy: accuracy,
+        stars: accuracy >= 90 ? 3 : (accuracy >= 70 ? 2 : 1),
+        maxCombo: state.maxCombo,
+        timestamp: new Date().toISOString()
+      };
+
+      // 儲存至本機快取
+      saveLocalRecord(record);
+
+      if (db) {
+        db.collection('zuo_game_records').doc(`seat_${seatNum}`).set(record, { merge: true })
+          .then(() => {
+            syncTag.innerText = '✅ 已成功同步至班級排行榜！';
+          })
+          .catch((err) => {
+            console.warn('雲端上傳失敗，已存入本機:', err);
+            syncTag.innerText = '💾 已保存在本機排行榜';
+          });
+      } else {
+        syncTag.innerText = '💾 已保存在本機排行榜';
+      }
+    }
+
+    function saveLocalRecord(record) {
+      let list = JSON.parse(localStorage.getItem('zuo_local_records') || '[]');
+      list = list.filter(r => r.seat !== record.seat);
+      list.push(record);
+      localStorage.setItem('zuo_local_records', JSON.stringify(list));
+    }
+
+    /* =========================================================
+       14. 排行榜與進度牆渲染
+       ========================================================= */
+    function showLeaderboard() {
+      sound.playClick();
+      showScreen('leaderboard-screen');
+      fetchLeaderboardData();
+    }
+
+    function switchLeaderboardTab(tabName) {
+      sound.playClick();
+      const tabWall = document.getElementById('tab-seat-wall');
+      const tabRank = document.getElementById('tab-hero-rank');
+      const viewWall = document.getElementById('view-seat-wall');
+      const viewRank = document.getElementById('view-hero-rank');
+
+      if (tabName === 'seat-wall') {
+        tabWall.className = 'flex-1 py-2.5 text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-sm transition';
+        tabRank.className = 'flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-600 rounded-xl hover:text-slate-800 transition';
+        viewWall.classList.remove('hidden');
+        viewRank.classList.add('hidden');
+      } else {
+        tabRank.className = 'flex-1 py-2.5 text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-sm transition';
+        tabWall.className = 'flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-600 rounded-xl hover:text-slate-800 transition';
+        viewRank.classList.remove('hidden');
+        viewWall.classList.add('hidden');
+      }
+    }
+
+    function fetchLeaderboardData() {
+      const render = (dataMap) => {
+        renderSeatWall(dataMap);
+        renderHeroRank(dataMap);
+      };
+
+      // 優先讀取本機快取以求秒開
+      const localList = JSON.parse(localStorage.getItem('zuo_local_records') || '[]');
+      const dataMap = {};
+      localList.forEach(r => { dataMap[r.seat] = r; });
+      render(dataMap);
+
+      // 若有 Firestore，即時監聽與更新
+      if (db) {
+        db.collection('zuo_game_records').onSnapshot((snapshot) => {
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            dataMap[data.seat] = data;
+          });
+          render(dataMap);
+        }, (err) => {
+          console.warn('Firestore 排行榜監聽錯誤:', err);
+        });
+      }
+    }
+
+    function renderSeatWall(dataMap) {
+      const wall = document.getElementById('view-seat-wall');
+      wall.innerHTML = '';
+
+      for (let i = 1; i <= 30; i++) {
+        const card = document.createElement('div');
+        const record = dataMap[i];
+        
+        if (record) {
+          const starsStr = '⭐'.repeat(record.stars || 1);
+          card.className = 'bg-indigo-50/90 border-2 border-indigo-200 rounded-2xl p-2 sm:p-3 text-center shadow-sm flex flex-col justify-between';
+          card.innerHTML = `
+            <div class="font-black text-indigo-800 text-xs sm:text-sm mb-0.5">${i} 號</div>
+            <div class="text-xs my-0.5">${starsStr}</div>
+            <div class="text-[11px] font-black text-amber-600 font-brand">${record.score}分</div>
+          `;
+        } else {
+          card.className = 'bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-2 sm:p-3 text-center text-slate-400 flex flex-col justify-center items-center';
+          card.innerHTML = `
+            <div class="font-bold text-slate-400 text-xs">${i} 號</div>
+            <div class="text-[10px] text-slate-300 mt-1">未挑戰</div>
+          `;
+        }
+        wall.appendChild(card);
+      }
+    }
+
+    function renderHeroRank(dataMap) {
+      const rankContainer = document.getElementById('view-hero-rank');
+      rankContainer.innerHTML = '';
+
+      const list = Object.values(dataMap).sort((a, b) => b.score - a.score).slice(0, 10);
+
+      if (list.length === 0) {
+        rankContainer.innerHTML = '<div class="text-center text-slate-400 py-6 text-sm">目前尚無挑戰紀錄，快來搶下第 1 名！</div>';
+        return;
+      }
+
+      list.forEach((r, idx) => {
+        const item = document.createElement('div');
+        const isTop3 = idx < 3;
+        const medal = idx === 0 ? '🥇' : (idx === 1 ? '🥈' : (idx === 2 ? '🥉' : `#${idx + 1}`));
+        
+        item.className = `flex items-center justify-between p-3 rounded-2xl border ${
+          isTop3 ? 'bg-amber-50/70 border-amber-200 shadow-sm' : 'bg-white border-slate-100'
+        }`;
+
+        item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="text-xl font-black w-8 text-center">${medal}</span>
+            <div>
+              <div class="font-black text-slate-800 text-sm">${r.seat} 號同學</div>
+              <div class="text-[11px] text-slate-500">正確率 ${r.accuracy}% · 最高連擊 ${r.maxCombo || 0}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-black text-amber-600 font-brand">${r.score} 分</div>
+            <div class="text-xs text-amber-400">${'⭐'.repeat(r.stars || 1)}</div>
+          </div>
+        `;
+        rankContainer.appendChild(item);
+      });
+    }
+
+    /* =========================================================
+       15. 初始化啟動
+       ========================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      updateZhuyinUI();
+      renderSeatGrid();
+      updateSeatDisplay();
+    });
+  </script>
+</body>
+</html>

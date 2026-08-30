@@ -1,4 +1,4 @@
-﻿# 老師班級工具箱 (teacher-toolkit) 🧰
+# 老師班級工具箱 (teacher-toolkit) 🧰
 
 專為第一線國小課堂與教師設計的互動教學遊戲與實用工具集。
 
@@ -9,9 +9,10 @@
 ## 🛠️ 現有工具清單
 
 | 工具名稱 | 適用對象 | 核心特色 | 線上連結 |
-| :--- | :---: | :--- | :---: |
+| :--- | :---: | :--- | :--- |
 | **🐾 [成語大冒險 v2.0](./成語遊戲/)** | 國小低 / 中年級 | 4 種玩法、三輯精選題庫、Web Audio 音效、Firebase 班級榜與 1~30 號進度牆 | [🔗 開始遊玩](https://garfield543.github.io/teacher-toolkit/成語遊戲/) |
 | **🎒 [語文遊戲 — 的得大挑戰](./語文遊戲/)** | 國小低年級 | 🔤 題目注音一鍵切換（標準前置輕聲˙ㄉㄜ）、百寶袋與打分數小老師口訣、80+ 去答案化隨機題庫、8 秒彩虹競速、叮咚四連音 | [🔗 開始遊玩](https://garfield543.github.io/teacher-toolkit/語文遊戲/) |
+| **🖐️💡 [做作大挑戰](./做作大挑戰/)** | 國小低年級 | 🔤 題目注音一鍵切換、動手做 vs 動腦作魔法分辨術、67 題精選生活題庫、雙超大按鈕、8 秒競速與即時榜 | [🔗 開始遊玩](https://garfield543.github.io/teacher-toolkit/做作大挑戰/) |
 
 ---
 
@@ -27,7 +28,7 @@
 
 ## 📁 檔案結構
 
-`
+```
 teacher-toolkit/
 ├── index.html                                        # 遊戲與教學大廳入口（GitHub Pages 首頁）
 ├── README.md                                         # 專案總說明與架構
@@ -37,12 +38,16 @@ teacher-toolkit/
 ├── 成語遊戲/                                          # 成語大冒險模組
 │   ├── index.html
 │   └── README.md
-└── 語文遊戲/                                          # 語文辨析模組（的得大挑戰）
+├── 語文遊戲/                                          # 語文辨析模組（的得大挑戰）
+│   ├── index.html
+│   ├── README.md
+│   ├── 國小「的」「得」互動遊戲設計---Google-Gemini.md
+│   └── 教一年級分辨「做」與「作」---Google-Gemini.md
+└── 做作大挑戰/                                        # 做與作魔法分辨挑戰模組
     ├── index.html
-    ├── README.md
-    ├── 國小「的」「得」互動遊戲設計---Google-Gemini.md
-    └── 教一年級分辨「做」與「作」---Google-Gemini.md
-`
+    ├── questions.json
+    └── README.md
+```
 
 ---
 
