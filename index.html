@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>老師班級工具箱 🧰 互動教學與語文遊戲大廳</title>
+  <meta name="description" content="專為國小課堂設計的互動教學遊戲集，包含成語大冒險、的得大挑戰等，支援注音開關、多端排版與班級即時排行榜。">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: manipulation;
+    }
+    .font-brand {
+      font-family: 'Fredoka', 'Noto Sans TC', cursive, sans-serif;
+    }
+    .card-hover {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .card-hover:active {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-sky-50 min-h-screen text-slate-800 flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white/80 backdrop-blur-md border-b border-amber-100 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md shadow-amber-200">
+          🧰
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">老師班級工具箱</h1>
+          <p class="text-xs text-slate-500 font-medium hidden sm:block">國小課堂互動教學與語文遊戲大廳</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <a href="https://github.com/Garfield543/teacher-toolkit" target="_blank" rel="noopener" class="inline-flex items-center px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+          <svg class="w-4 h-4 mr-1.5 fill-current" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-6xl mx-auto px-4 py-8 sm:py-12 w-full">
+    <div class="text-center mb-10 sm:mb-14">
+      <span class="inline-block bg-amber-100 text-amber-800 text-xs sm:text-sm font-bold px-3 py-1 rounded-full mb-3 shadow-sm">
+        ✨ 互動教學・生動好玩・課堂必備
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mb-4 font-brand">
+        國小課堂互動遊戲大廳
+      </h2>
+      <p class="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        專為大螢幕白板、學生平板與手機設計。支援標準注音標註、即時音效、競速計分與免打字班級進度牆！
+      </p>
+    </div>
+
+    <!-- Game Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12">
+
+      <!-- Game Card 1: 成語大冒險 -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-indigo-100 card-hover flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-indigo-50 rounded-full group-hover:scale-110 transition-transform -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-4xl sm:text-5xl">🐾</span>
+            <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">
+              低中年級適用
+            </span>
+          </div>
+
+          <h3 class="text-2xl font-bold text-slate-800 mb-2">
+            成語大冒險 <span class="text-indigo-600 font-brand">v2.0</span>
+          </h3>
+          <p class="text-slate-600 text-sm mb-5 leading-relaxed">
+            透過闖關探索豐富成語！包含三輯精選題庫、4 種多樣玩法、生動音效與 1~30 號座號進度牆。
+          </p>
+
+          <!-- Badges -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">🎯 4 種玩法</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">📚 三輯題庫</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">🏆 班級排行榜</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">🔊 互動音效</span>
+          </div>
+        </div>
+
+        <div class="relative z-10 pt-4 border-t border-slate-100">
+          <a href="成語遊戲/" class="w-full inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md shadow-indigo-200 transition text-base">
+            進入成語大冒險 🚀
+          </a>
+        </div>
+      </div>
+
+      <!-- Game Card 2: 的得大挑戰 -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border-2 border-emerald-100 card-hover flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-50 rounded-full group-hover:scale-110 transition-transform -z-0"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-4xl sm:text-5xl">🎒</span>
+            <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">
+              低年級專屬
+            </span>
+          </div>
+
+          <h3 class="text-2xl font-bold text-slate-800 mb-2">
+            語文遊戲 — 的得大挑戰
+          </h3>
+          <p class="text-slate-600 text-sm mb-5 leading-relaxed">
+            告別「的」「得」不分！獨創「百寶袋法 vs 打分數小老師」，內建注音一鍵切換與 8 秒彩虹競速闖關。
+          </p>
+
+          <!-- Badges -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-lg font-bold">🔤 題目注音開關</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">⚡ 80+ 隨機題庫</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">⏱️ 8秒競速計分</span>
+            <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg font-medium">📊 即時進度牆</span>
+          </div>
+        </div>
+
+        <div class="relative z-10 pt-4 border-t border-slate-100">
+          <a href="語文遊戲/" class="w-full inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md shadow-emerald-200 transition text-base">
+            開始 的得大挑戰 🎒
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Core Features Banner -->
+    <div class="bg-white/90 backdrop-blur rounded-3xl p-6 sm:p-8 border border-amber-200 shadow-md mb-8">
+      <h4 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center">
+        <span class="mr-2">🌟</span> 班級互動遊戲四大核心標準
+      </h4>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-100">
+          <div class="font-bold text-amber-900 text-sm mb-1 flex items-center">🔤 注音一鍵開關</div>
+          <p class="text-xs text-slate-600 leading-normal">標準 Ruby 標註、前置輕聲（˙ㄉㄜ），低年級認字不卡關。</p>
+        </div>
+        <div class="p-3 bg-sky-50/60 rounded-2xl border border-sky-100">
+          <div class="font-bold text-sky-900 text-sm mb-1 flex items-center">📱 三端自適應排版</div>
+          <p class="text-xs text-slate-600 leading-normal">平板、手機、白板完美相容，大觸控熱區防誤觸。</p>
+        </div>
+        <div class="p-3 bg-rose-50/60 rounded-2xl border border-rose-100">
+          <div class="font-bold text-rose-900 text-sm mb-1 flex items-center">🔊 Web Audio 音效</div>
+          <p class="text-xs text-slate-600 leading-normal">清脆叮咚四連音與喔喔下滑音，無額外音檔即開即聽。</p>
+        </div>
+        <div class="p-3 bg-purple-50/60 rounded-2xl border border-purple-100">
+          <div class="font-bold text-purple-900 text-sm mb-1 flex items-center">☁️ 免打字排行榜</div>
+          <p class="text-xs text-slate-600 leading-normal">1~30 號座號一鍵點選，即時呈現全班通關狀態與英雄榜。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white/60 border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="mb-2">專為第一線教師與國小課堂打造的開源互動工具箱 🧰</p>
+      <p class="text-slate-400">
+        Hosted on GitHub Pages · Open Source at <a href="https://github.com/Garfield543/teacher-toolkit" class="underline hover:text-slate-600" target="_blank" rel="noopener">Garfield543/teacher-toolkit</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

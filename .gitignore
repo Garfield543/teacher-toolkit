@@ -2,15 +2,27 @@
 desktop.ini
 *.tmp
 ~$*
+.tmp.drivedownload/
+.tmp.driveupload/
 
-# 敏感資料
-.env
-*.key
-credentials.*
+# 作業系統暫存檔
+.DS_Store
+Thumbs.db
 
-# Claude / AntiGravity 本地設定
+# 編輯器與 IDE 設定檔
+.vscode/
+.idea/
+
+# AI Agent 本地對話與設定
 .claude/
 .gemini/
+.codex/
+
+# 敏感金鑰與環境變數
+.env
+.env.local
+*.key
+credentials.*
 
 # Node.js
 node_modules/
