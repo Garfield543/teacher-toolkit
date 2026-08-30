@@ -159,6 +159,13 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     }
 
+    .top-pill-btn.active {
+      background: var(--amber);
+      color: white;
+      border-color: var(--amber-dark);
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+    }
+
     .top-pill-btn:active {
       transform: translateY(1px);
     }
@@ -408,7 +415,7 @@
       background: #e7e5e4;
       border-radius: 999px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
       position: relative;
     }
@@ -427,31 +434,84 @@
       background: white;
       border: 3px solid #fde68a;
       border-radius: var(--radius-lg);
-      padding: clamp(24px, 5vw, 40px) 20px;
+      padding: clamp(20px, 4vw, 36px) 18px;
       text-align: center;
       box-shadow: var(--shadow-md);
       margin-bottom: 24px;
       position: relative;
     }
 
+    .question-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
     .question-instruction {
       font-size: clamp(1rem, 2.5vw, 1.25rem);
       color: var(--muted);
       font-weight: 700;
-      margin-bottom: 16px;
     }
 
+    .question-zhuyin-toggle {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #b45309;
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .question-zhuyin-toggle:hover {
+      background: #fde68a;
+      transform: translateY(-1px);
+    }
+
+    .question-zhuyin-toggle.active {
+      background: var(--amber);
+      color: white;
+      border-color: var(--amber-dark);
+    }
+
+    /* 題目字體與 Ruby 注音排版 */
     .question-sentence {
-      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      font-size: clamp(2.4rem, 6.8vw, 4.2rem);
       font-weight: 1000;
       color: #451a03;
-      letter-spacing: 0.05em;
-      line-height: 1.35;
+      letter-spacing: 0.04em;
+      line-height: 1.45;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 4px 8px;
+      gap: 4px 6px;
+      min-height: 110px;
+    }
+
+    ruby {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: bottom;
+      margin: 0 1px;
+    }
+
+    ruby rt {
+      font-size: 0.36em;
+      line-height: 1.1;
+      color: var(--amber-dark);
+      font-weight: 900;
+      margin-bottom: 2px;
+      user-select: none;
+      letter-spacing: -0.02em;
     }
 
     .blank-slot {
@@ -568,7 +628,7 @@
       background: white;
       border-radius: var(--radius-lg);
       padding: clamp(24px, 5vw, 36px);
-      max-width: 540px;
+      max-width: 560px;
       width: 100%;
       text-align: center;
       box-shadow: 0 24px 48px rgba(0,0,0,0.25);
@@ -613,6 +673,11 @@
       padding: 12px 16px;
       border-radius: var(--radius-md);
       margin: 12px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2px 4px;
     }
 
     .feedback-sentence span.highlight {
@@ -943,6 +1008,9 @@
         <button id="btn-seat" class="top-pill-btn" data-action="open-seat-modal" title="點擊切換座號">
           <span>👤</span> <strong id="top-seat-label">未選座號</strong>
         </button>
+        <button id="btn-zhuyin" class="top-pill-btn" data-action="toggle-zhuyin" title="切換注音顯示">
+          <span id="zhuyin-icon">🔤</span> <span id="zhuyin-label">注音：開</span>
+        </button>
         <button id="btn-sound" class="top-pill-btn" data-action="toggle-sound" title="切換音效">
           <span id="sound-icon">🔊</span> <span>音效</span>
         </button>
@@ -1004,11 +1072,12 @@
 
           <div class="info-strip">
             <div class="info-chip"><strong>🎯 題庫</strong>80+ 題精選題庫隨機抽取</div>
+            <div class="info-chip"><strong>🔤 注音</strong>支援一鍵開關注音輔助閱讀</div>
             <div class="info-chip"><strong>⏱️ 競速</strong>8秒計時，答得越快分數越高</div>
             <div class="info-chip"><strong>📊 班級</strong>即時排行榜與 1~30 號進度牆</div>
           </div>
         </div>
-        <p class="footnote">提示：若使用平板或電子白板，可開啟「平板版」以獲得超大按鈕操作體驗。</p>
+        <p class="footnote">提示：可隨時點擊頂部「🔤 注音」按鈕切換漢字上方注音符號顯示。</p>
       </div>
     </section>
 
@@ -1081,7 +1150,12 @@
 
         <!-- 題目區域 -->
         <div class="question-card">
-          <div class="question-instruction">請選出空格中正確的字：</div>
+          <div class="question-header-row">
+            <span class="question-instruction">請選出空格中正確的字：</span>
+            <button id="q-zhuyin-btn" class="question-zhuyin-toggle" data-action="toggle-zhuyin" title="點擊開關注音輔助">
+              <span>🔤</span> <span id="q-zhuyin-text">注音：開</span>
+            </button>
+          </div>
           <div id="question-sentence" class="question-sentence">
             <!-- 動態填入題目，如：我 <span class="blank-slot">？</span> 書包 -->
           </div>
@@ -1165,7 +1239,7 @@
       <div id="fb-icon" class="feedback-icon">🎉</div>
       <div id="fb-title" class="feedback-title correct">答對了！太棒了！</div>
       <div id="fb-sentence" class="feedback-sentence">
-        我的<span class="highlight">書包</span>
+        <!-- 動態帶入 -->
       </div>
       <div id="fb-explanation" class="feedback-explanation">
         💡 <strong>百寶袋提示</strong>：後面是「書包」，是具體的物品喔，所以用「的」！
@@ -1246,7 +1320,69 @@
 
   <script>
     /* =========================================================
-       1. 海量精選題庫池（約 80 題，涵蓋名詞、程度、特殊用法）
+       1. 繁體中文全字庫注音字典（精確注音聲調）
+       ========================================================= */
+    const zhuyinDict = {
+      '我': 'ㄨㄛˇ', '書': 'ㄕㄨ', '包': 'ㄅㄠ', '漂': 'ㄆㄧㄠˋ', '亮': 'ㄌㄧㄤˋ',
+      '花': 'ㄏㄨㄚ', '朵': 'ㄉㄨㄛˇ', '媽': 'ㄇㄚ', '愛': 'ㄞˋ', '心': 'ㄒㄧㄣ',
+      '紅': 'ㄏㄨㄥˊ', '蘋': 'ㄆㄧㄥˊ', '果': 'ㄍㄨㄛˇ', '藍': 'ㄌㄢˊ', '色': 'ㄙㄜˋ',
+      '天': 'ㄊㄧㄢ', '空': 'ㄎㄨㄥ', '弟': 'ㄉㄧˋ', '玩': 'ㄨㄢˊ', '具': 'ㄐㄩˋ',
+      '學': 'ㄒㄩㄝˊ', '校': 'ㄒㄧㄠˋ', '操': 'ㄘㄠ', '場': 'ㄔㄤˇ', '乾': 'ㄍㄢ',
+      '淨': 'ㄐㄧㄥˋ', '教': 'ㄐㄧㄠˋ', '室': 'ㄕˋ', '美': 'ㄇㄟˇ', '味': 'ㄨㄟˋ',
+      '蛋': 'ㄉㄢˋ', '糕': 'ㄍㄠ', '溫': 'ㄨㄣ', '暖': 'ㄋㄨㄢˇ', '太': 'ㄊㄞˋ',
+      '陽': 'ㄧㄤˊ', '快': 'ㄎㄨㄞˋ', '樂': 'ㄌㄜˋ', '童': 'ㄊㄨㄥˊ', '年': 'ㄋㄧㄢˊ',
+      '綠': 'ㄌㄩˋ', '草': 'ㄘㄠˇ', '地': 'ㄉㄧˋ', '跑': 'ㄆㄠˇ', '得': 'ㄉㄜˊ',
+      '車': 'ㄔㄜ', '會': 'ㄏㄨㄟˋ', '飛': 'ㄈㄟ', '小': 'ㄒㄧㄠˇ', '鳥': 'ㄋㄧㄠˇ',
+      '唱': 'ㄔㄤˋ', '好': 'ㄏㄠˇ', '聽': 'ㄊㄧㄥ', '歌': 'ㄍㄜ', '曲': 'ㄑㄩˇ',
+      '跳': 'ㄊㄧㄠˋ', '很': 'ㄏㄣˇ', '高': 'ㄍㄠ', '青': 'ㄑㄧㄥ', '蛙': 'ㄨㄚ',
+      '新': 'ㄒㄧㄣ', '買': 'ㄇㄞˇ', '鉛': 'ㄑㄧㄢ', '筆': 'ㄅㄧˇ', '盛': 'ㄕㄥˋ',
+      '開': 'ㄎㄞ', '櫻': 'ㄧㄥ', '圓': 'ㄩㄢˊ', '月': 'ㄩㄝˋ', '老': 'ㄌㄠˇ',
+      '師': 'ㄕ', '微': 'ㄨㄟˊ', '笑': 'ㄒㄧㄠˋ', '聰': 'ㄘㄨㄥ', '明': 'ㄇㄧㄥˊ',
+      '狐': 'ㄏㄨˊ', '狸': 'ㄌㄧ˙', '善': 'ㄕㄢˋ', '良': 'ㄌㄧㄤˊ', '腸': 'ㄔㄤˊ',
+      '爸': 'ㄅㄚˋ', '手': 'ㄕㄡˇ', '錶': 'ㄅㄧㄠˇ', '有': 'ㄧㄡˇ', '趣': 'ㄑㄩˋ',
+      '故': 'ㄍㄨˋ', '事': 'ㄕˋ', '冰': 'ㄅㄧㄥ', '涼': 'ㄌㄧㄤˊ', '西': 'ㄒㄧ',
+      '瓜': 'ㄍㄨㄚ', '可': 'ㄎㄜˇ', '狗': 'ㄍㄡˇ', '大': 'ㄉㄚˋ', '樹': 'ㄕㄨˋ',
+      '木': 'ㄇㄨˋ', '閃': 'ㄕㄢˇ', '星': 'ㄒㄧㄥ', '甜': 'ㄊㄧㄢˊ', '莓': 'ㄇㄟˊ',
+      '火': 'ㄏㄨㄛˇ', '白': 'ㄅㄞˊ', '雲': 'ㄩㄣˊ', '鋒': 'ㄈㄥ', '利': 'ㄌㄧˋ',
+      '剪': 'ㄐㄧㄢˇ', '刀': 'ㄉㄠ', '精': 'ㄐㄧㄥ', '彩': 'ㄘㄞˇ', '表': 'ㄅㄧㄠˇ',
+      '演': 'ㄧㄢˇ', '頑': 'ㄨㄢˊ', '皮': 'ㄆㄧˊ', '貓': 'ㄇㄠ', '衣': 'ㄧ',
+      '服': 'ㄈㄨˊ', '柔': 'ㄖㄡˊ', '風': 'ㄈㄥ', '音': 'ㄧㄣ', '勤': 'ㄑㄧㄣˊ',
+      '勞': 'ㄌㄠˊ', '蜜': 'ㄇㄧˋ', '蜂': 'ㄈㄥ', '雄': 'ㄒㄩㄥˊ', '偉': 'ㄨㄟˇ',
+      '山': 'ㄕㄢ', '清': 'ㄑㄧㄥ', '澈': 'ㄔㄜˋ', '溪': 'ㄒㄧ', '水': 'ㄕㄨㄟˇ',
+      '是': 'ㄕˋ', '叫': 'ㄐㄧㄠˋ', '你': 'ㄋㄧˇ', '起': 'ㄑㄧˇ', '床': 'ㄔㄨㄤˊ',
+      '的': 'ㄉㄜ˙', '真': 'ㄓㄣ', '慢': 'ㄇㄢˋ', '游': 'ㄧㄡˊ', '哭': 'ㄎㄨ',
+      '傷': 'ㄕㄤ', '寫': 'ㄒㄧㄝˇ', '工': 'ㄍㄨㄥ', '整': 'ㄓㄥˇ', '讀': 'ㄉㄨˊ',
+      '認': 'ㄖㄣˋ', '煮': 'ㄓㄨˇ', '飽': 'ㄅㄠˇ', '睡': 'ㄕㄨㄟˋ', '香': 'ㄒㄧㄤ',
+      '痛': 'ㄊㄨㄥˋ', '不': 'ㄅㄨˋ', '了': 'ㄌㄧㄠˇ', '氣': 'ㄑㄧˋ', '丈': 'ㄓㄤˋ',
+      '累': 'ㄌㄟˋ', '走': 'ㄗㄡˇ', '動': 'ㄉㄨㄥˋ', '掃': 'ㄙㄠˇ', '洗': 'ㄒㄧˇ',
+      '吃': 'ㄔ', '爬': 'ㄆㄚˊ', '畫': 'ㄏㄨㄚˋ', '考': 'ㄎㄠˇ', '非': 'ㄈㄟ',
+      '常': 'ㄔㄤˊ', '算': 'ㄙㄨㄢˋ', '說': 'ㄕㄨㄛ', '楚': 'ㄔㄨˇ', '入': 'ㄖㄨˋ',
+      '迷': 'ㄇㄧˊ', '站': 'ㄓㄢˋ', '挺': 'ㄊㄧㄥˇ', '坐': 'ㄗㄨㄛˋ', '端': 'ㄉㄨㄢ',
+      '正': 'ㄓㄥˋ', '熱': 'ㄖㄜˋ', '滿': 'ㄇㄢˇ', '頭': 'ㄊㄡˊ', '汗': 'ㄏㄢˋ',
+      '冷': 'ㄌㄥˇ', '直': 'ㄓˊ', '抖': 'ㄉㄡˇ', '忙': 'ㄇㄤˊ', '團': 'ㄊㄨㄢˊ',
+      '轉': 'ㄓㄨㄢˋ', '嚇': 'ㄒㄧㄚˋ', '臉': 'ㄌㄧㄢˇ', '哇': 'ㄨㄚ', '攏': 'ㄌㄨㄥˇ',
+      '嘴': 'ㄗㄨㄟˇ', '餓': 'ㄜˋ', '肚': 'ㄉㄨˋ', '子': 'ㄗ˙', '咕': 'ㄍㄨ',
+      '活': 'ㄏㄨㄛˊ', '靈': 'ㄌㄧㄥˊ', '現': 'ㄒㄧㄢˋ', '讓': 'ㄖㄤˋ', '人': 'ㄖㄣˊ',
+      '捨': 'ㄕㄜˇ', '眨': 'ㄓㄚˇ', '眼': 'ㄧㄢˇ', '蹤': 'ㄗㄨㄥ', '影': 'ㄧㄥˇ',
+      '道': 'ㄉㄠˋ', '輕': 'ㄑㄧㄥ', '踢': 'ㄊㄧ', '悄': 'ㄑㄧㄠˇ', '靜': 'ㄐㄧㄥˋ',
+      '覺': 'ㄐㄩㄝˊ', '變': 'ㄅㄧㄢˋ', '更': 'ㄍㄥˋ', '記': 'ㄐㄧˋ', '這': 'ㄓㄜˋ',
+      '件': 'ㄐㄧㄢˋ', '分': 'ㄈㄣ', '懂': 'ㄉㄨㄥˇ', '享': 'ㄒㄧㄤˇ', '最': 'ㄗㄨㄟˋ',
+      '去': 'ㄑㄩˋ', '三': 'ㄙㄢ', '發': 'ㄈㄚ', '合': 'ㄏㄜˊ', '隻': 'ㄓ'
+    };
+
+    function renderWithZhuyin(str) {
+      if (!state.showZhuyin) return str;
+      return [...str].map(char => {
+        const zy = zhuyinDict[char];
+        if (zy) {
+          return `<ruby>${char}<rt>${zy}</rt></ruby>`;
+        }
+        return char;
+      }).join('');
+    }
+
+    /* =========================================================
+       2. 海量精選題庫池（約 80 題，涵蓋名詞、程度、特殊用法）
        ========================================================= */
     const allQuestionsPool = [
       // --- 「的」百寶袋系列（名詞 / 代名詞 / 物品 / 擁有）---
@@ -1346,7 +1482,7 @@
     ];
 
     /* =========================================================
-       2. Web Audio API 音效合成引擎 (輕快清脆、無外部依賴)
+       3. Web Audio API 音效合成引擎 (輕快清脆、無外部依賴)
        ========================================================= */
     class SoundEngine {
       constructor() {
@@ -1424,7 +1560,7 @@
     const sound = new SoundEngine();
 
     /* =========================================================
-       3. 彩色紙花 Confetti 特效
+       4. 彩色紙花 Confetti 特效
        ========================================================= */
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
@@ -1485,7 +1621,7 @@
     }
 
     /* =========================================================
-       4. Firebase Firestore 班級連線設定
+       5. Firebase Firestore 班級連線設定
        ========================================================= */
     const firebaseConfig = {
       apiKey: "AIzaSyB3Z-NJkvnzGwWVF_8tw8M07ghoTdZs_TI",
@@ -1507,11 +1643,12 @@
     }
 
     /* =========================================================
-       5. 遊戲狀態管理
+       6. 遊戲狀態管理
        ========================================================= */
     const state = {
       seatNumber: localStorage.getItem('de_seat_num') || null, // 1~30 或 null
       isMobileLayout: localStorage.getItem('de_device_mode') === 'mobile',
+      showZhuyin: localStorage.getItem('de_zhuyin_enabled') !== 'false', // 預設開啟注音輔助低年級
       
       screen: 'home-screen',
       questions: [],
@@ -1552,7 +1689,7 @@
     }
 
     /* =========================================================
-       6. 遊戲流程控制
+       7. 遊戲流程控制
        ========================================================= */
     function startChallenge() {
       sound.click();
@@ -1581,11 +1718,14 @@
       $('current-q-index').textContent = state.currentIndex + 1;
       $('current-total-score').textContent = state.totalScore;
 
-      // 渲染去答案化的題幹，例：我 [ ？ ] 書包
+      // 依注音狀態渲染去答案化題幹，例：我 [ ？ ] 書包
+      const prefixHtml = renderWithZhuyin(q.prefix);
+      const suffixHtml = renderWithZhuyin(q.suffix);
+
       $('question-sentence').innerHTML = `
-        <span>${q.prefix}</span>
+        <span class="q-word">${prefixHtml}</span>
         <span class="blank-slot">？</span>
-        <span>${q.suffix}</span>
+        <span class="q-word">${suffixHtml}</span>
       `;
 
       // 啟動 8 秒彩虹計時條
@@ -1652,7 +1792,11 @@
     }
 
     function showFeedback(isCorrect, q, earnedScore, isTimeout = false) {
-      const fullSentence = `${q.prefix}<span class="highlight">${q.answer}</span>${q.suffix}`;
+      const pHtml = renderWithZhuyin(q.prefix);
+      const aHtml = renderWithZhuyin(q.answer);
+      const sHtml = renderWithZhuyin(q.suffix);
+
+      const fullSentence = `<span>${pHtml}</span><span class="highlight">${aHtml}</span><span>${sHtml}</span>`;
       $('fb-sentence').innerHTML = fullSentence;
       $('fb-explanation').innerHTML = `💡 <strong>${q.type === 'bag' ? '百寶袋法' : '打分數法'}</strong>：${q.exp}`;
 
@@ -1708,7 +1852,7 @@
     }
 
     /* =========================================================
-       7. Firebase 上傳與排行榜查詢
+       8. Firebase 上傳與排行榜查詢
        ========================================================= */
     function uploadScoreToFirestore() {
       if (!db || state.uploaded) return;
@@ -1822,7 +1966,7 @@
     }
 
     /* =========================================================
-       8. 座號與介面設定
+       9. 座號、注音與介面設定
        ========================================================= */
     function initSeatModal() {
       const grid = $('seat-grid');
@@ -1841,6 +1985,27 @@
         resSeat.textContent = state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')} 號` : '未選座號 (訪客)';
       }
       initSeatModal();
+    }
+
+    function updateZhuyinUI() {
+      const btn = $('btn-zhuyin');
+      const qBtn = $('q-zhuyin-btn');
+      const qText = $('q-zhuyin-text');
+      const label = $('zhuyin-label');
+
+      if (state.showZhuyin) {
+        btn.classList.add('active');
+        if (label) label.textContent = '注音：開';
+        btn.title = '注音顯示中（點擊切換為純國字）';
+        if (qBtn) qBtn.classList.add('active');
+        if (qText) qText.textContent = '注音：開';
+      } else {
+        btn.classList.remove('active');
+        if (label) label.textContent = '注音：關';
+        btn.title = '純國字模式（點擊開啟注音輔助）';
+        if (qBtn) qBtn.classList.remove('active');
+        if (qText) qText.textContent = '注音：關';
+      }
     }
 
     function updateSoundUI() {
@@ -1865,7 +2030,7 @@
     }
 
     /* =========================================================
-       9. 全域事件委派
+       10. 全域事件委派
        ========================================================= */
     document.addEventListener('click', (e) => {
       const target = e.target.closest('[data-action]');
@@ -1889,6 +2054,22 @@
       }
       if (action === 'next-question') {
         nextQuestion();
+      }
+      if (action === 'toggle-zhuyin') {
+        sound.click();
+        state.showZhuyin = !state.showZhuyin;
+        localStorage.setItem('de_zhuyin_enabled', state.showZhuyin);
+        updateZhuyinUI();
+        if (state.screen === 'game-screen' && state.questions.length > 0) {
+          const q = state.questions[state.currentIndex];
+          if (q) {
+            $('question-sentence').innerHTML = `
+              <span class="q-word">${renderWithZhuyin(q.prefix)}</span>
+              <span class="blank-slot">？</span>
+              <span class="q-word">${renderWithZhuyin(q.suffix)}</span>
+            `;
+          }
+        }
       }
       if (action === 'open-seat-modal') {
         sound.click();
@@ -1949,6 +2130,7 @@
 
     // 初始化啟動
     updateSeatUI();
+    updateZhuyinUI();
     updateSoundUI();
     updateDeviceUI();
   </script>
