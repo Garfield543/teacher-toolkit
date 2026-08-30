@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>雄筆順練習 - 康軒115二上生字筆順</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+      touch-action: manipulation;
+    }
+    .lesson-btn.active {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: white;
+      border-color: #c2410c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+  <!-- 頂部導覽列 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="../index.html" class="text-slate-500 hover:text-slate-800 p-1.5 rounded-lg hover:bg-slate-100 transition" title="回大廳首頁">
+          <i class="fa-solid fa-arrow-left text-lg"></i>
+        </a>
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">✍️</span>
+          <div>
+            <h1 class="text-lg md:text-xl font-bold text-slate-800">雄筆順練習導覽</h1>
+            <p class="text-xs text-slate-500 font-medium">115學年度 康軒版 國語二年級上學期</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a href="https://gsyan888.blogspot.com/p/stroke.html" target="_blank" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg hover:bg-amber-100 transition flex items-center gap-1">
+          <i class="fa-solid fa-lightbulb"></i> 雄老師首頁
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容區 -->
+  <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+    <!-- 課別選擇區 -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-orange-500 rounded-full"></span>
+          <h2 class="text-base md:text-lg font-bold text-slate-800">選擇課別（L1 ～ L12）</h2>
+        </div>
+        <span class="text-xs bg-orange-50 text-orange-600 px-2.5 py-1 rounded-full font-bold">康軒二上</span>
+      </div>
+
+      <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-2.5" id="lessonGrid">
+        <!-- 課別按鈕將由 JS 動態生成 -->
+      </div>
+    </div>
+
+    <!-- 當前課別詳情與操作卡片 -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6" id="detailCard">
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg" id="currentLessonBadge">第 1 課</span>
+            <h3 class="text-xl font-bold text-slate-800" id="currentLessonTitle">第一課 生字筆順</h3>
+          </div>
+          <p class="text-xs text-slate-500 mt-1">本課共 <span id="wordCount" class="font-bold text-orange-600">0</span> 個生字</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <a id="btnGsyan" href="#" target="_blank" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-pen-nib"></i> 開啟雄筆順練習
+          </a>
+          <a id="btnMoe" href="#" target="_blank" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap"></i> 教育部筆順網
+          </a>
+          <button id="btnCopy" onclick="copyCurrentUrl()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1.5">
+            <i class="fa-regular fa-copy"></i> 複製網址
+          </button>
+        </div>
+      </div>
+
+      <!-- 生字矩陣展示 -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">本課生字一覽 (點擊單字可練習單字筆順)</h4>
+        <div class="flex flex-wrap gap-2.5" id="wordsContainer">
+          <!-- 生字晶片由 JS 動態生成 -->
+        </div>
+      </div>
+
+      <!-- 二維碼與投影分享 -->
+      <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80 flex flex-col sm:flex-row items-center gap-5">
+        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm shrink-0">
+          <img id="qrImage" src="" alt="QR Code" class="w-28 h-28 object-contain">
+        </div>
+        <div class="space-y-1.5 text-center sm:text-left flex-1">
+          <h5 class="text-sm font-bold text-slate-800 flex items-center justify-center sm:justify-start gap-1.5">
+            <i class="fa-solid fa-qrcode text-orange-500"></i> 平板/手機 掃描練習
+          </h5>
+          <p class="text-xs text-slate-500">學生可使用 iPad 或手機相機掃描 QR Code，直接在瀏覽器開啟該課筆順動畫與書寫互動。</p>
+          <div class="pt-1">
+            <input type="text" id="currentUrlInput" readonly class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 select-all font-mono">
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+    teacher-toolkit 課堂工具系列 • 資料來源：雄老師 HTML5 FUN 與 教育部國字標準字體筆順學習網
+  </footer>
+
+  <script>
+    const lessonsData = [
+      { id: 1, name: "第一課", words: "年希望坐位本淡書老師以為故用力只現還聲矮" },
+      { id: 2, name: "第二課", words: "全蛋煎圓番茄切輪司夾吐中方城堡接畫臉餐醬" },
+      { id: 3, name: "第三課", words: "巷叔貓屋捧蝴蝶忙娶娘黃筆打扮樣越美麗牆模" },
+      { id: 4, name: "第四課", words: "運動飄熱鬧舞哇往容步汗腳協聲河氣最可賽拔" },
+      { id: 5, name: "第五課", words: "竹籃鄉南暑假帶等跨划吹邊叫原近捕活識碗轉" },
+      { id: 6, name: "第六課", words: "鎮餅節因此進排遠色愛月乾甜客買親如意柿埔" },
+      { id: 7, name: "第七課", words: "衣胖針簡單聰明臣敢東西直棒街滿眼哪思裳慌" },
+      { id: 8, name: "第八課", words: "渴烏喝瓶法森林物旅行午裝許石難忘哈但熊鴉" },
+      { id: 9, name: "第九課", words: "象操粗腿柱砍幾部搖沖首牽沉少沿然紀竟曹秤" },
+      { id: 10, name: "第十課", words: "雪梨夜卻冷冬臺季相反煙火待雖春貨期飯灣綻" },
+      { id: 11, name: "第十一課", words: "皮具飛者洋寒北嘴伸飽沙急服站翅膀充念戴扁" },
+      { id: 12, name: "第十二課", words: "灰涼牠鼓絡欣發居冒冰圍咪幸團聚愉鍋妙聊" }
+    ];
+
+    let currentLessonIndex = 0;
+
+    function renderLessonButtons() {
+      const grid = document.getElementById('lessonGrid');
+      grid.innerHTML = '';
+      lessonsData.forEach((l, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `lesson-btn py-2.5 px-2 rounded-xl text-center border font-bold text-sm transition ${idx === currentLessonIndex ? 'active' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-orange-50 hover:text-orange-600'}`;
+        btn.innerHTML = `L${l.id}`;
+        btn.onclick = () => selectLesson(idx);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectLesson(idx) {
+      currentLessonIndex = idx;
+      renderLessonButtons();
+      const lesson = lessonsData[idx];
+
+      document.getElementById('currentLessonBadge').textContent = `L${lesson.id}`;
+      document.getElementById('currentLessonTitle').textContent = `${lesson.name} 生字筆順`;
+      document.getElementById('wordCount').textContent = lesson.words.length;
+
+      const gsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan&words=${encodeURIComponent(lesson.words)}`;
+      const firstCharCode = lesson.words.charCodeAt(0);
+      const moeUrl = `https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=${firstCharCode}&q=1&WORD=${encodeURIComponent(lesson.words)}`;
+
+      document.getElementById('btnGsyan').href = gsyanUrl;
+      document.getElementById('btnMoe').href = moeUrl;
+      document.getElementById('currentUrlInput').value = gsyanUrl;
+
+      // QR Code
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(gsyanUrl)}`;
+      document.getElementById('qrImage').src = qrUrl;
+
+      // Render words chips
+      const wordsContainer = document.getElementById('wordsContainer');
+      wordsContainer.innerHTML = '';
+      for (const char of lesson.words) {
+        const charBtn = document.createElement('a');
+        const singleGsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan&words=${encodeURIComponent(char)}`;
+        charBtn.href = singleGsyanUrl;
+        charBtn.target = '_blank';
+        charBtn.className = 'w-11 h-11 flex items-center justify-center bg-orange-50/70 border border-orange-200 hover:border-orange-500 hover:bg-orange-500 hover:text-white rounded-xl text-lg font-bold text-slate-800 shadow-sm transition transform hover:-translate-y-0.5';
+        charBtn.textContent = char;
+        charBtn.title = `練習單字「${char}」筆順`;
+        wordsContainer.appendChild(charBtn);
+      }
+    }
+
+    function copyCurrentUrl() {
+      const url = document.getElementById('currentUrlInput').value;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('btnCopy');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check text-green-600"></i> 已複製！';
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+        }, 2000);
+      });
+    }
+
+    // Init
+    renderLessonButtons();
+    selectLesson(0);
+  </script>
+</body>
+</html>
