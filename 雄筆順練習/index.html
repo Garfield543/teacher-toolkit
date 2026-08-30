@@ -61,6 +61,51 @@
       </div>
     </div>
 
+    <!-- 雄筆順參數設定列 (依指定標準預設全開) -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-emerald-500 rounded-full"></span>
+          <h2 class="text-base font-bold text-slate-800">雄筆順功能設定（已套用指定標準）</h2>
+        </div>
+        <span class="text-xs text-slate-400">變更將即時同步至 QR Code 與練習連結</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
+          <input type="checkbox" id="cfg_number" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <div class="text-xs">
+            <div class="font-bold text-slate-700">顯示筆順序號</div>
+            <div class="text-[10px] text-slate-400">提示第幾筆 (number)</div>
+          </div>
+        </label>
+
+        <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
+          <input type="checkbox" id="cfg_track" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <div class="text-xs">
+            <div class="font-bold text-slate-700">顯示提示點</div>
+            <div class="text-[10px] text-slate-400">起點圓點 (track)</div>
+          </div>
+        </label>
+
+        <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
+          <input type="checkbox" id="cfg_hint" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <div class="text-xs">
+            <div class="font-bold text-slate-700">提示下一筆順</div>
+            <div class="text-[10px] text-slate-400">下一筆指引 (hint)</div>
+          </div>
+        </label>
+
+        <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
+          <input type="checkbox" id="cfg_sound" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <div class="text-xs">
+            <div class="font-bold text-slate-700">播放語音</div>
+            <div class="text-[10px] text-slate-400">筆畫/讀音朗讀 (sound)</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
     <!-- 當前課別詳情與操作卡片 -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6" id="detailCard">
       <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-100 gap-3">
@@ -69,7 +114,7 @@
             <span class="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg" id="currentLessonBadge">第 1 課</span>
             <h3 class="text-xl font-bold text-slate-800" id="currentLessonTitle">第一課 生字筆順</h3>
           </div>
-          <p class="text-xs text-slate-500 mt-1">本課共 <span id="wordCount" class="font-bold text-orange-600">0</span> 個生字</p>
+          <p class="text-xs text-slate-500 mt-1">本課共 <span id=\"wordCount\" class="font-bold text-orange-600">0</span> 個生字</p>
         </div>
 
         <div class="flex flex-wrap gap-2">
@@ -94,17 +139,22 @@
       </div>
 
       <!-- 二維碼與投影分享 -->
-      <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80 flex flex-col sm:flex-row items-center gap-5">
-        <div class="bg-white p-2 rounded-lg border border-slate-200 shadow-sm shrink-0">
-          <img id="qrImage" src="" alt="QR Code" class="w-28 h-28 object-contain">
+      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200/80 flex flex-col sm:flex-row items-center gap-6">
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-md shrink-0">
+          <img id="qrImage" src="" alt="QR Code" class="w-32 h-32 object-contain">
         </div>
-        <div class="space-y-1.5 text-center sm:text-left flex-1">
-          <h5 class="text-sm font-bold text-slate-800 flex items-center justify-center sm:justify-start gap-1.5">
-            <i class="fa-solid fa-qrcode text-orange-500"></i> 平板/手機 掃描練習
-          </h5>
-          <p class="text-xs text-slate-500">學生可使用 iPad 或手機相機掃描 QR Code，直接在瀏覽器開啟該課筆順動畫與書寫互動。</p>
+        <div class="space-y-2 text-center sm:text-left flex-1">
+          <div class="flex items-center justify-center sm:justify-start gap-2">
+            <span class="p-1.5 bg-orange-100 text-orange-600 rounded-lg text-sm"><i class="fa-solid fa-qrcode"></i></span>
+            <h5 class="text-sm font-bold text-slate-800">
+              平板/手機 掃描練習（已配置序號/提示點/指引/語音全開）
+            </h5>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            學生使用 iPad 或手機相機掃描 QR Code，即可直接進入該課雄筆順動畫練習，預設已啟用序號、起點提示點、下一筆指引與語音朗讀。
+          </p>
           <div class="pt-1">
-            <input type="text" id="currentUrlInput" readonly class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 select-all font-mono">
+            <input type="text" id="currentUrlInput" readonly class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-600 select-all font-mono">
           </div>
         </div>
       </div>
@@ -134,6 +184,14 @@
 
     let currentLessonIndex = 0;
 
+    function getSettingsQuery() {
+      const number = document.getElementById('cfg_number').checked ? '1' : '0';
+      const track = document.getElementById('cfg_track').checked ? '1' : '0';
+      const hint = document.getElementById('cfg_hint').checked ? '1' : '0';
+      const sound = document.getElementById('cfg_sound').checked ? '1' : '0';
+      return `&number=${number}&track=${track}&hint=${hint}&sound=${sound}`;
+    }
+
     function renderLessonButtons() {
       const grid = document.getElementById('lessonGrid');
       grid.innerHTML = '';
@@ -149,13 +207,18 @@
     function selectLesson(idx) {
       currentLessonIndex = idx;
       renderLessonButtons();
-      const lesson = lessonsData[idx];
+      updateLessonView();
+    }
+
+    function updateLessonView() {
+      const lesson = lessonsData[currentLessonIndex];
+      const cfgQuery = getSettingsQuery();
 
       document.getElementById('currentLessonBadge').textContent = `L${lesson.id}`;
       document.getElementById('currentLessonTitle').textContent = `${lesson.name} 生字筆順`;
       document.getElementById('wordCount').textContent = lesson.words.length;
 
-      const gsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan&words=${encodeURIComponent(lesson.words)}`;
+      const gsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan${cfgQuery}&words=${encodeURIComponent(lesson.words)}`;
       const firstCharCode = lesson.words.charCodeAt(0);
       const moeUrl = `https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=${firstCharCode}&q=1&WORD=${encodeURIComponent(lesson.words)}`;
 
@@ -164,7 +227,7 @@
       document.getElementById('currentUrlInput').value = gsyanUrl;
 
       // QR Code
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(gsyanUrl)}`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(gsyanUrl)}`;
       document.getElementById('qrImage').src = qrUrl;
 
       // Render words chips
@@ -172,7 +235,7 @@
       wordsContainer.innerHTML = '';
       for (const char of lesson.words) {
         const charBtn = document.createElement('a');
-        const singleGsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan&words=${encodeURIComponent(char)}`;
+        const singleGsyanUrl = `https://gsyan888.github.io/html5_fun/html5_stroke_parts/html5_stroke_parts.html?by=gsyan${cfgQuery}&words=${encodeURIComponent(char)}`;
         charBtn.href = singleGsyanUrl;
         charBtn.target = '_blank';
         charBtn.className = 'w-11 h-11 flex items-center justify-center bg-orange-50/70 border border-orange-200 hover:border-orange-500 hover:bg-orange-500 hover:text-white rounded-xl text-lg font-bold text-slate-800 shadow-sm transition transform hover:-translate-y-0.5';
