@@ -1635,10 +1635,27 @@
     }
 
     /* =========================================================
-       6. Firebase 排行榜與分數上傳
+       6. 排行榜、本機快取與 Firebase 串接
        ========================================================= */
+    function getLocalScores() {
+      try {
+        return JSON.parse(localStorage.getItem('idiom_local_scores') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLocalScore(record) {
+      try {
+        const list = getLocalScores();
+        list.unshift(record);
+        localStorage.setItem('idiom_local_scores', JSON.stringify(list.slice(0, 50)));
+      } catch (e) {
+        console.warn('Local score save error:', e);
+      }
+    }
+
     function uploadScoreToFirebase() {
-      if (!db) return;
       const data = {
         seatNumber: state.seatNumber ? Number(state.seatNumber) : null,
         seatLabel: state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')}號` : '訪客',
@@ -1651,12 +1668,21 @@
         stars: state.score >= state.total ? 5 : (state.score >= state.total * 0.7 ? 4 : (state.score >= state.total * 0.5 ? 3 : 2)),
         timeMs: state.mode === 'challenge' ? state.challengeElapsedMs : 0,
         timeFormatted: state.mode === 'challenge' ? formatElapsed(state.challengeElapsedMs) : '--',
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: Date.now()
       };
 
-      db.collection('idiom_game_scores').add(data).catch(err => {
-        console.warn('Score upload error:', err);
-      });
+      // 1. 優先存入本機，確保離線也有紀錄
+      saveLocalScore(data);
+
+      // 2. 若有 Firebase 則同步上傳
+      if (db) {
+        db.collection('idiom_game_scores').add({
+          ...data,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(err => {
+          console.warn('Firebase 雲端上傳失敗，已保存在本機:', err);
+        });
+      }
     }
 
     function openLeaderboard() {
@@ -1664,79 +1690,113 @@
       loadLeaderboardData();
     }
 
-    function loadLeaderboardData() {
+    function renderLeaderboardView(records, statusNotice = '') {
       const tbody = $('leaderboard-tbody');
-      tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; color:var(--muted);">正在讀取最新紀錄...</td></tr>';
-      
-      // 繪製 1~30 號空卡片
       const wall = $('class-wall-grid');
-      wall.innerHTML = Array.from({ length: 30 }, (_, i) => i + 1).map(num => `
-        <div class="seat-status-card" id="seat-card-${num}">
-          <span class="seat-status-num">${String(num).padStart(2, '0')}號</span>
-          <span class="seat-status-stars" style="color:#d5d4e6;">未完成</span>
-        </div>
-      `).join('');
 
-      if (!db) {
-        tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; color:var(--coral-dark);">離線模式：尚未連接資料庫</td></tr>';
+      // 1. 繪製 1~30 號進度牆
+      const seatBest = {};
+      records.forEach(d => {
+        if (d.seatNumber) {
+          if (!seatBest[d.seatNumber] || (d.stars || 0) > (seatBest[d.seatNumber].stars || 0)) {
+            seatBest[d.seatNumber] = d;
+          }
+        }
+      });
+
+      wall.innerHTML = Array.from({ length: 30 }, (_, i) => i + 1).map(num => {
+        const d = seatBest[num];
+        if (d) {
+          return `
+            <div class="seat-status-card completed" id="seat-card-${num}">
+              <span class="seat-status-num">${String(num).padStart(2, '0')}號</span>
+              <span class="seat-status-stars" style="color:var(--mint-dark); font-weight:800;">
+                ${'⭐'.repeat(d.stars || 1)}<br><small style="color:var(--muted);">${d.timeFormatted || '完成'}</small>
+              </span>
+            </div>
+          `;
+        }
+        return `
+          <div class="seat-status-card" id="seat-card-${num}">
+            <span class="seat-status-num">${String(num).padStart(2, '0')}號</span>
+            <span class="seat-status-stars" style="color:#d5d4e6;">未完成</span>
+          </div>
+        `;
+      }).join('');
+
+      // 2. 繪製挑戰英雄榜（純前端排序：星星高 -> 用時少，完全不依賴伺服器複合索引）
+      const challengeList = records
+        .filter(r => r.mode === 'challenge')
+        .sort((a, b) => (b.stars || 0) - (a.stars || 0) || (a.timeMs || 999999) - (b.timeMs || 999999))
+        .slice(0, 20);
+
+      if (challengeList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="padding:20px; color:var(--muted);">
+          ${statusNotice ? `<div style="color:var(--coral-dark); margin-bottom:8px; font-weight:800;">${statusNotice}</div>` : ''}
+          目前還沒有挑戰紀錄，快來當第一名吧！
+        </td></tr>`;
         return;
       }
 
+      let rank = 1;
+      tbody.innerHTML = challengeList.map(d => {
+        const rankClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
+        const rankIcon = rank === 1 ? '🥇 1' : (rank === 2 ? '🥈 2' : (rank === 3 ? '🥉 3' : rank));
+        const starStr = '⭐'.repeat(d.stars || 0);
+        const html = `<tr>
+          <td class="${rankClass}">${rankIcon}</td>
+          <td><strong>${d.seatLabel || '訪客'}</strong> ${d.character || ''}</td>
+          <td>${d.volumeTitle || ''}</td>
+          <td style="color:#f2b83f;">${starStr}</td>
+          <td>${d.timeFormatted || '--'}</td>
+          <td style="color:var(--muted); font-size:.82rem;">${d.timestamp ? '剛才' : '本機'}</td>
+        </tr>`;
+        rank++;
+        return html;
+      }).join('');
+
+      if (statusNotice) {
+        tbody.insertAdjacentHTML('afterbegin', `<tr><td colspan="6" style="padding:8px; background:#fff1f2; color:var(--coral-dark); font-size:.82rem; font-weight:800;">${statusNotice}</td></tr>`);
+      }
+    }
+
+    function loadLeaderboardData() {
+      // 1. 秒開本機快取
+      const localList = getLocalScores();
+      renderLeaderboardView(localList);
+
+      if (!db) {
+        renderLeaderboardView(localList, '離線模式：尚未連接雲端資料庫');
+        return;
+      }
+
+      // 2. 雲端讀取：不加多欄位 orderBy，避免 Firestore 複合索引報錯
       db.collection('idiom_game_scores')
-        .where('mode', '==', 'challenge')
-        .orderBy('stars', 'desc')
-        .orderBy('timeMs', 'asc')
-        .limit(20)
+        .limit(60)
         .get()
         .then(snapshot => {
-          if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; color:var(--muted);">目前還沒有挑戰紀錄，快來當第一名吧！</td></tr>';
-          } else {
-            let rank = 1;
-            tbody.innerHTML = snapshot.docs.map(doc => {
-              const d = doc.data();
-              const rankClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
-              const rankIcon = rank === 1 ? '🥇 1' : (rank === 2 ? '🥈 2' : (rank === 3 ? '🥉 3' : rank));
-              const starStr = '⭐'.repeat(d.stars || 0);
-              const html = `<tr>
-                <td class="${rankClass}">${rankIcon}</td>
-                <td><strong>${d.seatLabel || '訪客'}</strong> ${d.character || ''}</td>
-                <td>${d.volumeTitle || ''}</td>
-                <td style="color:#f2b83f;">${starStr}</td>
-                <td>${d.timeFormatted || '--'}</td>
-                <td style="color:var(--muted); font-size:.82rem;">剛才</td>
-              </tr>`;
-              rank++;
-              return html;
-            }).join('');
-          }
+          const cloudList = [];
+          snapshot.forEach(doc => {
+            cloudList.push(doc.data());
+          });
+
+          // 合併本機與雲端
+          const combined = [...cloudList];
+          localList.forEach(loc => {
+            if (!combined.some(c => c.seatNumber === loc.seatNumber && c.createdAt === loc.createdAt)) {
+              combined.push(loc);
+            }
+          });
+
+          renderLeaderboardView(combined);
         })
         .catch(err => {
-          console.warn('Leaderboard query error:', err);
-          tbody.innerHTML = '<tr><td colspan="6" style="padding:20px; color:var(--coral-dark);">讀取失敗，請確認網路連線</td></tr>';
-        });
-
-      // 全班進度牆資料
-      db.collection('idiom_game_scores')
-        .orderBy('timestamp', 'desc')
-        .limit(50)
-        .get()
-        .then(snapshot => {
-          const seatBest = {};
-          snapshot.forEach(doc => {
-            const d = doc.data();
-            if (d.seatNumber && !seatBest[d.seatNumber]) {
-              seatBest[d.seatNumber] = d;
-            }
-          });
-          Object.keys(seatBest).forEach(num => {
-            const d = seatBest[num];
-            const card = document.getElementById(`seat-card-${num}`);
-            if (card) {
-              card.classList.add('completed');
-              card.querySelector('.seat-status-stars').innerHTML = `${'⭐'.repeat(d.stars || 1)}<br><small>${d.timeFormatted || '完成'}</small>`;
-            }
-          });
+          console.warn('Firestore 排行榜讀取異常:', err);
+          let notice = '⚠️ 雲端連線失敗，目前顯示本機歷史紀錄';
+          if (err.code === 'permission-denied') {
+            notice = '⚠️ Firebase 權限尚未開放，目前顯示本機歷史紀錄';
+          }
+          renderLeaderboardView(localList, notice);
         });
     }
 
