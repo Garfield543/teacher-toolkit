@@ -73,7 +73,7 @@
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
-          <input type="checkbox" id="cfg_number" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <input type="checkbox" id="cfg_number" onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
           <div class="text-xs">
             <div class="font-bold text-slate-700">顯示筆順序號</div>
             <div class="text-[10px] text-slate-400">提示第幾筆 (number)</div>
@@ -81,7 +81,7 @@
         </label>
 
         <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
-          <input type="checkbox" id="cfg_track" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <input type="checkbox" id="cfg_track" onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
           <div class="text-xs">
             <div class="font-bold text-slate-700">顯示提示點</div>
             <div class="text-[10px] text-slate-400">起點圓點 (track)</div>
@@ -89,7 +89,7 @@
         </label>
 
         <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
-          <input type="checkbox" id="cfg_hint" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <input type="checkbox" id="cfg_hint" onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
           <div class="text-xs">
             <div class="font-bold text-slate-700">提示下一筆順</div>
             <div class="text-[10px] text-slate-400">下一筆指引 (hint)</div>
@@ -97,7 +97,7 @@
         </label>
 
         <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50/50 hover:border-emerald-200 transition">
-          <input type="checkbox" id="cfg_sound" checked onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
+          <input type="checkbox" id="cfg_sound" onchange="updateLessonView()" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500">
           <div class="text-xs">
             <div class="font-bold text-slate-700">播放語音</div>
             <div class="text-[10px] text-slate-400">筆畫/讀音朗讀 (sound)</div>
@@ -147,11 +147,11 @@
           <div class="flex items-center justify-center sm:justify-start gap-2">
             <span class="p-1.5 bg-orange-100 text-orange-600 rounded-lg text-sm"><i class="fa-solid fa-qrcode"></i></span>
             <h5 class="text-sm font-bold text-slate-800">
-              平板/手機 掃描練習（已配置序號/提示點/指引/語音全開）
+              平板/手機 掃描練習（已配置：序號/提示點/指引/語音皆關閉）
             </h5>
           </div>
           <p class="text-xs text-slate-500 leading-relaxed">
-            學生使用 iPad 或手機相機掃描 QR Code，即可直接進入該課雄筆順動畫練習，預設已啟用序號、起點提示點、下一筆指引與語音朗讀。
+            學生使用 iPad 或手機相機掃描 QR Code，即可直接進入該課雄筆順動畫練習，預設已將序號、提示點、下一筆指引與語音設為關閉。
           </p>
           <div class="pt-1">
             <input type="text" id="currentUrlInput" readonly class="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-600 select-all font-mono">
