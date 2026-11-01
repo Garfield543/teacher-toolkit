@@ -210,6 +210,120 @@
       text-align: center;
     }
     .volume-title { font-weight: 900; font-size: .95rem; color: var(--purple); margin-bottom: 8px; }
+    .volume-group-label { font-weight: 800; font-size: .82rem; color: var(--muted); margin: 10px 0 6px; }
+    .volume-group-label:first-of-type { margin-top: 0; }
+
+
+    /* ===== 成語圖鑑 ===== */
+    .album-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0 16px; padding: 12px 16px; border-radius: 18px; background: var(--lavender); }
+    .album-summary strong { color: var(--purple-dark); font-size: 1.5rem; }
+    .album-sync { color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-bottom: 18px; }
+    .album-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 3px solid transparent; border-radius: 22px; background: #fff; }
+    .album-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: var(--vc, #d4d3df); color: var(--ink); font-size: .9rem; font-weight: 800; }
+    .album-chip { padding: 1px 10px; border-radius: 10px; font-size: .78rem; background: #e4e1fa; color: var(--ink); }
+    .album-body { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 8px; padding: 10px 12px; }
+    .album-title { font-size: 1.2rem; font-weight: 900; color: var(--ink); }
+    .album-stamps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; width: 100%; }
+    .stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 58px; padding: 2px; border: 2px dashed #b3b2c4; border-radius: 10px; background: #e4e3ec; color: #8a899c; font-family: inherit; cursor: pointer; touch-action: manipulation; }
+    .stamp.learned { border: 2px solid #8d86d8; background: #fff; color: var(--ink); }
+    .stamp-art { font-size: 1.15rem; line-height: 1; }
+    .stamp-art svg { width: 1em; height: 1em; vertical-align: -0.12em; }
+    .stamp-name { font-size: .66rem; font-weight: 800; white-space: nowrap; }
+    .stamp-q { font-size: 1.1rem; font-weight: 800; }
+    .stamp-prog { font-size: .62rem; font-weight: 800; }
+    .album-count { font-size: .8rem; color: var(--muted); font-weight: 700; }
+    .album-foot { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: .8rem; color: var(--muted); }
+    .album-stars { font-size: 1.15rem; letter-spacing: 2px; }
+    .album-card.lv-locked { border: 3px dashed #b3b2c4; background: #ececf1; }
+    .album-card.lv-lit { border-color: #8d86d8; box-shadow: 0 6px 14px rgba(70,60,140,.15); }
+    .album-card.lv-silver { border: 6px solid transparent; background: linear-gradient(#eaf0f9, #eaf0f9) padding-box, linear-gradient(135deg, #5d6b84, #f2f5fa 25%, #8794ab 50%, #f7f9fc 75%, #5d6b84) border-box; box-shadow: 0 8px 18px rgba(80,90,110,.3); }
+    .album-card.lv-gold { border: 6px solid transparent; background: linear-gradient(#fff6d6, #fff6d6) padding-box, linear-gradient(135deg, #8a6200, #ffe9a0 25%, #d9a21b 50%, #fff3c4 75%, #8a6200) border-box; box-shadow: 0 0 0 4px rgba(217,162,27,.28), 0 10px 24px rgba(217,162,27,.4); }
+    .album-card.lv-silver .album-chip { background: #5d6b84; color: #fff; }
+    .album-card.lv-gold .album-chip { background: #8a6200; color: #fff; }
+    .album-card.lv-locked .album-chip { background: #d4d3df; }
+    .album-card.lv-lit .album-stars { color: #5b52b8; }
+    .album-card.lv-silver .album-stars { color: #4a566d; }
+    .album-card.lv-gold .album-stars { color: #8a6200; }
+    .album-card.lv-locked .album-stars { color: #8a899c; }
+    .album-card.lv-silver::after, .album-card.lv-gold::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.65) 50%, transparent 62%); }
+    .album-detail-art { font-size: 3.4rem; line-height: 1.1; text-align: center; }
+    .album-detail-art svg { width: 1em; height: 1em; vertical-align: -0.12em; }
+    .album-detail-name { margin: 6px 0; text-align: center; font-size: 2rem; font-weight: 1000; color: var(--purple-dark); letter-spacing: .1em; }
+    .album-detail-line { margin: 8px 0; line-height: 1.8; }
+    .album-toasts { position: fixed; top: 76px; right: 14px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; max-width: 80vw; pointer-events: none; }
+    .album-toast { padding: 10px 16px; border: 2px solid var(--purple); border-radius: 16px; background: #fff; box-shadow: 0 8px 20px rgba(54,48,110,.2); font-weight: 900; animation: toast-in .25s ease-out; }
+    .album-toast.big { border-color: #f3c65a; background: var(--yellow); font-size: 1.1rem; }
+    @keyframes toast-in { from { transform: translateX(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+    /* ===== 第六～十輯新玩法：用對了嗎 / 品格分類箱 / 打地鼠 / 團體模式 ===== */
+    .play-card.practice-judge { background: #e8f6ff; }
+    .play-card.practice-sort { background: #eefbe9; }
+    .play-card.practice-whack { background: #fff3e0; }
+    .mode-card.group { grid-column: 1 / -1; background: linear-gradient(145deg, #eef6ff, #dcecff); border-color: #c6dcf5; }
+    .idiom-hl { display: inline-block; margin: 0 2px; padding: 0 8px; border-radius: 10px; background: var(--yellow); color: var(--ink); font-weight: 900; }
+    .sort-idiom { display: block; margin: 6px 0; color: var(--purple-dark); font-size: clamp(2.4rem, 9vw, 4.2rem); font-weight: 1000; letter-spacing: .12em; }
+    .sort-phrase { display: block; color: var(--muted); font-size: clamp(1.1rem, 3.4vw, 1.6rem); font-weight: 800; }
+    .judge-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 680px; margin: 18px auto 0; }
+    .judge-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 84px; padding: 10px 14px;
+      border: 3px solid #e2e2ef; border-radius: 22px; background: #fff;
+      font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 1000; color: var(--ink);
+      box-shadow: 0 4px 10px rgba(54,48,110,.06); cursor: pointer; touch-action: manipulation;
+    }
+    .judge-btn span { font-size: 1.5em; }
+    .judge-btn.yes:hover:not(:disabled) { border-color: var(--mint-dark); background: var(--mint); transform: translateY(-2px); }
+    .judge-btn.no:hover:not(:disabled) { border-color: var(--coral-dark); background: var(--coral); transform: translateY(-2px); }
+    .judge-btn:disabled { cursor: default; opacity: .5; }
+    .judge-btn.chosen { opacity: 1; }
+    .judge-btn.chosen.right { border-color: var(--mint-dark); background: var(--mint); }
+    .judge-btn.chosen.wrong { border-color: var(--coral-dark); background: var(--coral); }
+    .judge-result { max-width: 680px; margin: 16px auto 0; padding: 14px 18px; border-radius: 18px; background: #fff; border: 2px dashed #cfcbf0; text-align: left; line-height: 1.8; font-size: 1.05rem; }
+    .judge-verdict { margin-bottom: 6px; text-align: center; font-size: 1.25rem; font-weight: 1000; }
+    .judge-verdict.ok { color: var(--mint-dark); }
+    .judge-verdict.no { color: var(--coral-dark); }
+    .judge-reason p { margin: 6px 0; }
+    .group-step { margin: 18px 0 6px; text-align: center; color: var(--purple-dark); }
+    .team-count-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 10px 0; }
+    .team-count-btn { min-width: 120px; }
+    .team-count-btn.active { border-color: var(--purple); background: var(--lavender); }
+    .team-preview { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 8px; }
+    .team-chip-mini { padding: 6px 14px; border-radius: 999px; background: var(--sky); font-weight: 900; }
+    .group-tip { margin: 14px 0; text-align: center; color: var(--muted); }
+    .group-board { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 12px 0; }
+    .team-chip { display: flex; flex: 1 1 120px; max-width: 220px; flex-direction: column; align-items: center; padding: 10px 12px; border: 3px solid #e2e2ef; border-radius: 20px; background: #fff; opacity: .7; transition: transform .2s; }
+    .team-chip.active { border-color: var(--purple); background: var(--lavender); opacity: 1; transform: scale(1.05); box-shadow: var(--shadow); }
+    .team-emoji { font-size: 2rem; }
+    .team-name { font-weight: 900; }
+    .team-score { color: var(--purple-dark); font-size: 1.7rem; font-weight: 1000; }
+    .group-turn { margin-bottom: 8px; font-size: clamp(1.1rem, 3vw, 1.5rem); }
+    .group-sentence { max-width: 900px; line-height: 1.7; font-size: clamp(1.6rem, 4.2vw, 2.6rem) !important; }
+    .judge-buttons.big { max-width: 820px; }
+    .judge-buttons.big .judge-btn { min-height: 110px; font-size: clamp(1.6rem, 4.5vw, 2.4rem); }
+    .rank-row { display: flex; align-items: center; gap: 14px; max-width: 520px; margin: 10px auto; padding: 12px 18px; border: 2px solid #e2e2ef; border-radius: 18px; background: #fff; font-size: 1.4rem; font-weight: 900; }
+    .rank-row.rank-1 { border-color: #f3c65a; background: var(--yellow); }
+    .rank-medal { min-width: 44px; font-size: 2rem; }
+    .rank-team { flex: 1; text-align: left; }
+    .rank-score { color: var(--purple-dark); }
+    /* 打地鼠 */
+    .whack-ready { max-width: 720px; margin: 10px auto; text-align: center; }
+    .whack-ready h2 { margin: 8px 0; }
+    .whack-ready p { line-height: 1.8; }
+    .whack-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 720px; margin: 14px auto 0; }
+    .hole { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-height: 120px; padding: 6px; border: 3px solid transparent; border-radius: 22px; background: #efe3d2; overflow: hidden; font-family: inherit; }
+    .hole .mound { width: 70%; height: 34px; margin-bottom: 14px; border-radius: 50%; background: #8a6a4a; box-shadow: inset 0 6px 8px rgba(0,0,0,.25); }
+    .hole.has-mole { border-color: #e0b98a; background: #f7e7cf; cursor: pointer; animation: mole-pop .28s ease-out; touch-action: manipulation; }
+    .hole.has-mole:hover { background: #fff0d6; }
+    .mole-emoji { font-size: 2.2rem; line-height: 1.1; }
+    .mole-label { color: var(--ink); font-size: clamp(1.15rem, 3.4vw, 1.7rem); font-weight: 1000; }
+    #whack-area .zy { display: none; color: var(--muted); font-size: .72rem; line-height: 1.2; }
+    #whack-area.show-zy .zy { display: block; }
+    #whack-area .whack-prompt .zy { font-size: .95rem; }
+    .hole.hit { border-color: var(--mint-dark); background: var(--mint); }
+    .hole.miss { border-color: var(--coral-dark); background: var(--coral); opacity: .7; animation: mole-shake .3s; }
+    .hole .pts { position: absolute; top: 6px; right: 10px; color: var(--mint-dark); font-size: 1.2rem; font-weight: 1000; }
+    @keyframes mole-pop { from { transform: translateY(40%) scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes mole-shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
     .volume-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
     .volume-btn {
       padding: 8px 16px;
@@ -690,6 +804,9 @@
         <button id="btn-seat" class="top-pill-btn" data-action="open-seat-modal" title="點擊切換座號">
           <span>👤</span> <strong id="top-seat-label">未選座號</strong>
         </button>
+        <button id="btn-album" class="top-pill-btn" data-action="open-album" title="我的成語圖鑑">
+          <span>📖</span> <strong id="album-count">0/100</strong>
+        </button>
         <button id="btn-sound" class="top-pill-btn" data-action="toggle-sound" title="切換音效">
           <span id="sound-icon">🔊</span> <span>音效</span>
         </button>
@@ -715,13 +832,23 @@
         <!-- 週次 / 輯數切換 -->
         <div class="volume-selector">
           <div class="volume-title">📚 選擇學習週次與題庫</div>
+          <div class="volume-group-label">第一～五輯</div>
           <div class="volume-tags">
             <button class="volume-btn" data-action="select-volume" data-vol="1">第一輯 (W1.2)</button>
             <button class="volume-btn active" data-action="select-volume" data-vol="2">第二輯 (W3.4)</button>
             <button class="volume-btn" data-action="select-volume" data-vol="3">第三輯 (W5.6)</button>
             <button class="volume-btn" data-action="select-volume" data-vol="4">第四輯 (W7.8)</button>
             <button class="volume-btn" data-action="select-volume" data-vol="5">第五輯 (W9.10)</button>
-            <button class="volume-btn" data-action="select-volume" data-vol="all">🌟 全輯挑戰</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="all">🌟 全輯挑戰 (1–5輯)</button>
+          </div>
+          <div class="volume-group-label">第六～十輯</div>
+          <div class="volume-tags">
+            <button class="volume-btn" data-action="select-volume" data-vol="6">第六輯 (W11.12)</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="7">第七輯 (W13.14)</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="8">第八輯 (W15.16)</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="9">第九輯 (W17.18)</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="10">第十輯 (W19.20)</button>
+            <button class="volume-btn" data-action="select-volume" data-vol="all2">🌟 全輯挑戰 (6–10輯)</button>
           </div>
         </div>
 
@@ -781,6 +908,12 @@
             <p>四種玩法綜合闖關，成績即時同步班級排行榜！</p>
             <span class="mode-button">開始挑戰</span>
           </button>
+          <button class="mode-card group" id="group-card" data-action="group" style="display:none;">
+            <span class="mode-icon">👥</span>
+            <h3>團體模式</h3>
+            <p>全班用大電視、或在家和家人，分成幾隊輪流比賽！</p>
+            <span class="mode-button">分隊開始</span>
+          </button>
         </div>
         <div class="button-row">
           <button class="secondary-button" data-action="character">↩ 更換夥伴</button>
@@ -820,6 +953,21 @@
             <h3>成語偵探</h3>
             <p>從生活情境中找出最適合的成語。</p>
           </button>
+          <button class="play-card practice-judge" id="judge-card" data-action="practice-type" data-type="judge" style="display:none;">
+            <span class="play-icon">⭕❌</span>
+            <h3>用對了嗎</h3>
+            <p>判斷句子裡的成語，用得對不對。</p>
+          </button>
+          <button class="play-card practice-sort" id="sort-card" data-action="practice-type" data-type="sort" style="display:none;">
+            <span class="play-icon">📦</span>
+            <h3>品格分類箱</h3>
+            <p>把成語放進「值得學習」或「需要改進」的箱子。</p>
+          </button>
+          <button class="play-card practice-whack" id="whack-card" data-action="practice-type" data-type="whack" style="display:none;">
+            <span class="play-icon">🐹</span>
+            <h3>打地鼠：成語出洞</h3>
+            <p>看意思，限時 30 秒敲出正確的成語。</p>
+          </button>
         </div>
         <div class="button-row" style="margin-top: 22px;">
           <button class="secondary-button" data-action="mode">↩ 返回模式</button>
@@ -840,6 +988,124 @@
           <div id="progress-fill" class="progress-fill" style="width: 10%"></div>
         </div>
         <div id="question-area"></div>
+      </div>
+    </section>
+
+    <!-- 成語圖鑑 -->
+    <section id="album-screen" class="screen">
+      <div class="panel">
+        <div class="screen-intro">
+          <div>
+            <p class="eyebrow">📖 成語圖鑑</p>
+            <h2>我的成語圖鑑</h2>
+            <p>每個成語答對 2 次就學會，蓋一個章！一輯學會 3 個點亮、6 個升銀邊、10 個全部學會是金邊。</p>
+          </div>
+        </div>
+        <div id="album-summary" class="album-summary"></div>
+        <div id="album-grid" class="album-grid"></div>
+        <div class="button-row">
+          <button class="secondary-button" data-action="home">↩ 回首頁</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="album-detail" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 class="modal-title">📖 成語小卡</h3>
+          <button class="modal-close" data-action="close-modal">✕</button>
+        </div>
+        <div id="album-detail-body"></div>
+      </div>
+    </div>
+    <div id="album-toasts" class="album-toasts"></div>
+
+    <!-- 打地鼠 -->
+    <section id="whack-screen" class="screen">
+      <div class="panel game-panel" style="max-width: 1000px;">
+        <div class="play-toolbar">
+          <button class="top-pill-btn" data-action="whack-exit">↩ 結束</button>
+          <span id="whack-team" class="progress-pill" hidden></span>
+          <span id="whack-time" class="progress-pill">⏱ 30</span>
+          <span id="whack-score" class="progress-pill">⭐ 0</span>
+          <span id="whack-combo" class="progress-pill" hidden>🔥 連擊 0</span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div id="whack-time-fill" class="progress-fill" style="width: 100%"></div>
+        </div>
+        <div id="whack-area"></div>
+      </div>
+    </section>
+
+    <!-- 團體模式：設定 -->
+    <section id="group-setup-screen" class="screen">
+      <div class="panel">
+        <div class="screen-intro">
+          <div>
+            <p class="eyebrow">👥 團體模式</p>
+            <h2>分組輪流比賽</h2>
+            <p>目前題庫：<strong id="group-volume-label" style="color:var(--purple-dark);"></strong></p>
+          </div>
+        </div>
+        <h3 class="group-step">① 幾隊一起玩？</h3>
+        <div class="team-count-row">
+          <button class="choice-button team-count-btn active" data-action="group-teams" data-n="2">2 隊</button>
+          <button class="choice-button team-count-btn" data-action="group-teams" data-n="3">3 隊</button>
+          <button class="choice-button team-count-btn" data-action="group-teams" data-n="4">4 隊</button>
+        </div>
+        <div id="group-team-preview" class="team-preview"></div>
+        <h3 class="group-step">② 選一種玩法</h3>
+        <div class="play-grid">
+          <button class="play-card practice-judge" data-action="group-start" data-game="judge">
+            <span class="play-icon">⭕❌</span>
+            <h3>用對了嗎</h3>
+            <p>每隊輪流判斷一句話，共 12 題，答對得 1 分。</p>
+          </button>
+          <button class="play-card practice-sort" id="group-sort-card" data-action="group-start" data-game="sort" style="display:none;">
+            <span class="play-icon">📦</span>
+            <h3>品格分類箱</h3>
+            <p>每隊輪流把成語放進 👍 或 👎 箱，共 12 題，答對得 1 分。</p>
+          </button>
+          <button class="play-card practice-whack" data-action="group-start" data-game="whack">
+            <span class="play-icon">🐹</span>
+            <h3>打地鼠：成語出洞</h3>
+            <p>每隊限時 30 秒輪流敲成語，連擊加分，分數最高的隊伍獲勝。</p>
+          </button>
+        </div>
+        <p class="group-tip">💡 大家可以一起討論、用手比出答案，再由一位同學按下去。</p>
+        <div class="button-row">
+          <button class="secondary-button" data-action="mode">↩ 返回模式</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 團體模式：比賽中 -->
+    <section id="group-play-screen" class="screen">
+      <div class="panel game-panel" style="max-width: 1000px;">
+        <div class="play-toolbar">
+          <button class="top-pill-btn" data-action="mode">↩ 結束比賽</button>
+          <span id="group-progress" class="progress-pill"></span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <div id="group-progress-fill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div id="group-board" class="group-board"></div>
+        <div id="group-area"></div>
+      </div>
+    </section>
+
+    <!-- 團體模式：結果 -->
+    <section id="group-result-screen" class="screen">
+      <div class="panel result-card">
+        <div class="result-emoji">🏆</div>
+        <p class="eyebrow">比賽結束！</p>
+        <h2 id="group-result-title"></h2>
+        <div id="group-ranking"></div>
+        <div class="button-row" style="margin-top: 18px;">
+          <button class="primary-button" data-action="group-restart">🔄 再比一次</button>
+          <button class="secondary-button" data-action="group">👥 更換隊數</button>
+          <button class="top-pill-btn" data-action="mode">↩ 返回模式</button>
+        </div>
       </div>
     </section>
 
@@ -923,7 +1189,7 @@
 
   <script>
     /* =========================================================
-       1. 題庫資料集（第一輯 W1.2、第二輯 W3.4、第三輯 W5.6、第四輯 W7.8、第五輯 W9.10）
+       1. 題庫資料集（第一輯 W1.2 ～ 第十輯 W19.20，每輯 10 個成語）
        ========================================================= */
     const idiomLibraries = {
       1: [
@@ -985,6 +1251,66 @@
         { id: 'laojianjuhua', idiom: '老奸巨猾', zhuyin: 'ㄌㄠˇ ㄐㄧㄢ ㄐㄩˋ ㄏㄨㄚˊ', choiceZhuyin: 'ㄨㄟˊ ㄖㄣˊ ㄐㄧㄥ ㄧㄢˋ ㄈㄥ ㄈㄨˋ ㄑㄩㄝˋ ㄒㄧㄣ ㄙ ㄅㄨˋ ㄓㄥˋ，ㄐㄧˊ ㄨㄟˊ ㄐㄧㄢ ㄓㄚˋ ㄐㄧㄠˇ ㄏㄨㄚˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄉㄚˋ ㄏㄨㄟ ㄌㄤˊ ㄅㄧㄠˇ ㄇㄧㄢˋ ㄕㄤˋ ㄒㄧㄠˋ ㄇㄧ ㄇㄧ ㄓㄨㄤ ㄗㄨㄛˋ ㄘˊ ㄒㄧㄤˊ ㄉㄜ˙ ㄌㄠˇ ㄋㄞˇ ㄋㄞˇ ㄑㄧㄠ ㄇㄣˊ，ㄉㄨˇ ㄗ˙ ㄌㄧˇ ㄑㄩㄝˋ ㄘㄤˊ ㄓㄜ˙ ㄎㄜˇ ㄆㄚˋ ㄉㄜ˙ ㄏㄨㄞˋ ㄓㄨˇ ㄧˋ。', meaning: '為人經驗豐富卻心思不正，極為奸詐狡猾。', hint: '像老狐狸或大灰狼一樣狡猾奸詐，用詭計欺騙別人。', scene: '大灰狼表面上笑咪咪裝作慈祥的老奶奶敲門，肚子裡卻藏著可怕的壞主意。', example: '故事裡的壞巫師為人老奸巨猾，用各種詭計欺騙了村子裡單純的小動物。' },
         { id: 'laodangyizhuang', idiom: '老當益壯', zhuyin: 'ㄌㄠˇ ㄉㄤ ㄧˋ ㄓㄨㄤˋ', choiceZhuyin: 'ㄋㄧㄢˊ ㄐㄧˋ ㄙㄨㄟ ㄉㄚˋ，ㄉㄢˋ ㄕㄣ ㄊㄧˇ ㄏㄜˊ ㄓˋ ㄑㄧˋ ㄑㄩㄝˋ ㄍㄥˋ ㄐㄧㄚ ㄏㄠˊ ㄓㄨㄤˋ ㄧㄡˇ ㄏㄨㄛˊ ㄌㄧˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄑㄧ ㄕˊ ㄙㄨㄟˋ ㄉㄜ˙ ㄨㄤˊ ㄧㄝˊ ㄧㄝˊ ㄇㄟˇ ㄊㄧㄢ ㄗㄠˇ ㄔㄣˊ ㄐㄧㄥ ㄕㄣˊ ㄉㄡˇ ㄙㄡˇ ㄉㄜ˙ ㄗㄞˋ ㄍㄨㄥ ㄩㄢˊ ㄇㄢˋ ㄆㄠˇ ㄆㄚˊ ㄕㄢ，ㄕㄣˋ ㄓˋ ㄅㄧˇ ㄋㄧㄢˊ ㄑㄧㄥ ㄖㄣˊ ㄆㄠˇ ㄉㄜ˙ ㄏㄞˊ ㄎㄨㄞˋ！', meaning: '年紀雖大，但身體和志氣卻更加豪壯有活力。', hint: '雖然年紀變老了，但精神活力比年輕人還要棒！', scene: '七十歲的王爺爺每天早晨精神抖擻地在公園慢跑爬山，甚至比年輕人跑得還快！', example: '爺爺每天都堅持早起打太極拳，真是老當益壯、精神飽滿。' },
         { id: 'zigaofenyong', idiom: '自告奮勇', zhuyin: 'ㄗˋ ㄍㄠˋ ㄈㄣˋ ㄩㄥˇ', choiceZhuyin: 'ㄗˋ ㄐㄧˇ ㄓㄨˇ ㄉㄨㄥˋ ㄓㄥ ㄑㄩˇ ㄉㄢ ㄈㄨˋ ㄇㄠˋ ㄒㄧㄢˇ ㄏㄨㄛˋ ㄒㄧㄣ ㄎㄨˇ ㄉㄜ˙ ㄍㄨㄥ ㄗㄨㄛˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄉㄚˇ ㄙㄠˇ ㄕˊ ㄐㄧㄢ ㄌㄠˇ ㄕ ㄨㄣˋ ㄕㄟˊ ㄩㄢˋ ㄧˋ ㄅㄢ ㄓㄨㄥˋ ㄨˋ ㄑㄩˋ ㄊㄨˊ ㄕㄨ ㄍㄨㄢˇ，ㄅㄢ ㄓㄤˇ ㄉㄧˋ ㄧ ㄍㄜ˙ ㄅㄚˇ ㄕㄡˇ ㄐㄩˇ ㄉㄜ˙ ㄍㄠ ㄍㄠ ㄉㄜ˙ ㄗˋ ㄩㄢˋ ㄅㄤ ㄇㄤˊ。', meaning: '自己主動爭取擔負冒險或辛苦的工作。', hint: '遇到挑戰或困難，主動舉手說：「讓我來做！」', scene: '打掃時間老師問誰願意搬重物去圖書館，班長第一個把手舉得高高的自願幫忙。', example: '看見教室的垃圾桶滿了，小華自告奮勇拿去回收場倒乾淨。' }
+      ],
+      6: [
+        { id: 'zixiangcansha', idiom: '自相殘殺', zhuyin: 'ㄗˋ ㄒㄧㄤ ㄘㄢˊ ㄕㄚ', choiceZhuyin: 'ㄊㄨㄥˊ ㄧ ㄐㄧㄚ ㄖㄣˊ、ㄊㄨㄥˊ ㄧ ㄉㄨㄟˋ ㄉㄜ˙ ㄖㄣˊ，ㄅㄨˋ ㄊㄨㄢˊ ㄐㄧㄝˊ ㄈㄢˇ ㄦˊ ㄏㄨˋ ㄒㄧㄤ ㄕㄤ ㄏㄞˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄊㄨㄥˊ ㄧ ㄉㄨㄟˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄆㄥˊ ㄧㄡˇ ㄨㄢˊ ㄉㄨㄛˇ ㄅㄧˋ ㄑㄧㄡˊ ㄕˊ，ㄅㄨˋ ㄉㄢˋ ㄅㄨˋ ㄏㄜˊ ㄗㄨㄛˋ ㄐㄧㄝ ㄑㄧㄡˊ，ㄏㄞˊ ㄏㄨˋ ㄒㄧㄤ ㄍㄨㄞˋ ㄗㄨㄟˋ ㄔㄠˇ ㄐㄧㄚˋ，ㄏㄣˇ ㄎㄨㄞˋ ㄐㄧㄡˋ ㄕㄨ ㄌㄜ˙ ㄅㄧˇ ㄙㄞˋ。', meaning: '同一家人、同一隊的人，不團結反而互相傷害。', hint: '本來是一國的，卻變成自己人打自己人。', scene: '同一隊的小朋友玩躲避球時，不但不合作接球，還互相怪罪吵架，很快就輸了比賽。', example: '我們同在一個班級裡，應該要團結合作，千萬不能自相殘殺。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄊㄨㄥˊ ㄗㄞˋ ㄧ ㄍㄜ˙ ㄅㄢ ㄐㄧˊ ㄌㄧˇ，ㄧㄥ ㄍㄞ ㄧㄠˋ ㄊㄨㄢˊ ㄐㄧㄝˊ ㄏㄜˊ ㄗㄨㄛˋ，ㄑㄧㄢ ㄨㄢˋ ㄅㄨˋ ㄋㄥˊ ㄗˋ ㄒㄧㄤ ㄘㄢˊ ㄕㄚ。', wrong: '他和隔壁班的同學吵架，真是自相殘殺。', wrongZhuyin: 'ㄊㄚ ㄏㄜˊ ㄍㄜˊ ㄅㄧˋ ㄅㄢ ㄉㄜ˙ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄔㄠˇ ㄐㄧㄚˋ，ㄓㄣ ㄕˋ ㄗˋ ㄒㄧㄤ ㄘㄢˊ ㄕㄚ。', wrongWhy: '自相殘殺是「自己人」打自己人，隔壁班的同學不算自己人。', wrongWhyZhuyin: 'ㄗˋ ㄒㄧㄤ ㄘㄢˊ ㄕㄚ ㄕˋ「ㄗˋ ㄐㄧˇ ㄖㄣˊ」ㄉㄚˇ ㄗˋ ㄐㄧˇ ㄖㄣˊ，ㄍㄜˊ ㄅㄧˋ ㄅㄢ ㄉㄜ˙ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄅㄨˋ ㄙㄨㄢˋ ㄗˋ ㄐㄧˇ ㄖㄣˊ。', trait: 'bad', traitPhrase: '自己人打自己人', traitPhraseZhuyin: 'ㄗˋ ㄐㄧˇ ㄖㄣˊ ㄉㄚˇ ㄗˋ ㄐㄧˇ ㄖㄣˊ' },
+        { id: 'zitaomeiqu', idiom: '自討沒趣', zhuyin: 'ㄗˋ ㄊㄠˇ ㄇㄟˊ ㄑㄩˋ', choiceZhuyin: 'ㄇㄟˊ ㄎㄢˋ ㄑㄧㄥ ㄔㄨˇ ㄅㄧㄝˊ ㄖㄣˊ ㄉㄜ˙ ㄒㄧㄣ ㄑㄧㄥˊ ㄐㄧㄡˋ ㄑㄩˋ ㄉㄚˇ ㄖㄠˇ，ㄐㄧㄝˊ ㄍㄨㄛˇ ㄖㄤˋ ㄗˋ ㄐㄧˇ ㄏㄣˇ ㄍㄢ ㄍㄚˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄍㄜ ㄍㄜ ㄎㄠˇ ㄕˋ ㄇㄟˊ ㄎㄠˇ ㄏㄠˇ，ㄓㄥˋ ㄗㄞˋ ㄅㄟˋ ㄇㄚ ㄇㄚ ㄊㄧˊ ㄒㄧㄥˇ，ㄉㄧˋ ㄉㄧ˙ ㄑㄩㄝˋ ㄗㄞˋ ㄆㄤˊ ㄅㄧㄢ ㄅㄢˋ ㄍㄨㄟˇ ㄌㄧㄢˇ，ㄐㄧㄝˊ ㄍㄨㄛˇ ㄧㄝˇ ㄅㄟˋ ㄇㄚ ㄇㄚ ㄧㄢˊ ㄙㄨˋ ㄉㄜ˙ ㄕㄨㄛ ㄌㄜ˙ ㄧ ㄉㄨㄣˋ。', meaning: '沒看清楚別人的心情就去打擾，結果讓自己很尷尬。', hint: '沒注意氣氛，結果自己碰了一鼻子灰。', scene: '哥哥考試沒考好，正在被媽媽提醒，弟弟卻在旁邊扮鬼臉，結果也被媽媽嚴肅地說了一頓。', example: '姐姐正在難過，我還去吵她，結果自討沒趣。', exampleZhuyin: 'ㄐㄧㄝˇ ㄐㄧㄝˇ ㄓㄥˋ ㄗㄞˋ ㄋㄢˊ ㄍㄨㄛˋ，ㄨㄛˇ ㄏㄞˊ ㄑㄩˋ ㄔㄠˇ ㄊㄚ，ㄐㄧㄝˊ ㄍㄨㄛˇ ㄗˋ ㄊㄠˇ ㄇㄟˊ ㄑㄩˋ。', wrong: '小華主動幫忙掃地，老師誇獎他，他真是自討沒趣。', wrongZhuyin: 'ㄒㄧㄠˇ ㄏㄨㄚˊ ㄓㄨˇ ㄉㄨㄥˋ ㄅㄤ ㄇㄤˊ ㄙㄠˇ ㄉㄧˋ，ㄌㄠˇ ㄕ ㄎㄨㄚ ㄐㄧㄤˇ ㄊㄚ，ㄊㄚ ㄓㄣ ㄕˋ ㄗˋ ㄊㄠˇ ㄇㄟˊ ㄑㄩˋ。', wrongWhy: '自討沒趣是自己惹得很尷尬；幫忙被誇獎是好事。', wrongWhyZhuyin: 'ㄗˋ ㄊㄠˇ ㄇㄟˊ ㄑㄩˋ ㄕˋ ㄗˋ ㄐㄧˇ ㄖㄜˇ ㄉㄜ˙ ㄏㄣˇ ㄍㄢ ㄍㄚˋ；ㄅㄤ ㄇㄤˊ ㄅㄟˋ ㄎㄨㄚ ㄐㄧㄤˇ ㄕˋ ㄏㄠˇ ㄕˋ。' },
+        { id: 'yiguanchuchu', idiom: '衣冠楚楚', zhuyin: 'ㄧ ㄍㄨㄢ ㄔㄨˇ ㄔㄨˇ', choiceZhuyin: 'ㄧ ㄈㄨˊ ㄔㄨㄢ ㄉㄜ˙ ㄓㄥˇ ㄑㄧˊ ㄧㄡˋ ㄆㄧㄠˋ ㄌㄧㄤˋ，ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄏㄣˇ ㄧㄡˇ ㄐㄧㄥ ㄕㄣˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧㄣ ㄌㄜˋ ㄈㄚ ㄅㄧㄠˇ ㄏㄨㄟˋ ㄋㄚˋ ㄊㄧㄢ，ㄒㄧㄠˇ ㄇㄧㄥˊ ㄔㄨㄢ ㄕㄤˋ ㄅㄞˊ ㄔㄣˋ ㄕㄢ、ㄉㄚˇ ㄕㄤˋ ㄓㄥˇ ㄑㄧˊ ㄉㄜ˙ ㄌㄧㄥˇ ㄐㄧㄝˊ，ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄒㄧㄤˋ ㄍㄜ˙ ㄧㄡ ㄧㄚˇ ㄉㄜ˙ ㄒㄧㄠˇ ㄕㄣ ㄕˋ。', meaning: '衣服穿得整齊又漂亮，看起來很有精神。', hint: '從頭到腳都整整齊齊、乾乾淨淨。', scene: '音樂發表會那天，小明穿上白襯衫、打上整齊的領結，看起來像個優雅的小紳士。', example: '爸爸今天換上筆挺的西裝，打扮得衣冠楚楚去參加表姊的婚禮。', exampleZhuyin: 'ㄅㄚˋ ㄅㄚˋ ㄐㄧㄣ ㄊㄧㄢ ㄏㄨㄢˋ ㄕㄤˋ ㄅㄧˇ ㄊㄧㄥˇ ㄉㄜ˙ ㄒㄧ ㄓㄨㄤ，ㄉㄚˇ ㄅㄢˋ ㄉㄜ˙ ㄧ ㄍㄨㄢ ㄔㄨˇ ㄔㄨˇ ㄑㄩˋ ㄘㄢ ㄐㄧㄚ ㄅㄧㄠˇ ㄗˇ ㄉㄜ˙ ㄏㄨㄣ ㄌㄧˇ。', wrong: '他的衣服又髒又破，看起來衣冠楚楚。', wrongZhuyin: 'ㄊㄚ ㄉㄜ˙ ㄧ ㄈㄨˊ ㄧㄡˋ ㄗㄤ ㄧㄡˋ ㄆㄛˋ，ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄧ ㄍㄨㄢ ㄔㄨˇ ㄔㄨˇ。', wrongWhy: '衣冠楚楚是穿得整齊漂亮，又髒又破不是。', wrongWhyZhuyin: 'ㄧ ㄍㄨㄢ ㄔㄨˇ ㄔㄨˇ ㄕˋ ㄔㄨㄢ ㄉㄜ˙ ㄓㄥˇ ㄑㄧˊ ㄆㄧㄠˋ ㄌㄧㄤˋ，ㄧㄡˋ ㄗㄤ ㄧㄡˋ ㄆㄛˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'sidongfeidong', idiom: '似懂非懂', zhuyin: 'ㄙˋ ㄉㄨㄥˇ ㄈㄟ ㄉㄨㄥˇ', choiceZhuyin: 'ㄏㄠˇ ㄒㄧㄤˋ ㄉㄨㄥˇ ㄌㄜ˙，ㄧㄡˋ ㄏㄠˇ ㄒㄧㄤˋ ㄇㄟˊ ㄧㄡˇ ㄨㄢˊ ㄑㄩㄢˊ ㄇㄧㄥˊ ㄅㄞˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄌㄠˇ ㄕ ㄍㄤ ㄐㄧㄠˋ ㄨㄢˊ ㄒㄧㄣ ㄉㄜ˙ ㄔㄥˊ ㄈㄚˇ ㄍㄨㄟ ㄗㄜˊ，ㄒㄧㄠˇ ㄏㄨㄚˊ ㄙㄨㄟ ㄖㄢˊ ㄉㄧㄢˇ ㄉㄧㄢˇ ㄊㄡˊ，ㄧ ㄎㄢˋ ㄉㄠˋ ㄌㄧㄢˋ ㄒㄧˊ ㄊㄧˊ ㄑㄩㄝˋ ㄏㄞˊ ㄕˋ ㄓㄨㄚ ㄓㄨㄚ ㄊㄡˊ，ㄅㄨˋ ㄓ ㄉㄠˋ ㄗㄣˇ ㄇㄜ˙ ㄒㄧㄝˇ。', meaning: '好像懂了，又好像沒有完全明白。', hint: '腦袋裡明白一點點，又不是很確定。', scene: '老師剛教完新的乘法規則，小華雖然點點頭，一看到練習題卻還是抓抓頭，不知道怎麼寫。', example: '如果聽完課覺得似懂非懂，一定要勇敢舉手問老師。', exampleZhuyin: 'ㄖㄨˊ ㄍㄨㄛˇ ㄊㄧㄥ ㄨㄢˊ ㄎㄜˋ ㄐㄩㄝˊ ㄉㄜ˙ ㄙˋ ㄉㄨㄥˇ ㄈㄟ ㄉㄨㄥˇ，ㄧ ㄉㄧㄥˋ ㄧㄠˋ ㄩㄥˇ ㄍㄢˇ ㄐㄩˇ ㄕㄡˇ ㄨㄣˋ ㄌㄠˇ ㄕ。', wrong: '這一題我已經完全弄明白了，所以我似懂非懂。', wrongZhuyin: 'ㄓㄜˋ ㄧ ㄊㄧˊ ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄨㄢˊ ㄑㄩㄢˊ ㄋㄨㄥˋ ㄇㄧㄥˊ ㄅㄞˊ ㄌㄜ˙，ㄙㄨㄛˇ ㄧˇ ㄨㄛˇ ㄙˋ ㄉㄨㄥˇ ㄈㄟ ㄉㄨㄥˇ。', wrongWhy: '似懂非懂是還沒有完全懂；已經完全明白就不是了。', wrongWhyZhuyin: 'ㄙˋ ㄉㄨㄥˇ ㄈㄟ ㄉㄨㄥˇ ㄕˋ ㄏㄞˊ ㄇㄟˊ ㄧㄡˇ ㄨㄢˊ ㄑㄩㄢˊ ㄉㄨㄥˇ；ㄧˇ ㄐㄧㄥ ㄨㄢˊ ㄑㄩㄢˊ ㄇㄧㄥˊ ㄅㄞˊ ㄐㄧㄡˋ ㄅㄨˋ ㄕˋ ㄌㄜ˙。' },
+        { id: 'chuimaoqiuci', idiom: '吹毛求疵', zhuyin: 'ㄔㄨㄟ ㄇㄠˊ ㄑㄧㄡˊ ㄘ', choiceZhuyin: 'ㄍㄨˋ ㄧˋ ㄊㄧㄠ ㄊㄧ ㄅㄧㄝˊ ㄖㄣˊ ㄏㄣˇ ㄒㄧㄠˇ ㄉㄜ˙ ㄑㄩㄝ ㄉㄧㄢˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄊㄨㄥˊ ㄒㄩㄝˊ ㄏㄨㄚˋ ㄌㄜ˙ ㄧ ㄈㄨˊ ㄏㄣˇ ㄇㄟˇ ㄉㄜ˙ ㄘㄞˇ ㄏㄨㄥˊ，ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄔㄥ ㄗㄢˋ，ㄓˇ ㄧㄡˇ ㄒㄧㄠˇ ㄢ ㄧㄥˋ ㄕㄨㄛ ㄆㄤˊ ㄅㄧㄢ ㄧㄡˇ ㄧ ㄉㄨㄛˇ ㄒㄧㄠˇ ㄩㄣˊ ㄏㄨㄚˋ ㄉㄜ˙ ㄧㄡˇ ㄉㄧㄢˇ ㄨㄞ。', meaning: '故意挑剔別人很小的缺點。', hint: '像拿著放大鏡，專找別人的小毛病。', scene: '同學畫了一幅很美的彩虹，大家都稱讚，只有小安硬說旁邊有一朵小雲畫得有點歪。', example: '大家一起合作做海報時要多看別人的優點，不要總是吹毛求疵。', exampleZhuyin: 'ㄉㄚˋ ㄐㄧㄚ ㄧ ㄑㄧˇ ㄏㄜˊ ㄗㄨㄛˋ ㄗㄨㄛˋ ㄏㄞˇ ㄅㄠˋ ㄕˊ ㄧㄠˋ ㄉㄨㄛ ㄎㄢˋ ㄅㄧㄝˊ ㄖㄣˊ ㄉㄜ˙ ㄧㄡ ㄉㄧㄢˇ，ㄅㄨˋ ㄧㄠˋ ㄗㄨㄥˇ ㄕˋ ㄔㄨㄟ ㄇㄠˊ ㄑㄧㄡˊ ㄘ。', wrong: '媽媽稱讚我把房間整理得很乾淨，她真是吹毛求疵。', wrongZhuyin: 'ㄇㄚ ㄇㄚ ㄔㄥ ㄗㄢˋ ㄨㄛˇ ㄅㄚˇ ㄈㄤˊ ㄐㄧㄢ ㄓㄥˇ ㄌㄧˇ ㄉㄜ˙ ㄏㄣˇ ㄍㄢ ㄐㄧㄥˋ，ㄊㄚ ㄓㄣ ㄕˋ ㄔㄨㄟ ㄇㄠˊ ㄑㄧㄡˊ ㄘ。', wrongWhy: '吹毛求疵是故意挑小缺點；稱讚是看見優點。', wrongWhyZhuyin: 'ㄔㄨㄟ ㄇㄠˊ ㄑㄧㄡˊ ㄘ ㄕˋ ㄍㄨˋ ㄧˋ ㄊㄧㄠ ㄒㄧㄠˇ ㄑㄩㄝ ㄉㄧㄢˇ；ㄔㄥ ㄗㄢˋ ㄕˋ ㄎㄢˋ ㄐㄧㄢˋ ㄧㄡ ㄉㄧㄢˇ。', trait: 'bad', traitPhrase: '故意挑別人小缺點', traitPhraseZhuyin: 'ㄍㄨˋ ㄧˋ ㄊㄧㄠ ㄅㄧㄝˊ ㄖㄣˊ ㄒㄧㄠˇ ㄑㄩㄝ ㄉㄧㄢˇ' },
+        { id: 'kuaimajiabian', idiom: '快馬加鞭', zhuyin: 'ㄎㄨㄞˋ ㄇㄚˇ ㄐㄧㄚ ㄅㄧㄢ', choiceZhuyin: 'ㄐㄧㄚ ㄎㄨㄞˋ ㄙㄨˋ ㄉㄨˋ，ㄍㄢˇ ㄐㄧㄣˇ ㄅㄚˇ ㄕˋ ㄑㄧㄥˊ ㄗㄨㄛˋ ㄨㄢˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄎㄨㄞˋ ㄧㄠˋ ㄉㄠˋ ㄒㄧㄠˋ ㄔㄜ ㄈㄚ ㄔㄜ ㄉㄜ˙ ㄕˊ ㄐㄧㄢ ㄌㄜ˙，ㄒㄧㄠˇ ㄍㄤ ㄍㄢˇ ㄐㄧㄣˇ ㄌㄚ ㄏㄠˇ ㄕㄨ ㄅㄠ ㄌㄚ ㄌㄧㄢˋ、ㄔㄨㄢ ㄕㄤˋ ㄒㄧㄝˊ ㄗ˙，ㄈㄟ ㄎㄨㄞˋ ㄉㄜ˙ ㄔㄨㄥ ㄒㄧㄤˋ ㄇㄣˊ ㄎㄡˇ。', meaning: '加快速度，趕緊把事情做完。', hint: '像騎在馬背上，催牠跑得更快。', scene: '快要到校車發車的時間了，小剛趕緊拉好書包拉鍊、穿上鞋子，飛快地衝向門口。', example: '眼看就要下雨了，農夫伯伯快馬加鞭地把曬在院子裡的花生收進屋裡。', exampleZhuyin: 'ㄧㄢˇ ㄎㄢˋ ㄐㄧㄡˋ ㄧㄠˋ ㄒㄧㄚˋ ㄩˇ ㄌㄜ˙，ㄋㄨㄥˊ ㄈㄨ ㄅㄛˊ ㄅㄛ˙ ㄎㄨㄞˋ ㄇㄚˇ ㄐㄧㄚ ㄅㄧㄢ ㄉㄜ˙ ㄅㄚˇ ㄕㄞˋ ㄗㄞˋ ㄩㄢˋ ㄗ˙ ㄌㄧˇ ㄉㄜ˙ ㄏㄨㄚ ㄕㄥ ㄕㄡ ㄐㄧㄣˋ ㄨ ㄌㄧˇ。', wrong: '爺爺在公園慢慢散步，走得好悠閒，真是快馬加鞭。', wrongZhuyin: 'ㄧㄝˊ ㄧㄝˊ ㄗㄞˋ ㄍㄨㄥ ㄩㄢˊ ㄇㄢˋ ㄇㄢˋ ㄙㄢˋ ㄅㄨˋ，ㄗㄡˇ ㄉㄜ˙ ㄏㄠˇ ㄧㄡ ㄒㄧㄢˊ，ㄓㄣ ㄕˋ ㄎㄨㄞˋ ㄇㄚˇ ㄐㄧㄚ ㄅㄧㄢ。', wrongWhy: '快馬加鞭是加快速度；慢慢散步是慢的。', wrongWhyZhuyin: 'ㄎㄨㄞˋ ㄇㄚˇ ㄐㄧㄚ ㄅㄧㄢ ㄕˋ ㄐㄧㄚ ㄎㄨㄞˋ ㄙㄨˋ ㄉㄨˋ；ㄇㄢˋ ㄇㄢˋ ㄙㄢˋ ㄅㄨˋ ㄕˋ ㄇㄢˋ ㄉㄜ˙。' },
+        { id: 'woxingwosu', idiom: '我行我素', zhuyin: 'ㄨㄛˇ ㄒㄧㄥˊ ㄨㄛˇ ㄙㄨˋ', choiceZhuyin: 'ㄅㄨˋ ㄍㄨㄢˇ ㄅㄧㄝˊ ㄖㄣˊ ㄗㄣˇ ㄇㄜ˙ ㄕㄨㄛ，ㄉㄡ ㄓㄠˋ ㄗˋ ㄐㄧˇ ㄉㄜ˙ ㄒㄧㄤˇ ㄈㄚˇ ㄗㄨㄛˋ ㄕˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄊㄨˊ ㄕㄨ ㄍㄨㄢˇ ㄊㄧㄝ ㄓㄜ˙「ㄑㄧㄥˇ ㄅㄠˇ ㄔˊ ㄢ ㄐㄧㄥˋ」，ㄧㄡˇ ㄨㄟˋ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄅㄟˋ ㄍㄨㄢˇ ㄓㄤˇ ㄚ ㄧˊ ㄊㄧˊ ㄒㄧㄥˇ ㄌㄜ˙，ㄏㄞˊ ㄕˋ ㄐㄧˋ ㄒㄩˋ ㄉㄚˋ ㄕㄥ ㄍㄣ ㄆㄥˊ ㄧㄡˇ ㄌㄧㄠˊ ㄊㄧㄢ。', meaning: '不管別人怎麼說，都照自己的想法做事。', hint: '別人提醒也不理，想怎麼做就怎麼做。', scene: '圖書館貼著「請保持安靜」，有位同學被館長阿姨提醒了，還是繼續大聲跟朋友聊天。', example: '上課鐘聲響了就應該回到座位坐好，不能我行我素在走廊上奔跑。', exampleZhuyin: 'ㄕㄤˋ ㄎㄜˋ ㄓㄨㄥ ㄕㄥ ㄒㄧㄤˇ ㄌㄜ˙ ㄐㄧㄡˋ ㄧㄥ ㄍㄞ ㄏㄨㄟˊ ㄉㄠˋ ㄗㄨㄛˋ ㄨㄟˋ ㄗㄨㄛˋ ㄏㄠˇ，ㄅㄨˋ ㄋㄥˊ ㄨㄛˇ ㄒㄧㄥˊ ㄨㄛˇ ㄙㄨˋ ㄗㄞˋ ㄗㄡˇ ㄌㄤˊ ㄕㄤˋ ㄅㄣ ㄆㄠˇ。', wrong: '老師一提醒，他馬上改正，真是我行我素。', wrongZhuyin: 'ㄌㄠˇ ㄕ ㄧ ㄊㄧˊ ㄒㄧㄥˇ，ㄊㄚ ㄇㄚˇ ㄕㄤˋ ㄍㄞˇ ㄓㄥˋ，ㄓㄣ ㄕˋ ㄨㄛˇ ㄒㄧㄥˊ ㄨㄛˇ ㄙㄨˋ。', wrongWhy: '我行我素是不聽別人的話、照自己想法做；馬上改正不是。', wrongWhyZhuyin: 'ㄨㄛˇ ㄒㄧㄥˊ ㄨㄛˇ ㄙㄨˋ ㄕˋ ㄅㄨˋ ㄊㄧㄥ ㄅㄧㄝˊ ㄖㄣˊ ㄉㄜ˙ ㄏㄨㄚˋ、ㄓㄠˋ ㄗˋ ㄐㄧˇ ㄒㄧㄤˇ ㄈㄚˇ ㄗㄨㄛˋ；ㄇㄚˇ ㄕㄤˋ ㄍㄞˇ ㄓㄥˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '不聽勸只照自己想法', traitPhraseZhuyin: 'ㄅㄨˋ ㄊㄧㄥ ㄑㄩㄢˋ ㄓˇ ㄓㄠˋ ㄗˋ ㄐㄧˇ ㄒㄧㄤˇ ㄈㄚˇ' },
+        { id: 'gaixieguizheng', idiom: '改邪歸正', zhuyin: 'ㄍㄞˇ ㄒㄧㄝˊ ㄍㄨㄟ ㄓㄥˋ', choiceZhuyin: 'ㄍㄞˇ ㄉㄧㄠˋ ㄅㄨˋ ㄏㄠˇ ㄉㄜ˙ ㄒㄧㄥˊ ㄨㄟˊ，ㄔㄨㄥˊ ㄒㄧㄣ ㄗㄡˇ ㄏㄨㄟˊ ㄓㄥˋ ㄑㄩㄝˋ ㄉㄜ˙ ㄌㄨˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄉㄚˋ ㄧㄝˇ ㄌㄤˊ ㄅㄣˇ ㄌㄞˊ ㄔㄤˊ ㄑㄧ ㄈㄨˋ ㄙㄣ ㄌㄧㄣˊ ㄌㄧˇ ㄉㄜ˙ ㄒㄧㄠˇ ㄉㄨㄥˋ ㄨˋ，ㄏㄡˋ ㄌㄞˊ ㄅㄟˋ ㄉㄚˋ ㄐㄧㄚ ㄉㄜ˙ ㄨㄣ ㄋㄨㄢˇ ㄍㄢˇ ㄉㄨㄥˋ，ㄅㄨˋ ㄗㄞˋ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ，ㄏㄞˊ ㄊㄧㄢ ㄊㄧㄢ ㄅㄤ ㄇㄤˊ ㄓㄨㄥˋ ㄕㄨ ㄘㄞˋ。', meaning: '改掉不好的行為，重新走回正確的路。', hint: '知道做錯了，決心變回好孩子。', scene: '大野狼本來常欺負森林裡的小動物，後來被大家的溫暖感動，不再做壞事，還天天幫忙種蔬菜。', example: '只要願意認真反省並改邪歸正，大家隨時都歡迎你重新加入我們的隊伍。', exampleZhuyin: 'ㄓˇ ㄧㄠˋ ㄩㄢˋ ㄧˋ ㄖㄣˋ ㄓㄣ ㄈㄢˇ ㄒㄧㄥˇ ㄅㄧㄥˋ ㄍㄞˇ ㄒㄧㄝˊ ㄍㄨㄟ ㄓㄥˋ，ㄉㄚˋ ㄐㄧㄚ ㄙㄨㄟˊ ㄕˊ ㄉㄡ ㄏㄨㄢ ㄧㄥˊ ㄋㄧˇ ㄔㄨㄥˊ ㄒㄧㄣ ㄐㄧㄚ ㄖㄨˋ ㄨㄛˇ ㄇㄣ˙ ㄉㄜ˙ ㄉㄨㄟˋ ㄨˇ。', wrong: '小美每天都很乖，從來不做壞事，真是改邪歸正。', wrongZhuyin: 'ㄒㄧㄠˇ ㄇㄟˇ ㄇㄟˇ ㄊㄧㄢ ㄉㄡ ㄏㄣˇ ㄍㄨㄞ，ㄘㄨㄥˊ ㄌㄞˊ ㄅㄨˋ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ，ㄓㄣ ㄕˋ ㄍㄞˇ ㄒㄧㄝˊ ㄍㄨㄟ ㄓㄥˋ。', wrongWhy: '改邪歸正是以前做錯事、後來改好；小美一直都很乖。', wrongWhyZhuyin: 'ㄍㄞˇ ㄒㄧㄝˊ ㄍㄨㄟ ㄓㄥˋ ㄕˋ ㄧˇ ㄑㄧㄢˊ ㄗㄨㄛˋ ㄘㄨㄛˋ ㄕˋ、ㄏㄡˋ ㄌㄞˊ ㄍㄞˇ ㄏㄠˇ；ㄒㄧㄠˇ ㄇㄟˇ ㄧ ㄓˊ ㄉㄡ ㄏㄣˇ ㄍㄨㄞ。', trait: 'good', traitPhrase: '改掉壞習慣走回正路', traitPhraseZhuyin: 'ㄍㄞˇ ㄉㄧㄠˋ ㄏㄨㄞˋ ㄒㄧˊ ㄍㄨㄢˋ ㄗㄡˇ ㄏㄨㄟˊ ㄓㄥˋ ㄌㄨˋ' },
+        { id: 'shushouwuce', idiom: '束手無策', zhuyin: 'ㄕㄨˋ ㄕㄡˇ ㄨˊ ㄘㄜˋ', choiceZhuyin: 'ㄩˋ ㄉㄠˋ ㄎㄨㄣˋ ㄋㄢˊ，ㄑㄩㄝˋ ㄒㄧㄤˇ ㄅㄨˋ ㄔㄨ ㄖㄣˋ ㄏㄜˊ ㄅㄢˋ ㄈㄚˇ ㄐㄧㄝˇ ㄐㄩㄝˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄇㄠ ㄆㄚˊ ㄉㄠˋ ㄉㄚˋ ㄕㄨˋ ㄉㄧㄥˇ ㄉㄨㄢ ㄅㄨˋ ㄍㄢˇ ㄒㄧㄚˋ ㄌㄞˊ，ㄕㄨˋ ㄒㄧㄚˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄆㄥˊ ㄧㄡˇ ㄍㄜˋ ㄗ˙ ㄊㄞˋ ㄞˇ ㄧㄡˋ ㄍㄡˋ ㄅㄨˋ ㄉㄠˋ，ㄐㄧˊ ㄉㄜ˙ ㄧ ㄉㄧㄢˇ ㄅㄢˋ ㄈㄚˇ ㄧㄝˇ ㄇㄟˊ ㄧㄡˇ。', meaning: '遇到困難，卻想不出任何辦法解決。', hint: '雙手垂在旁邊，不知道該怎麼辦。', scene: '小貓爬到大樹頂端不敢下來，樹下的小朋友個子太矮又搆不到，急得一點辦法也沒有。', example: '電腦突然當機了，我束手無策，只好等爸爸回家。', exampleZhuyin: 'ㄉㄧㄢˋ ㄋㄠˇ ㄊㄨ ㄖㄢˊ ㄉㄤ ㄐㄧ ㄌㄜ˙，ㄨㄛˇ ㄕㄨˋ ㄕㄡˇ ㄨˊ ㄘㄜˋ，ㄓˇ ㄏㄠˇ ㄉㄥˇ ㄅㄚˋ ㄅㄚˋ ㄏㄨㄟˊ ㄐㄧㄚ。', wrong: '遇到困難時，我想出好幾個辦法，真是束手無策。', wrongZhuyin: 'ㄩˋ ㄉㄠˋ ㄎㄨㄣˋ ㄋㄢˊ ㄕˊ，ㄨㄛˇ ㄒㄧㄤˇ ㄔㄨ ㄏㄠˇ ㄐㄧˇ ㄍㄜ˙ ㄅㄢˋ ㄈㄚˇ，ㄓㄣ ㄕˋ ㄕㄨˋ ㄕㄡˇ ㄨˊ ㄘㄜˋ。', wrongWhy: '束手無策是想不出辦法；想出好幾個辦法不是。', wrongWhyZhuyin: 'ㄕㄨˋ ㄕㄡˇ ㄨˊ ㄘㄜˋ ㄕˋ ㄒㄧㄤˇ ㄅㄨˋ ㄔㄨ ㄅㄢˋ ㄈㄚˇ；ㄒㄧㄤˇ ㄔㄨ ㄏㄠˇ ㄐㄧˇ ㄍㄜ˙ ㄅㄢˋ ㄈㄚˇ ㄅㄨˋ ㄕˋ。' },
+        { id: 'liangshiyiyou', idiom: '良師益友', zhuyin: 'ㄌㄧㄤˊ ㄕ ㄧˋ ㄧㄡˇ', choiceZhuyin: 'ㄋㄥˊ ㄐㄧㄠˋ ㄨㄛˇ ㄇㄣ˙ ㄓ ㄕˊ，ㄧㄡˋ ㄋㄥˊ ㄆㄟˊ ㄨㄛˇ ㄇㄣ˙ ㄧ ㄑㄧˇ ㄐㄧㄣˋ ㄅㄨˋ ㄉㄜ˙ ㄏㄠˇ ㄌㄠˇ ㄕ ㄏㄨㄛˋ ㄏㄠˇ ㄆㄥˊ ㄧㄡˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄑㄧㄤˊ ㄏㄨㄟˋ ㄗㄞˋ ㄨㄛˇ ㄕㄨˋ ㄒㄩㄝˊ ㄊㄧˊ ㄎㄚˇ ㄓㄨˋ ㄕˊ ㄋㄞˋ ㄒㄧㄣ ㄐㄧㄠˋ ㄨㄛˇ，ㄧㄝˇ ㄏㄨㄟˋ ㄗㄞˋ ㄨㄛˇ ㄒㄧㄣ ㄑㄧㄥˊ ㄉㄧ ㄌㄨㄛˋ ㄕˊ ㄆㄟˊ ㄨㄛˇ ㄌㄧㄠˊ ㄊㄧㄢ ㄙㄢˋ ㄅㄨˋ，ㄕˋ ㄕㄣ ㄅㄧㄢ ㄗㄨㄟˋ ㄅㄤˋ ㄉㄜ˙ ㄏㄨㄛˇ ㄅㄢˋ。', meaning: '能教我們知識，又能陪我們一起進步的好老師或好朋友。', hint: '又像老師，又像朋友，讓你愈來愈好。', scene: '小強會在我數學題卡住時耐心教我，也會在我心情低落時陪我聊天散步，是身邊最棒的夥伴。', example: '好書就像良師益友，讓我學到很多。', exampleZhuyin: 'ㄏㄠˇ ㄕㄨ ㄐㄧㄡˋ ㄒㄧㄤˋ ㄌㄧㄤˊ ㄕ ㄧˋ ㄧㄡˇ，ㄖㄤˋ ㄨㄛˇ ㄒㄩㄝˊ ㄉㄠˋ ㄏㄣˇ ㄉㄨㄛ。', wrong: '那個同學常常帶我去做壞事，是我的良師益友。', wrongZhuyin: 'ㄋㄚˋ ㄍㄜ˙ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄔㄤˊ ㄔㄤˊ ㄉㄞˋ ㄨㄛˇ ㄑㄩˋ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ，ㄕˋ ㄨㄛˇ ㄉㄜ˙ ㄌㄧㄤˊ ㄕ ㄧˋ ㄧㄡˇ。', wrongWhy: '良師益友會帶我們變得更好；帶人做壞事不是。', wrongWhyZhuyin: 'ㄌㄧㄤˊ ㄕ ㄧˋ ㄧㄡˇ ㄏㄨㄟˋ ㄉㄞˋ ㄨㄛˇ ㄇㄣ˙ ㄅㄧㄢˋ ㄉㄜ˙ ㄍㄥˋ ㄏㄠˇ；ㄉㄞˋ ㄖㄣˊ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '帶我們進步的好朋友', traitPhraseZhuyin: 'ㄉㄞˋ ㄨㄛˇ ㄇㄣ˙ ㄐㄧㄣˋ ㄅㄨˋ ㄉㄜ˙ ㄏㄠˇ ㄆㄥˊ ㄧㄡˇ' }
+      ],
+      7: [
+        { id: 'heaikeqin', idiom: '和藹可親', zhuyin: 'ㄏㄜˊ ㄞˇ ㄎㄜˇ ㄑㄧㄣ', choiceZhuyin: 'ㄊㄞˋ ㄉㄨˋ ㄨㄣ ㄏㄜˊ，ㄖㄤˋ ㄖㄣˊ ㄏㄣˇ ㄒㄧㄤˇ ㄎㄠˋ ㄐㄧㄣˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄩㄝˊ ㄒㄧㄠˋ ㄇㄣˊ ㄎㄡˇ ㄉㄜ˙ ㄐㄧㄥˇ ㄨㄟˋ ㄅㄛˊ ㄅㄛ˙ ㄇㄟˇ ㄊㄧㄢ ㄗㄠˇ ㄔㄣˊ ㄉㄡ ㄒㄧㄠˋ ㄇㄧ ㄇㄧ ㄉㄜ˙ ㄏㄨㄟ ㄕㄡˇ ㄍㄣ ㄨㄛˇ ㄇㄣ˙ ㄉㄠˋ ㄗㄠˇ ㄢ，ㄕㄨㄛ ㄏㄨㄚˋ ㄑㄧㄥ ㄑㄧㄥ ㄖㄡˊ ㄖㄡˊ ㄉㄜ˙，ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄏㄠˇ ㄒㄧˇ ㄏㄨㄢ ㄍㄣ ㄊㄚ ㄉㄚˇ ㄓㄠ ㄏㄨ。', meaning: '態度溫和，讓人很想靠近。', hint: '總是笑瞇瞇，說話輕輕柔柔。', scene: '學校門口的警衛伯伯每天早晨都笑瞇瞇地揮手跟我們道早安，說話輕輕柔柔的，大家都好喜歡跟他打招呼。', example: '我們的班導師說話溫柔又和藹可親，就像大姐姐一樣照顧著大家。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄉㄜ˙ ㄅㄢ ㄉㄠˇ ㄕ ㄕㄨㄛ ㄏㄨㄚˋ ㄨㄣ ㄖㄡˊ ㄧㄡˋ ㄏㄜˊ ㄞˇ ㄎㄜˇ ㄑㄧㄣ，ㄐㄧㄡˋ ㄒㄧㄤˋ ㄉㄚˋ ㄐㄧㄝˇ ㄐㄧㄝˇ ㄧ ㄧㄤˋ ㄓㄠˋ ㄍㄨˋ ㄓㄜ˙ ㄉㄚˋ ㄐㄧㄚ。', wrong: '那位叔叔兇巴巴地大聲罵人，真是和藹可親。', wrongZhuyin: 'ㄋㄚˋ ㄨㄟˋ ㄕㄨ ㄕㄨ ㄒㄩㄥ ㄅㄚ ㄅㄚ ㄉㄜ˙ ㄉㄚˋ ㄕㄥ ㄇㄚˋ ㄖㄣˊ，ㄓㄣ ㄕˋ ㄏㄜˊ ㄞˇ ㄎㄜˇ ㄑㄧㄣ。', wrongWhy: '和藹可親是態度溫和、讓人想親近；兇巴巴不是。', wrongWhyZhuyin: 'ㄏㄜˊ ㄞˇ ㄎㄜˇ ㄑㄧㄣ ㄕˋ ㄊㄞˋ ㄉㄨˋ ㄨㄣ ㄏㄜˊ、ㄖㄤˋ ㄖㄣˊ ㄒㄧㄤˇ ㄑㄧㄣ ㄐㄧㄣˋ；ㄒㄩㄥ ㄅㄚ ㄅㄚ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '態度溫和讓人想親近', traitPhraseZhuyin: 'ㄊㄞˋ ㄉㄨˋ ㄨㄣ ㄏㄜˊ ㄖㄤˋ ㄖㄣˊ ㄒㄧㄤˇ ㄑㄧㄣ ㄐㄧㄣˋ' },
+        { id: 'suoxiangwudi', idiom: '所向無敵', zhuyin: 'ㄙㄨㄛˇ ㄒㄧㄤˋ ㄨˊ ㄉㄧˊ', choiceZhuyin: 'ㄕˊ ㄌㄧˋ ㄈㄟ ㄔㄤˊ ㄑㄧㄤˊ，ㄅㄨˋ ㄍㄨㄢˇ ㄗㄡˇ ㄉㄠˋ ㄋㄚˇ ㄌㄧˇ ㄉㄡ ㄇㄟˊ ㄧㄡˇ ㄖㄣˊ ㄋㄥˊ ㄉㄚˇ ㄅㄞˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄍㄜ ㄍㄜ ㄗㄞˋ ㄔㄜˇ ㄌㄧㄥˊ ㄉㄨㄟˋ ㄊㄧㄢ ㄊㄧㄢ ㄎㄨˇ ㄌㄧㄢˋ，ㄆㄠ ㄌㄧㄥˊ、ㄓㄨㄢˇ ㄕㄣ ㄉㄡ ㄨㄣˇ ㄨㄣˇ ㄐㄧㄝ ㄓㄨˋ，ㄗㄞˋ ㄑㄩㄢˊ ㄒㄧㄢˋ ㄅㄧˇ ㄙㄞˋ ㄓㄨㄥ ㄋㄚˊ ㄉㄠˋ ㄍㄨㄢˋ ㄐㄩㄣ，ㄇㄟˊ ㄧㄡˇ ㄖㄣˊ ㄅㄧˇ ㄉㄜ˙ ㄕㄤˋ。', meaning: '實力非常強，不管走到哪裡都沒有人能打敗。', hint: '走到哪裡都沒有對手。', scene: '哥哥在扯鈴隊天天苦練，拋鈴、轉身都穩穩接住，在全縣比賽中拿到冠軍，沒有人比得上。', example: '只要我們全班同心協力拔河，一定能夠所向無敵奪得第一名。', exampleZhuyin: 'ㄓˇ ㄧㄠˋ ㄨㄛˇ ㄇㄣ˙ ㄑㄩㄢˊ ㄅㄢ ㄊㄨㄥˊ ㄒㄧㄣ ㄒㄧㄝˊ ㄌㄧˋ ㄅㄚˊ ㄏㄜˊ，ㄧ ㄉㄧㄥˋ ㄋㄥˊ ㄍㄡˋ ㄙㄨㄛˇ ㄒㄧㄤˋ ㄨˊ ㄉㄧˊ ㄉㄨㄛˊ ㄉㄜ˙ ㄉㄧˋ ㄧ ㄇㄧㄥˊ。', wrong: '我們班比賽一場都沒贏，真是所向無敵。', wrongZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄅㄢ ㄅㄧˇ ㄙㄞˋ ㄧ ㄔㄤˇ ㄉㄡ ㄇㄟˊ ㄧㄥˊ，ㄓㄣ ㄕˋ ㄙㄨㄛˇ ㄒㄧㄤˋ ㄨˊ ㄉㄧˊ。', wrongWhy: '所向無敵是到哪裡都打贏；一場都沒贏不是。', wrongWhyZhuyin: 'ㄙㄨㄛˇ ㄒㄧㄤˋ ㄨˊ ㄉㄧˊ ㄕˋ ㄉㄠˋ ㄋㄚˇ ㄌㄧˇ ㄉㄡ ㄉㄚˇ ㄧㄥˊ；ㄧ ㄔㄤˇ ㄉㄡ ㄇㄟˊ ㄧㄥˊ ㄅㄨˋ ㄕˋ。' },
+        { id: 'yirufanzhang', idiom: '易如反掌', zhuyin: 'ㄧˋ ㄖㄨˊ ㄈㄢˇ ㄓㄤˇ', choiceZhuyin: 'ㄕˋ ㄑㄧㄥˊ ㄈㄟ ㄔㄤˊ ㄖㄨㄥˊ ㄧˋ，ㄧ ㄉㄧㄢˇ ㄉㄡ ㄅㄨˋ ㄈㄟˋ ㄌㄧˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄦˋ ㄋㄧㄢˊ ㄐㄧˊ ㄉㄜ˙ ㄒㄧㄠˇ ㄇㄧㄥˊ ㄧˇ ㄐㄧㄥ ㄒㄩㄝˊ ㄏㄨㄟˋ ㄐㄧㄡˇ ㄐㄧㄡˇ ㄔㄥˊ ㄈㄚˇ，ㄗㄞˋ ㄖㄤˋ ㄊㄚ ㄙㄨㄢˋ ㄕˊ ㄧˇ ㄋㄟˋ ㄉㄜ˙ ㄐㄧㄚ ㄐㄧㄢˇ ㄈㄚˇ，ㄑㄧㄥ ㄑㄧㄥ ㄙㄨㄥ ㄙㄨㄥ ㄧ ㄒㄧㄚˋ ㄗ˙ ㄐㄧㄡˋ ㄙㄨㄢˋ ㄨㄢˊ ㄌㄜ˙。', meaning: '事情非常容易，一點都不費力。', hint: '像把手掌翻過來一樣簡單。', scene: '二年級的小明已經學會九九乘法，再讓他算十以內的加減法，輕輕鬆鬆一下子就算完了。', example: '這道數學題目對平時認真練習的小華來說，解開它簡直是易如反掌。', exampleZhuyin: 'ㄓㄜˋ ㄉㄠˋ ㄕㄨˋ ㄒㄩㄝˊ ㄊㄧˊ ㄇㄨˋ ㄉㄨㄟˋ ㄆㄧㄥˊ ㄕˊ ㄖㄣˋ ㄓㄣ ㄌㄧㄢˋ ㄒㄧˊ ㄉㄜ˙ ㄒㄧㄠˇ ㄏㄨㄚˊ ㄌㄞˊ ㄕㄨㄛ，ㄐㄧㄝˇ ㄎㄞ ㄊㄚ ㄐㄧㄢˇ ㄓˊ ㄕˋ ㄧˋ ㄖㄨˊ ㄈㄢˇ ㄓㄤˇ。', wrong: '這題數學好難，我想了一個小時還不會，真是易如反掌。', wrongZhuyin: 'ㄓㄜˋ ㄊㄧˊ ㄕㄨˋ ㄒㄩㄝˊ ㄏㄠˇ ㄋㄢˊ，ㄨㄛˇ ㄒㄧㄤˇ ㄌㄜ˙ ㄧ ㄍㄜ˙ ㄒㄧㄠˇ ㄕˊ ㄏㄞˊ ㄅㄨˋ ㄏㄨㄟˋ，ㄓㄣ ㄕˋ ㄧˋ ㄖㄨˊ ㄈㄢˇ ㄓㄤˇ。', wrongWhy: '易如反掌是非常容易；想很久還不會是很難。', wrongWhyZhuyin: 'ㄧˋ ㄖㄨˊ ㄈㄢˇ ㄓㄤˇ ㄕˋ ㄈㄟ ㄔㄤˊ ㄖㄨㄥˊ ㄧˋ；ㄒㄧㄤˇ ㄏㄣˇ ㄐㄧㄡˇ ㄏㄞˊ ㄅㄨˋ ㄏㄨㄟˋ ㄕˋ ㄏㄣˇ ㄋㄢˊ。' },
+        { id: 'xinxinxiangrong', idiom: '欣欣向榮', zhuyin: 'ㄒㄧㄣ ㄒㄧㄣ ㄒㄧㄤˋ ㄖㄨㄥˊ', choiceZhuyin: 'ㄏㄨㄚ ㄘㄠˇ ㄕㄨˋ ㄇㄨˋ ㄓㄤˇ ㄉㄜ˙ ㄇㄠˋ ㄕㄥˋ，ㄔㄨㄥ ㄇㄢˇ ㄏㄨㄛˊ ㄌㄧˋ ㄏㄜˊ ㄓㄠ ㄑㄧˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄔㄨㄣ ㄊㄧㄢ ㄗㄡˇ ㄐㄧㄣˋ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄉㄜ˙ ㄏㄨㄚ ㄆㄨˇ，ㄏㄨㄚ ㄦ˙ ㄎㄞ ㄉㄜ˙ ㄨˇ ㄧㄢˊ ㄌㄧㄡˋ ㄙㄜˋ，ㄌㄩˋ ㄧㄡˊ ㄧㄡˊ ㄉㄜ˙ ㄋㄣˋ ㄧㄚˊ ㄧ ㄍㄜ˙ ㄍㄜ˙ ㄇㄠˋ ㄔㄨ ㄊㄡˊ ㄌㄞˊ，ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄕㄥ ㄑㄧˋ ㄆㄥˊ ㄅㄛˊ。', meaning: '花草樹木長得茂盛，充滿活力和朝氣。', hint: '像春天的花草喝飽了雨水。', scene: '春天走進學校的花圃，花兒開得五顏六色，綠油油的嫩芽一個個冒出頭來，看起來生氣蓬勃。', example: '經過春雨的滋潤，校園花園裡的花草展現出一片欣欣向榮的景象。', exampleZhuyin: 'ㄐㄧㄥ ㄍㄨㄛˋ ㄔㄨㄣ ㄩˇ ㄉㄜ˙ ㄗ ㄖㄨㄣˋ，ㄒㄧㄠˋ ㄩㄢˊ ㄏㄨㄚ ㄩㄢˊ ㄌㄧˇ ㄉㄜ˙ ㄏㄨㄚ ㄘㄠˇ ㄓㄢˇ ㄒㄧㄢˋ ㄔㄨ ㄧ ㄆㄧㄢˋ ㄒㄧㄣ ㄒㄧㄣ ㄒㄧㄤˋ ㄖㄨㄥˊ ㄉㄜ˙ ㄐㄧㄥˇ ㄒㄧㄤˋ。', wrong: '冬天到了，花園裡的花都枯萎了，一片欣欣向榮。', wrongZhuyin: 'ㄉㄨㄥ ㄊㄧㄢ ㄉㄠˋ ㄌㄜ˙，ㄏㄨㄚ ㄩㄢˊ ㄌㄧˇ ㄉㄜ˙ ㄏㄨㄚ ㄉㄡ ㄎㄨ ㄨㄟˇ ㄌㄜ˙，ㄧ ㄆㄧㄢˋ ㄒㄧㄣ ㄒㄧㄣ ㄒㄧㄤˋ ㄖㄨㄥˊ。', wrongWhy: '欣欣向榮是茂盛有生氣；花枯萎了不是。', wrongWhyZhuyin: 'ㄒㄧㄣ ㄒㄧㄣ ㄒㄧㄤˋ ㄖㄨㄥˊ ㄕˋ ㄇㄠˋ ㄕㄥˋ ㄧㄡˇ ㄕㄥ ㄑㄧˋ；ㄏㄨㄚ ㄎㄨ ㄨㄟˇ ㄌㄜ˙ ㄅㄨˋ ㄕˋ。' },
+        { id: 'mangrenmoxiang', idiom: '盲人摸象', zhuyin: 'ㄇㄤˊ ㄖㄣˊ ㄇㄛ ㄒㄧㄤˋ', choiceZhuyin: 'ㄓˇ ㄎㄢˋ ㄉㄠˋ ㄕˋ ㄑㄧㄥˊ ㄉㄜ˙ ㄧ ㄒㄧㄠˇ ㄅㄨˋ ㄈㄣˋ，ㄐㄧㄡˋ ㄧˇ ㄨㄟˊ ㄎㄢˋ ㄉㄨㄥˇ ㄌㄜ˙ ㄑㄩㄢˊ ㄅㄨˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄧㄥ ㄎㄢˋ ㄉㄠˋ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄇㄟˊ ㄉㄞˋ ㄘㄞˇ ㄙㄜˋ ㄅㄧˇ，ㄐㄧㄡˋ ㄒㄧㄠˋ ㄊㄚ ㄒㄧㄠˇ ㄑㄧˋ ㄅㄨˋ ㄒㄧㄤˇ ㄐㄧㄝˋ ㄖㄣˊ，ㄑㄩㄝˋ ㄅㄨˋ ㄓ ㄉㄠˋ ㄊㄚ ㄕˋ ㄔㄨ ㄇㄣˊ ㄊㄞˋ ㄐㄧˊ ㄘㄞˊ ㄨㄤˋ ㄌㄜ˙ ㄉㄞˋ，ㄊㄚ ㄓˇ ㄎㄢˋ ㄉㄠˋ ㄕˋ ㄑㄧㄥˊ ㄉㄜ˙ ㄧ ㄒㄧㄠˇ ㄅㄨˋ ㄈㄣˋ。', meaning: '只看到事情的一小部分，就以為看懂了全部。', hint: '只摸到一個地方，就以為知道全部的樣子。', scene: '小英看到同學沒帶彩色筆，就笑他小氣不想借人，卻不知道他是出門太急才忘了帶，她只看到事情的一小部分。', example: '了解事情不能只看表面就隨便下結論，免得像盲人摸象一樣鬧出笑話。', exampleZhuyin: 'ㄌㄧㄠˇ ㄐㄧㄝˇ ㄕˋ ㄑㄧㄥˊ ㄅㄨˋ ㄋㄥˊ ㄓˇ ㄎㄢˋ ㄅㄧㄠˇ ㄇㄧㄢˋ ㄐㄧㄡˋ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄒㄧㄚˋ ㄐㄧㄝˊ ㄌㄨㄣˋ，ㄇㄧㄢˇ ㄉㄜ˙ ㄒㄧㄤˋ ㄇㄤˊ ㄖㄣˊ ㄇㄛ ㄒㄧㄤˋ ㄧ ㄧㄤˋ ㄋㄠˋ ㄔㄨ ㄒㄧㄠˋ ㄏㄨㄚˋ。', wrong: '我把整本書仔細讀完，再說出內容，真是盲人摸象。', wrongZhuyin: 'ㄨㄛˇ ㄅㄚˇ ㄓㄥˇ ㄅㄣˇ ㄕㄨ ㄗㄞˇ ㄒㄧˋ ㄉㄨˊ ㄨㄢˊ，ㄗㄞˋ ㄕㄨㄛ ㄔㄨ ㄋㄟˋ ㄖㄨㄥˊ，ㄓㄣ ㄕˋ ㄇㄤˊ ㄖㄣˊ ㄇㄛ ㄒㄧㄤˋ。', wrongWhy: '盲人摸象是只看到一小部分就以為懂了全部；仔細讀完就不是。', wrongWhyZhuyin: 'ㄇㄤˊ ㄖㄣˊ ㄇㄛ ㄒㄧㄤˋ ㄕˋ ㄓˇ ㄎㄢˋ ㄉㄠˋ ㄧ ㄒㄧㄠˇ ㄅㄨˋ ㄈㄣˋ ㄐㄧㄡˋ ㄧˇ ㄨㄟˊ ㄉㄨㄥˇ ㄌㄜ˙ ㄑㄩㄢˊ ㄅㄨˋ；ㄗㄞˇ ㄒㄧˋ ㄉㄨˊ ㄨㄢˊ ㄐㄧㄡˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '只看一部分就下結論', traitPhraseZhuyin: 'ㄓˇ ㄎㄢˋ ㄧ ㄅㄨˋ ㄈㄣˋ ㄐㄧㄡˋ ㄒㄧㄚˋ ㄐㄧㄝˊ ㄌㄨㄣˋ' },
+        { id: 'zhijieliaodang', idiom: '直接了當', zhuyin: 'ㄓˊ ㄐㄧㄝ ㄌㄧㄠˇ ㄉㄤ', choiceZhuyin: 'ㄕㄨㄛ ㄏㄨㄚˋ ㄏㄨㄛˋ ㄗㄨㄛˋ ㄕˋ ㄍㄢ ㄘㄨㄟˋ ㄇㄧㄥˊ ㄅㄞˊ，ㄅㄨˋ ㄍㄨㄞˇ ㄨㄢ ㄇㄛˋ ㄐㄧㄠˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄤˇ ㄐㄧㄝˋ ㄘㄞˇ ㄙㄜˋ ㄅㄧˇ ㄕˊ，ㄉㄚˋ ㄈㄤ ㄧㄡˇ ㄌㄧˇ ㄇㄠˋ ㄉㄜ˙ ㄕㄨㄛ：「ㄑㄧㄥˇ ㄨㄣˋ ㄨㄛˇ ㄎㄜˇ ㄧˇ ㄐㄧㄝˋ ㄏㄨㄥˊ ㄙㄜˋ ㄉㄜ˙ ㄇㄚ˙？」ㄦˊ ㄅㄨˋ ㄕˋ ㄓ ㄓ ㄨˊ ㄨˊ ㄐㄧㄤˇ ㄌㄜ˙ ㄅㄢˋ ㄊㄧㄢ。', meaning: '說話或做事乾脆明白，不拐彎抹角。', hint: '不繞圈子，有話就直說。', scene: '想借彩色筆時，大方有禮貌地說：「請問我可以借紅色的嗎？」而不是支支吾吾講了半天。', example: '小明直接了當地向老師報告了剛才在走廊上發生的小意外。', exampleZhuyin: 'ㄒㄧㄠˇ ㄇㄧㄥˊ ㄓˊ ㄐㄧㄝ ㄌㄧㄠˇ ㄉㄤ ㄉㄜ˙ ㄒㄧㄤˋ ㄌㄠˇ ㄕ ㄅㄠˋ ㄍㄠˋ ㄌㄜ˙ ㄍㄤ ㄘㄞˊ ㄗㄞˋ ㄗㄡˇ ㄌㄤˊ ㄕㄤˋ ㄈㄚ ㄕㄥ ㄉㄜ˙ ㄒㄧㄠˇ ㄧˋ ㄨㄞˋ。', wrong: '他講了半天都沒說到重點，真是直接了當。', wrongZhuyin: 'ㄊㄚ ㄐㄧㄤˇ ㄌㄜ˙ ㄅㄢˋ ㄊㄧㄢ ㄉㄡ ㄇㄟˊ ㄕㄨㄛ ㄉㄠˋ ㄓㄨㄥˋ ㄉㄧㄢˇ，ㄓㄣ ㄕˋ ㄓˊ ㄐㄧㄝ ㄌㄧㄠˇ ㄉㄤ。', wrongWhy: '直接了當是乾脆明白；講半天沒重點不是。', wrongWhyZhuyin: 'ㄓˊ ㄐㄧㄝ ㄌㄧㄠˇ ㄉㄤ ㄕˋ ㄍㄢ ㄘㄨㄟˋ ㄇㄧㄥˊ ㄅㄞˊ；ㄐㄧㄤˇ ㄅㄢˋ ㄊㄧㄢ ㄇㄟˊ ㄓㄨㄥˋ ㄉㄧㄢˇ ㄅㄨˋ ㄕˋ。' },
+        { id: 'kongqianjuehou', idiom: '空前絕後', zhuyin: 'ㄎㄨㄥ ㄑㄧㄢˊ ㄐㄩㄝˊ ㄏㄡˋ', choiceZhuyin: 'ㄧˇ ㄑㄧㄢˊ ㄇㄟˊ ㄧㄡˇ ㄈㄚ ㄕㄥ ㄍㄨㄛˋ，ㄧˇ ㄏㄡˋ ㄧㄝˇ ㄏㄣˇ ㄋㄢˊ ㄗㄞˋ ㄎㄢˋ ㄉㄠˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄩㄝˊ ㄒㄧㄠˋ ㄒㄧㄠˋ ㄑㄧㄥˋ ㄕˊ，ㄘㄠ ㄔㄤˇ ㄕㄤˋ ㄎㄨㄥ ㄔㄨ ㄒㄧㄢˋ ㄐㄧˇ ㄅㄞˇ ㄐㄧㄚˋ ㄨˊ ㄖㄣˊ ㄐㄧ ㄆㄞˊ ㄔㄥˊ ㄉㄜ˙ ㄐㄩˋ ㄉㄚˋ ㄒㄧㄠˋ ㄌㄧㄢˇ，ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄊㄞˊ ㄊㄡˊ ㄓㄤ ㄉㄚˋ ㄗㄨㄟˇ ㄅㄚ，ㄓˊ ㄕㄨㄛ ㄊㄞˋ ㄋㄢˊ ㄉㄜˊ ㄌㄜ˙！', meaning: '以前沒有發生過，以後也很難再看到。', hint: '前所未有，將來也不太可能再有。', scene: '學校校慶時，操場上空出現幾百架無人機排成的巨大笑臉，大家都抬頭張大嘴巴，直說太難得了！', example: '哥哥在運動會一人拿下四面金牌，創下了學校空前絕後的精彩紀錄。', exampleZhuyin: 'ㄍㄜ ㄍㄜ ㄗㄞˋ ㄩㄣˋ ㄉㄨㄥˋ ㄏㄨㄟˋ ㄧ ㄖㄣˊ ㄋㄚˊ ㄒㄧㄚˋ ㄙˋ ㄇㄧㄢˋ ㄐㄧㄣ ㄆㄞˊ，ㄔㄨㄤˋ ㄒㄧㄚˋ ㄌㄜ˙ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄎㄨㄥ ㄑㄧㄢˊ ㄐㄩㄝˊ ㄏㄡˋ ㄉㄜ˙ ㄐㄧㄥ ㄘㄞˇ ㄐㄧˋ ㄌㄨˋ。', wrong: '這種橡皮擦每家文具店都買得到，真是空前絕後。', wrongZhuyin: 'ㄓㄜˋ ㄓㄨㄥˇ ㄒㄧㄤˋ ㄆㄧˊ ㄘㄚ ㄇㄟˇ ㄐㄧㄚ ㄨㄣˊ ㄐㄩˋ ㄉㄧㄢˋ ㄉㄡ ㄇㄞˇ ㄉㄜ˙ ㄉㄠˋ，ㄓㄣ ㄕˋ ㄎㄨㄥ ㄑㄧㄢˊ ㄐㄩㄝˊ ㄏㄡˋ。', wrongWhy: '空前絕後是以前沒有、以後也很難再有；到處買得到不是。', wrongWhyZhuyin: 'ㄎㄨㄥ ㄑㄧㄢˊ ㄐㄩㄝˊ ㄏㄡˋ ㄕˋ ㄧˇ ㄑㄧㄢˊ ㄇㄟˊ ㄧㄡˇ、ㄧˇ ㄏㄡˋ ㄧㄝˇ ㄏㄣˇ ㄋㄢˊ ㄗㄞˋ ㄧㄡˇ；ㄉㄠˋ ㄔㄨˋ ㄇㄞˇ ㄉㄜ˙ ㄉㄠˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'hutoushewei', idiom: '虎頭蛇尾', zhuyin: 'ㄏㄨˇ ㄊㄡˊ ㄕㄜˊ ㄨㄟˇ', choiceZhuyin: 'ㄎㄞ ㄕˇ ㄕˊ ㄏㄣˇ ㄧㄡˇ ㄐㄧㄣˋ，ㄏㄡˋ ㄇㄧㄢˋ ㄑㄩㄝˋ ㄘㄠˇ ㄘㄠˇ ㄕㄡ ㄔㄤˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄈㄤˋ ㄐㄧㄚˋ ㄉㄧˋ ㄧ ㄊㄧㄢ，ㄒㄧㄠˇ ㄐㄧㄝˊ ㄒㄧㄣˋ ㄒㄧㄣ ㄇㄢˇ ㄇㄢˇ ㄉㄜ˙ ㄅㄚˇ ㄏㄢˊ ㄐㄧㄚˋ ㄗㄨㄛˋ ㄧㄝˋ ㄆㄞˊ ㄏㄠˇ，ㄒㄧㄝˇ ㄌㄜ˙ ㄌㄧㄤˇ ㄧㄝˋ ㄐㄧㄡˋ ㄆㄠˇ ㄑㄩˋ ㄎㄢˋ ㄉㄧㄢˋ ㄕˋ，ㄏㄡˋ ㄌㄞˊ ㄗㄞˋ ㄧㄝˇ ㄇㄟˊ ㄧㄡˇ ㄆㄥˋ ㄍㄨㄛˋ。', meaning: '開始時很有勁，後面卻草草收場。', hint: '一開始很兇猛，最後卻愈來愈小。', scene: '放假第一天，小傑信心滿滿地把寒假作業排好，寫了兩頁就跑去看電視，後來再也沒有碰過。', example: '學習任何才藝都要堅持到底，不能虎頭蛇尾、半途放棄。', exampleZhuyin: 'ㄒㄩㄝˊ ㄒㄧˊ ㄖㄣˋ ㄏㄜˊ ㄘㄞˊ ㄧˋ ㄉㄡ ㄧㄠˋ ㄐㄧㄢ ㄔˊ ㄉㄠˋ ㄉㄧˇ，ㄅㄨˋ ㄋㄥˊ ㄏㄨˇ ㄊㄡˊ ㄕㄜˊ ㄨㄟˇ、ㄅㄢˋ ㄊㄨˊ ㄈㄤˋ ㄑㄧˋ。', wrong: '他每天認真練習，從頭堅持到最後，真是虎頭蛇尾。', wrongZhuyin: 'ㄊㄚ ㄇㄟˇ ㄊㄧㄢ ㄖㄣˋ ㄓㄣ ㄌㄧㄢˋ ㄒㄧˊ，ㄘㄨㄥˊ ㄊㄡˊ ㄐㄧㄢ ㄔˊ ㄉㄠˋ ㄗㄨㄟˋ ㄏㄡˋ，ㄓㄣ ㄕˋ ㄏㄨˇ ㄊㄡˊ ㄕㄜˊ ㄨㄟˇ。', wrongWhy: '虎頭蛇尾是開始很有勁、後面草草結束；堅持到最後不是。', wrongWhyZhuyin: 'ㄏㄨˇ ㄊㄡˊ ㄕㄜˊ ㄨㄟˇ ㄕˋ ㄎㄞ ㄕˇ ㄏㄣˇ ㄧㄡˇ ㄐㄧㄣˋ、ㄏㄡˋ ㄇㄧㄢˋ ㄘㄠˇ ㄘㄠˇ ㄐㄧㄝˊ ㄕㄨˋ；ㄐㄧㄢ ㄔˊ ㄉㄠˋ ㄗㄨㄟˋ ㄏㄡˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '開始很有勁後來放棄', traitPhraseZhuyin: 'ㄎㄞ ㄕˇ ㄏㄣˇ ㄧㄡˇ ㄐㄧㄣˋ ㄏㄡˋ ㄌㄞˊ ㄈㄤˋ ㄑㄧˋ' },
+        { id: 'mentingruoshi', idiom: '門庭若市', zhuyin: 'ㄇㄣˊ ㄊㄧㄥˊ ㄖㄨㄛˋ ㄕˋ', choiceZhuyin: 'ㄇㄣˊ ㄎㄡˇ ㄐㄧˇ ㄇㄢˇ ㄎㄜˋ ㄖㄣˊ，ㄒㄧㄤˋ ㄘㄞˋ ㄕˋ ㄔㄤˇ ㄧ ㄧㄤˋ ㄖㄜˋ ㄋㄠˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄈㄤˋ ㄒㄩㄝˊ ㄕˊ ㄐㄧㄢ，ㄒㄩㄝˊ ㄒㄧㄠˋ ㄆㄤˊ ㄅㄧㄢ ㄒㄧㄣ ㄎㄞ ㄉㄜ˙ ㄉㄢˋ ㄍㄠ ㄊㄢ ㄨㄟˋ ㄑㄧㄢˊ，ㄆㄞˊ ㄌㄜ˙ ㄔㄤˊ ㄔㄤˊ ㄉㄜ˙ ㄒㄧㄠˇ ㄆㄥˊ ㄧㄡˇ ㄏㄜˊ ㄐㄧㄚ ㄓㄤˇ ㄉㄨㄟˋ ㄨˇ，ㄖㄜˋ ㄋㄠˋ ㄐㄧˊ ㄌㄜ˙。', meaning: '門口擠滿客人，像菜市場一樣熱鬧。', hint: '來來往往的人好多好多。', scene: '放學時間，學校旁邊新開的蛋糕攤位前，排了長長的小朋友和家長隊伍，熱鬧極了。', example: '這家手工冰淇淋店的口味豐富又好吃，每天下午都門庭若市。', exampleZhuyin: 'ㄓㄜˋ ㄐㄧㄚ ㄕㄡˇ ㄍㄨㄥ ㄅㄧㄥ ㄑㄧˊ ㄌㄧㄣˊ ㄉㄧㄢˋ ㄉㄜ˙ ㄎㄡˇ ㄨㄟˋ ㄈㄥ ㄈㄨˋ ㄧㄡˋ ㄏㄠˇ ㄔ，ㄇㄟˇ ㄊㄧㄢ ㄒㄧㄚˋ ㄨˇ ㄉㄡ ㄇㄣˊ ㄊㄧㄥˊ ㄖㄨㄛˋ ㄕˋ。', wrong: '那家店一個客人都沒有，冷冷清清，真是門庭若市。', wrongZhuyin: 'ㄋㄚˋ ㄐㄧㄚ ㄉㄧㄢˋ ㄧ ㄍㄜ˙ ㄎㄜˋ ㄖㄣˊ ㄉㄡ ㄇㄟˊ ㄧㄡˇ，ㄌㄥˇ ㄌㄥˇ ㄑㄧㄥ ㄑㄧㄥ，ㄓㄣ ㄕˋ ㄇㄣˊ ㄊㄧㄥˊ ㄖㄨㄛˋ ㄕˋ。', wrongWhy: '門庭若市是客人很多、很熱鬧；一個客人都沒有不是。', wrongWhyZhuyin: 'ㄇㄣˊ ㄊㄧㄥˊ ㄖㄨㄛˋ ㄕˋ ㄕˋ ㄎㄜˋ ㄖㄣˊ ㄏㄣˇ ㄉㄨㄛ、ㄏㄣˇ ㄖㄜˋ ㄋㄠˋ；ㄧ ㄍㄜ˙ ㄎㄜˋ ㄖㄣˊ ㄉㄡ ㄇㄟˊ ㄧㄡˇ ㄅㄨˋ ㄕˋ。' },
+        { id: 'xinkoukaihe', idiom: '信口開河', zhuyin: 'ㄒㄧㄣˋ ㄎㄡˇ ㄎㄞ ㄏㄜˊ', choiceZhuyin: 'ㄇㄟˊ ㄧㄡˇ ㄍㄣ ㄐㄩˋ，ㄙㄨㄟˊ ㄅㄧㄢˋ ㄌㄨㄢˋ ㄕㄨㄛ ㄏㄨㄚˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧㄡˇ ㄖㄣˊ ㄍㄣ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄔㄨㄟ ㄋㄧㄡˊ ㄕㄨㄛ：「ㄨㄛˇ ㄗㄨㄛˊ ㄊㄧㄢ ㄗㄞˋ ㄐㄧㄚ ㄌㄧˇ ㄉㄜ˙ ㄩˋ ㄍㄤ ㄉㄧㄠˋ ㄉㄠˋ ㄧ ㄊㄧㄠˊ ㄉㄚˋ ㄐㄧㄥ ㄩˊ！」ㄉㄚˋ ㄐㄧㄚ ㄧ ㄊㄧㄥ ㄐㄧㄡˋ ㄓ ㄉㄠˋ ㄊㄚ ㄗㄞˋ ㄌㄨㄢˋ ㄐㄧㄤˇ。', meaning: '沒有根據，隨便亂說話。', hint: '話一出口，就沒有經過大腦想。', scene: '有人跟同學吹牛說：「我昨天在家裡的浴缸釣到一條大鯨魚！」大家一聽就知道他在亂講。', example: '做個誠實的好孩子，說話要有憑有據，千萬不能信口開河。', exampleZhuyin: 'ㄗㄨㄛˋ ㄍㄜ˙ ㄔㄥˊ ㄕˊ ㄉㄜ˙ ㄏㄠˇ ㄏㄞˊ ㄗ˙，ㄕㄨㄛ ㄏㄨㄚˋ ㄧㄠˋ ㄧㄡˇ ㄆㄧㄥˊ ㄧㄡˇ ㄐㄩˋ，ㄑㄧㄢ ㄨㄢˋ ㄅㄨˋ ㄋㄥˊ ㄒㄧㄣˋ ㄎㄡˇ ㄎㄞ ㄏㄜˊ。', wrong: '他說話前先想一想，句句都有根據，真是信口開河。', wrongZhuyin: 'ㄊㄚ ㄕㄨㄛ ㄏㄨㄚˋ ㄑㄧㄢˊ ㄒㄧㄢ ㄒㄧㄤˇ ㄧ ㄒㄧㄤˇ，ㄐㄩˋ ㄐㄩˋ ㄉㄡ ㄧㄡˇ ㄍㄣ ㄐㄩˋ，ㄓㄣ ㄕˋ ㄒㄧㄣˋ ㄎㄡˇ ㄎㄞ ㄏㄜˊ。', wrongWhy: '信口開河是沒有根據亂說話；句句有根據不是。', wrongWhyZhuyin: 'ㄒㄧㄣˋ ㄎㄡˇ ㄎㄞ ㄏㄜˊ ㄕˋ ㄇㄟˊ ㄧㄡˇ ㄍㄣ ㄐㄩˋ ㄌㄨㄢˋ ㄕㄨㄛ ㄏㄨㄚˋ；ㄐㄩˋ ㄐㄩˋ ㄧㄡˇ ㄍㄣ ㄐㄩˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '沒根據亂說話', traitPhraseZhuyin: 'ㄇㄟˊ ㄍㄣ ㄐㄩˋ ㄌㄨㄢˋ ㄕㄨㄛ ㄏㄨㄚˋ' }
+      ],
+      8: [
+        { id: 'yuantianyouren', idiom: '怨天尤人', zhuyin: 'ㄩㄢˋ ㄊㄧㄢ ㄧㄡˊ ㄖㄣˊ', choiceZhuyin: 'ㄩˋ ㄉㄠˋ ㄅㄨˋ ㄕㄨㄣˋ ㄒㄧㄣ ㄐㄧㄡˋ ㄅㄠˋ ㄩㄢˋ ㄩㄣˋ ㄑㄧˋ、ㄗㄜˊ ㄍㄨㄞˋ ㄅㄧㄝˊ ㄖㄣˊ，ㄅㄨˋ ㄐㄧㄢˇ ㄊㄠˇ ㄗˋ ㄐㄧˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄎㄠˇ ㄕˋ ㄑㄧㄢˊ ㄇㄟˊ ㄧㄡˇ ㄖㄣˋ ㄓㄣ ㄈㄨˋ ㄒㄧˊ，ㄎㄠˇ ㄅㄨˋ ㄏㄠˇ ㄕˊ ㄑㄩㄝˋ ㄅㄠˋ ㄩㄢˋ ㄊㄧˊ ㄇㄨˋ ㄊㄞˋ ㄋㄢˊ、ㄍㄨㄞˋ ㄆㄤˊ ㄅㄧㄢ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄈㄢ ㄎㄠˇ ㄐㄩㄢˋ ㄊㄞˋ ㄔㄠˇ，ㄅㄨˋ ㄒㄧㄤˇ ㄒㄧㄤˇ ㄗˋ ㄐㄧˇ ㄧㄡˇ ㄇㄟˊ ㄧㄡˇ ㄩㄥˋ ㄒㄧㄣ ㄓㄨㄣˇ ㄅㄟˋ。', meaning: '遇到不順心就抱怨運氣、責怪別人，不檢討自己。', hint: '都是別人的錯，都不是我的錯。', scene: '考試前沒有認真複習，考不好時卻抱怨題目太難、怪旁邊同學翻考卷太吵，不想想自己有沒有用心準備。', example: '遇到困難時要勇敢面對並改進，一味怨天尤人是不會進步的。', exampleZhuyin: 'ㄩˋ ㄉㄠˋ ㄎㄨㄣˋ ㄋㄢˊ ㄕˊ ㄧㄠˋ ㄩㄥˇ ㄍㄢˇ ㄇㄧㄢˋ ㄉㄨㄟˋ ㄅㄧㄥˋ ㄍㄞˇ ㄐㄧㄣˋ，ㄧ ㄨㄟˋ ㄩㄢˋ ㄊㄧㄢ ㄧㄡˊ ㄖㄣˊ ㄕˋ ㄅㄨˋ ㄏㄨㄟˋ ㄐㄧㄣˋ ㄅㄨˋ ㄉㄜ˙。', wrong: '跌倒以後，他先檢討自己哪裡不小心，真是怨天尤人。', wrongZhuyin: 'ㄉㄧㄝ ㄉㄠˇ ㄧˇ ㄏㄡˋ，ㄊㄚ ㄒㄧㄢ ㄐㄧㄢˇ ㄊㄠˇ ㄗˋ ㄐㄧˇ ㄋㄚˇ ㄌㄧˇ ㄅㄨˋ ㄒㄧㄠˇ ㄒㄧㄣ，ㄓㄣ ㄕˋ ㄩㄢˋ ㄊㄧㄢ ㄧㄡˊ ㄖㄣˊ。', wrongWhy: '怨天尤人是怪天怪別人、不檢討自己；先檢討自己不是。', wrongWhyZhuyin: 'ㄩㄢˋ ㄊㄧㄢ ㄧㄡˊ ㄖㄣˊ ㄕˋ ㄍㄨㄞˋ ㄊㄧㄢ ㄍㄨㄞˋ ㄅㄧㄝˊ ㄖㄣˊ、ㄅㄨˋ ㄐㄧㄢˇ ㄊㄠˇ ㄗˋ ㄐㄧˇ；ㄒㄧㄢ ㄐㄧㄢˇ ㄊㄠˇ ㄗˋ ㄐㄧˇ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '都怪別人不檢討自己', traitPhraseZhuyin: 'ㄉㄡ ㄍㄨㄞˋ ㄅㄧㄝˊ ㄖㄣˊ ㄅㄨˋ ㄐㄧㄢˇ ㄊㄠˇ ㄗˋ ㄐㄧˇ' },
+        { id: 'zhiluweima', idiom: '指鹿為馬', zhuyin: 'ㄓˇ ㄌㄨˋ ㄨㄟˊ ㄇㄚˇ', choiceZhuyin: 'ㄇㄧㄥˊ ㄇㄧㄥˊ ㄕˋ ㄘㄨㄛˋ ㄉㄜ˙，ㄑㄩㄝˋ ㄧㄥˋ ㄕㄨㄛ ㄕˋ ㄉㄨㄟˋ ㄉㄜ˙，ㄍㄨˋ ㄧˋ ㄉㄧㄢ ㄉㄠˇ ㄕˋ ㄈㄟ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄉㄚˋ ㄐㄧㄚ ㄇㄧㄥˊ ㄇㄧㄥˊ ㄉㄡ ㄎㄢˋ ㄉㄠˋ ㄕㄨㄟˇ ㄏㄨˊ ㄕˋ ㄒㄧㄠˇ ㄑㄧㄤˊ ㄅㄨˋ ㄒㄧㄠˇ ㄒㄧㄣ ㄊㄧ ㄉㄠˇ ㄉㄜ˙，ㄊㄚ ㄑㄩㄝˋ ㄓˇ ㄓㄜ˙ ㄍㄤ ㄗㄡˇ ㄍㄨㄛˋ ㄑㄩˋ ㄉㄜ˙ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄕㄨㄛ：「ㄕˋ ㄊㄚ ㄊㄧ ㄉㄠˇ ㄉㄜ˙！」', meaning: '明明是錯的，卻硬說是對的，故意顛倒是非。', hint: '眼睛明明看得清楚，卻故意亂說。', scene: '大家明明都看到水壺是小強不小心踢倒的，他卻指著剛走過去的同學說：「是他踢倒的！」', example: '做人要誠實講實話，絕對不能指鹿為馬、混淆是非。', exampleZhuyin: 'ㄗㄨㄛˋ ㄖㄣˊ ㄧㄠˋ ㄔㄥˊ ㄕˊ ㄐㄧㄤˇ ㄕˊ ㄏㄨㄚˋ，ㄐㄩㄝˊ ㄉㄨㄟˋ ㄅㄨˋ ㄋㄥˊ ㄓˇ ㄌㄨˋ ㄨㄟˊ ㄇㄚˇ、ㄏㄨㄣˋ ㄒㄧㄠˊ ㄕˋ ㄈㄟ。', wrong: '弟弟看到小狗就說：「這是小狗。」他真是指鹿為馬。', wrongZhuyin: 'ㄉㄧˋ ㄉㄧ˙ ㄎㄢˋ ㄉㄠˋ ㄒㄧㄠˇ ㄍㄡˇ ㄐㄧㄡˋ ㄕㄨㄛ：「ㄓㄜˋ ㄕˋ ㄒㄧㄠˇ ㄍㄡˇ。」ㄊㄚ ㄓㄣ ㄕˋ ㄓˇ ㄌㄨˋ ㄨㄟˊ ㄇㄚˇ。', wrongWhy: '指鹿為馬是故意把對的說成錯的；弟弟說的是實話。', wrongWhyZhuyin: 'ㄓˇ ㄌㄨˋ ㄨㄟˊ ㄇㄚˇ ㄕˋ ㄍㄨˋ ㄧˋ ㄅㄚˇ ㄉㄨㄟˋ ㄉㄜ˙ ㄕㄨㄛ ㄔㄥˊ ㄘㄨㄛˋ ㄉㄜ˙；ㄉㄧˋ ㄉㄧ˙ ㄕㄨㄛ ㄉㄜ˙ ㄕˋ ㄕˊ ㄏㄨㄚˋ。', trait: 'bad', traitPhrase: '故意把對的說成錯的', traitPhraseZhuyin: 'ㄍㄨˋ ㄧˋ ㄅㄚˇ ㄉㄨㄟˋ ㄉㄜ˙ ㄕㄨㄛ ㄔㄥˊ ㄘㄨㄛˋ ㄉㄜ˙' },
+        { id: 'meikaiyanxiao', idiom: '眉開眼笑', zhuyin: 'ㄇㄟˊ ㄎㄞ ㄧㄢˇ ㄒㄧㄠˋ', choiceZhuyin: 'ㄈㄟ ㄔㄤˊ ㄍㄠ ㄒㄧㄥˋ，ㄒㄧㄠˋ ㄉㄜ˙ ㄓㄥˇ ㄓㄤ ㄌㄧㄢˇ ㄉㄡ ㄕㄨ ㄓㄢˇ ㄎㄞ ㄌㄞˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄕㄥ ㄖˋ ㄋㄚˋ ㄊㄧㄢ，ㄉㄧˋ ㄉㄧ˙ ㄈㄚ ㄒㄧㄢˋ ㄅㄚˋ ㄅㄚˋ ㄇㄚ ㄇㄚ ㄓㄨㄣˇ ㄅㄟˋ ㄌㄜ˙ ㄗㄨㄟˋ ㄞˋ ㄔ ㄉㄜ˙ ㄘㄠˇ ㄇㄟˊ ㄉㄢˋ ㄍㄠ ㄏㄜˊ ㄑㄧ ㄉㄞˋ ㄧˇ ㄐㄧㄡˇ ㄉㄜ˙ ㄐㄧ ㄑㄧˋ ㄖㄣˊ ㄨㄢˊ ㄐㄩˋ，ㄒㄧㄠˋ ㄉㄜ˙ ㄏㄜˊ ㄅㄨˋ ㄌㄨㄥˇ ㄗㄨㄟˇ。', meaning: '非常高興，笑得整張臉都舒展開來。', hint: '高興得整張臉都在笑。', scene: '生日那天，弟弟發現爸爸媽媽準備了最愛吃的草莓蛋糕和期待已久的機器人玩具，笑得合不攏嘴。', example: '聽到老師宣布今天沒有回家作業，同學們個個眉開眼笑。', exampleZhuyin: 'ㄊㄧㄥ ㄉㄠˋ ㄌㄠˇ ㄕ ㄒㄩㄢ ㄅㄨˋ ㄐㄧㄣ ㄊㄧㄢ ㄇㄟˊ ㄧㄡˇ ㄏㄨㄟˊ ㄐㄧㄚ ㄗㄨㄛˋ ㄧㄝˋ，ㄊㄨㄥˊ ㄒㄩㄝˊ ㄇㄣ˙ ㄍㄜ˙ ㄍㄜ˙ ㄇㄟˊ ㄎㄞ ㄧㄢˇ ㄒㄧㄠˋ。', wrong: '弟弟的玩具壞了，他哭得眉開眼笑。', wrongZhuyin: 'ㄉㄧˋ ㄉㄧ˙ ㄉㄜ˙ ㄨㄢˊ ㄐㄩˋ ㄏㄨㄞˋ ㄌㄜ˙，ㄊㄚ ㄎㄨ ㄉㄜ˙ ㄇㄟˊ ㄎㄞ ㄧㄢˇ ㄒㄧㄠˋ。', wrongWhy: '眉開眼笑是很高興；哭是難過。', wrongWhyZhuyin: 'ㄇㄟˊ ㄎㄞ ㄧㄢˇ ㄒㄧㄠˋ ㄕˋ ㄏㄣˇ ㄍㄠ ㄒㄧㄥˋ；ㄎㄨ ㄕˋ ㄋㄢˊ ㄍㄨㄛˋ。' },
+        { id: 'pobujidai', idiom: '迫不及待', zhuyin: 'ㄆㄛˋ ㄅㄨˋ ㄐㄧˊ ㄉㄞˋ', choiceZhuyin: 'ㄒㄧㄣ ㄌㄧˇ ㄏㄣˇ ㄐㄧˊ，ㄧ ㄇㄧㄠˇ ㄓㄨㄥ ㄉㄡ ㄉㄥˇ ㄅㄨˋ ㄒㄧㄚˋ ㄑㄩˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧ ㄈㄤˋ ㄒㄩㄝˊ ㄗㄡˇ ㄐㄧㄣˋ ㄐㄧㄚ ㄇㄣˊ，ㄨㄣˊ ㄉㄠˋ ㄔㄨˊ ㄈㄤˊ ㄆㄧㄠ ㄌㄞˊ ㄍㄤ ㄎㄠˇ ㄏㄠˇ ㄉㄜ˙ ㄙㄨㄥ ㄅㄧㄥˇ ㄒㄧㄤ，ㄕㄨ ㄅㄠ ㄏㄞˊ ㄇㄟˊ ㄈㄤˋ ㄒㄧㄚˋ ㄐㄧㄡˋ ㄐㄧˊ ㄓㄜ˙ ㄒㄧˇ ㄕㄡˇ ㄒㄧㄤˇ ㄔ。', meaning: '心裡很急，一秒鐘都等不下去。', hint: '好急好急，一刻也不想等！', scene: '一放學走進家門，聞到廚房飄來剛烤好的鬆餅香，書包還沒放下就急著洗手想吃。', example: '下課鐘聲一響，大家迫不及待地衝向操場玩溜滑梯。', exampleZhuyin: 'ㄒㄧㄚˋ ㄎㄜˋ ㄓㄨㄥ ㄕㄥ ㄧ ㄒㄧㄤˇ，ㄉㄚˋ ㄐㄧㄚ ㄆㄛˋ ㄅㄨˋ ㄐㄧˊ ㄉㄞˋ ㄉㄜ˙ ㄔㄨㄥ ㄒㄧㄤˋ ㄘㄠ ㄔㄤˇ ㄨㄢˊ ㄌㄧㄡ ㄏㄨㄚˊ ㄊㄧ。', wrong: '離放假還有好久，我慢慢等，一點也不急，真是迫不及待。', wrongZhuyin: 'ㄌㄧˊ ㄈㄤˋ ㄐㄧㄚˋ ㄏㄞˊ ㄧㄡˇ ㄏㄠˇ ㄐㄧㄡˇ，ㄨㄛˇ ㄇㄢˋ ㄇㄢˋ ㄉㄥˇ，ㄧ ㄉㄧㄢˇ ㄧㄝˇ ㄅㄨˋ ㄐㄧˊ，ㄓㄣ ㄕˋ ㄆㄛˋ ㄅㄨˋ ㄐㄧˊ ㄉㄞˋ。', wrongWhy: '迫不及待是急得一刻也等不了；一點也不急不是。', wrongWhyZhuyin: 'ㄆㄛˋ ㄅㄨˋ ㄐㄧˊ ㄉㄞˋ ㄕˋ ㄐㄧˊ ㄉㄜ˙ ㄧ ㄎㄜˋ ㄧㄝˇ ㄉㄥˇ ㄅㄨˋ ㄌㄧㄠˇ；ㄧ ㄉㄧㄢˇ ㄧㄝˇ ㄅㄨˋ ㄐㄧˊ ㄅㄨˋ ㄕˋ。' },
+        { id: 'daochiganzhe', idiom: '倒吃甘蔗', zhuyin: 'ㄉㄠˋ ㄔ ㄍㄢ ㄓㄜˋ', choiceZhuyin: 'ㄕˋ ㄑㄧㄥˊ ㄧ ㄎㄞ ㄕˇ ㄒㄧㄣ ㄎㄨˇ，ㄏㄡˋ ㄌㄞˊ ㄩˋ ㄌㄞˊ ㄩˋ ㄏㄠˇ、ㄩˋ ㄌㄞˊ ㄩˋ ㄊㄧㄢˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄍㄤ ㄒㄩㄝˊ ㄐㄧㄠˇ ㄊㄚˋ ㄔㄜ ㄕˊ ㄔㄤˊ ㄉㄧㄝ ㄉㄠˇ ㄘㄚ ㄕㄤ，ㄐㄩㄝˊ ㄉㄜ˙ ㄏㄣˇ ㄐㄩˇ ㄙㄤˋ；ㄌㄧㄢˋ ㄒㄧˊ ㄐㄧˇ ㄊㄧㄢ ㄓㄠˇ ㄉㄠˋ ㄆㄧㄥˊ ㄏㄥˊ ㄍㄢˇ ㄏㄡˋ，ㄐㄧㄡˋ ㄋㄥˊ ㄎㄞ ㄒㄧㄣ ㄉㄜ˙ ㄧㄥˊ ㄓㄜ˙ ㄈㄥ ㄑㄧˊ ㄔㄜ ㄌㄜ˙！', meaning: '事情一開始辛苦，後來愈來愈好、愈來愈甜。', hint: '一開始不容易，但愈做愈順利。', scene: '剛學腳踏車時常跌倒擦傷，覺得很沮喪；練習幾天找到平衡感後，就能開心地迎著風騎車了！', example: '剛練習直排輪時雖然一直摔跤，但熟練後像倒吃甘蔗一樣，愈溜愈順手。', exampleZhuyin: 'ㄍㄤ ㄌㄧㄢˋ ㄒㄧˊ ㄓˊ ㄆㄞˊ ㄌㄨㄣˊ ㄕˊ ㄙㄨㄟ ㄖㄢˊ ㄧ ㄓˊ ㄕㄨㄞ ㄐㄧㄠ，ㄉㄢˋ ㄕㄨˊ ㄌㄧㄢˋ ㄏㄡˋ ㄒㄧㄤˋ ㄉㄠˋ ㄔ ㄍㄢ ㄓㄜˋ ㄧ ㄧㄤˋ，ㄩˋ ㄌㄧㄡ ㄩˋ ㄕㄨㄣˋ ㄕㄡˇ。', wrong: '他一開始很順利，後來愈來愈糟，真是倒吃甘蔗。', wrongZhuyin: 'ㄊㄚ ㄧ ㄎㄞ ㄕˇ ㄏㄣˇ ㄕㄨㄣˋ ㄌㄧˋ，ㄏㄡˋ ㄌㄞˊ ㄩˋ ㄌㄞˊ ㄩˋ ㄗㄠ，ㄓㄣ ㄕˋ ㄉㄠˋ ㄔ ㄍㄢ ㄓㄜˋ。', wrongWhy: '倒吃甘蔗是愈來愈好、愈來愈甜；愈來愈糟不是。', wrongWhyZhuyin: 'ㄉㄠˋ ㄔ ㄍㄢ ㄓㄜˋ ㄕˋ ㄩˋ ㄌㄞˊ ㄩˋ ㄏㄠˇ、ㄩˋ ㄌㄞˊ ㄩˋ ㄊㄧㄢˊ；ㄩˋ ㄌㄞˊ ㄩˋ ㄗㄠ ㄅㄨˋ ㄕˋ。' },
+        { id: 'ruobujinfeng', idiom: '弱不禁風', zhuyin: 'ㄖㄨㄛˋ ㄅㄨˋ ㄐㄧㄣ ㄈㄥ', choiceZhuyin: 'ㄕㄣ ㄊㄧˇ ㄈㄟ ㄔㄤˊ ㄒㄩ ㄖㄨㄛˋ，ㄏㄠˇ ㄒㄧㄤˋ ㄑㄧㄥ ㄑㄧㄥ ㄧ ㄔㄨㄟ ㄐㄧㄡˋ ㄏㄨㄟˋ ㄅㄟˋ ㄔㄨㄟ ㄉㄠˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄆㄧㄥˊ ㄔㄤˊ ㄊㄧㄠ ㄕˊ ㄅㄨˋ ㄔ ㄑㄧㄥ ㄘㄞˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄆㄥˊ ㄧㄡˇ，ㄉㄨㄥˋ ㄅㄨˋ ㄉㄨㄥˋ ㄐㄧㄡˋ ㄍㄢˇ ㄇㄠˋ，ㄊㄧˇ ㄩˋ ㄎㄜˋ ㄘㄞˊ ㄆㄠˇ ㄅㄢˋ ㄑㄩㄢ ㄘㄠ ㄔㄤˇ ㄐㄧㄡˋ ㄌㄧㄢˇ ㄙㄜˋ ㄈㄚ ㄅㄞˊ、ㄔㄨㄢˇ ㄅㄨˋ ㄍㄨㄛˋ ㄑㄧˋ。', meaning: '身體非常虛弱，好像輕輕一吹就會被吹倒。', hint: '瘦瘦小小，看起來沒有力氣。', scene: '平常挑食不吃青菜的小朋友，動不動就感冒，體育課才跑半圈操場就臉色發白、喘不過氣。', example: '我們要多運動、均衡飲食，身體才會強壯，不會看起來弱不禁風。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄧㄠˋ ㄉㄨㄛ ㄩㄣˋ ㄉㄨㄥˋ、ㄐㄩㄣ ㄏㄥˊ ㄧㄣˇ ㄕˊ，ㄕㄣ ㄊㄧˇ ㄘㄞˊ ㄏㄨㄟˋ ㄑㄧㄤˊ ㄓㄨㄤˋ，ㄅㄨˋ ㄏㄨㄟˋ ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄖㄨㄛˋ ㄅㄨˋ ㄐㄧㄣ ㄈㄥ。', wrong: '爸爸天天運動，身體很結實，是個弱不禁風的人。', wrongZhuyin: 'ㄅㄚˋ ㄅㄚˋ ㄊㄧㄢ ㄊㄧㄢ ㄩㄣˋ ㄉㄨㄥˋ，ㄕㄣ ㄊㄧˇ ㄏㄣˇ ㄐㄧㄝˊ ㄕˊ，ㄕˋ ㄍㄜ˙ ㄖㄨㄛˋ ㄅㄨˋ ㄐㄧㄣ ㄈㄥ ㄉㄜ˙ ㄖㄣˊ。', wrongWhy: '弱不禁風是身體虛弱；天天運動、很結實不是。', wrongWhyZhuyin: 'ㄖㄨㄛˋ ㄅㄨˋ ㄐㄧㄣ ㄈㄥ ㄕˋ ㄕㄣ ㄊㄧˇ ㄒㄩ ㄖㄨㄛˋ；ㄊㄧㄢ ㄊㄧㄢ ㄩㄣˋ ㄉㄨㄥˋ、ㄏㄣˇ ㄐㄧㄝˊ ㄕˊ ㄅㄨˋ ㄕˋ。' },
+        { id: 'haidilaozhen', idiom: '海底撈針', zhuyin: 'ㄏㄞˇ ㄉㄧˇ ㄌㄠ ㄓㄣ', choiceZhuyin: 'ㄒㄧㄤˇ ㄓㄠˇ ㄉㄜ˙ ㄉㄨㄥ ㄒㄧ ㄏㄣˇ ㄋㄢˊ ㄓㄠˇ ㄉㄠˋ，ㄐㄧ ㄏㄨ ㄇㄟˊ ㄧㄡˇ ㄒㄧ ㄨㄤˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄗㄞˋ ㄓㄤˇ ㄇㄢˇ ㄗㄚˊ ㄘㄠˇ ㄉㄜ˙ ㄉㄚˋ ㄗㄨˊ ㄑㄧㄡˊ ㄔㄤˇ ㄕㄤˋ，ㄒㄧㄤˇ ㄓㄠˇ ㄏㄨㄟˊ ㄧ ㄎㄜ ㄉㄧㄠˋ ㄌㄨㄛˋ ㄉㄜ˙ ㄇㄧˇ ㄌㄧˋ ㄉㄚˋ ㄒㄧㄠˇ ㄉㄜ˙ ㄊㄡˋ ㄇㄧㄥˊ ㄊㄧㄝ ㄓˇ，ㄐㄧ ㄏㄨ ㄕˋ ㄅㄨˋ ㄎㄜˇ ㄋㄥˊ ㄉㄜ˙ ㄕˋ。', meaning: '想找的東西很難找到，幾乎沒有希望。', hint: '要在好大好大的地方，找一個小小的東西。', scene: '在長滿雜草的大足球場上，想找回一顆掉落的米粒大小的透明貼紙，幾乎是不可能的事。', example: '沙灘上人這麼多，要找掉落的耳環像海底撈針。', exampleZhuyin: 'ㄕㄚ ㄊㄢ ㄕㄤˋ ㄖㄣˊ ㄓㄜˋ ㄇㄜ˙ ㄉㄨㄛ，ㄧㄠˋ ㄓㄠˇ ㄉㄧㄠˋ ㄌㄨㄛˋ ㄉㄜ˙ ㄦˇ ㄏㄨㄢˊ ㄒㄧㄤˋ ㄏㄞˇ ㄉㄧˇ ㄌㄠ ㄓㄣ。', wrong: '我的書包就放在桌上，一眼就找到了，真是海底撈針。', wrongZhuyin: 'ㄨㄛˇ ㄉㄜ˙ ㄕㄨ ㄅㄠ ㄐㄧㄡˋ ㄈㄤˋ ㄗㄞˋ ㄓㄨㄛ ㄕㄤˋ，ㄧ ㄧㄢˇ ㄐㄧㄡˋ ㄓㄠˇ ㄉㄠˋ ㄌㄜ˙，ㄓㄣ ㄕˋ ㄏㄞˇ ㄉㄧˇ ㄌㄠ ㄓㄣ。', wrongWhy: '海底撈針是非常難找；一眼就找到不是。', wrongWhyZhuyin: 'ㄏㄞˇ ㄉㄧˇ ㄌㄠ ㄓㄣ ㄕˋ ㄈㄟ ㄔㄤˊ ㄋㄢˊ ㄓㄠˇ；ㄧ ㄧㄢˇ ㄐㄧㄡˋ ㄓㄠˇ ㄉㄠˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'langbeiweijian', idiom: '狼狽為奸', zhuyin: 'ㄌㄤˊ ㄅㄟˋ ㄨㄟˊ ㄐㄧㄢ', choiceZhuyin: 'ㄏㄨㄞˋ ㄖㄣˊ ㄏㄨˋ ㄒㄧㄤ ㄍㄡ ㄐㄧㄝˊ，ㄧ ㄑㄧˇ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄌㄧㄤˇ ㄓ ㄊㄧㄠˊ ㄆㄧˊ ㄉㄜ˙ ㄒㄧㄠˇ ㄏㄨˊ ㄌㄧˊ，ㄧ ㄓ ㄗㄞˋ ㄑㄧㄢˊ ㄇㄧㄢˋ ㄧㄣˇ ㄎㄞ ㄋㄨㄥˊ ㄈㄨ ㄉㄜ˙ ㄓㄨˋ ㄧˋ，ㄌㄧㄥˋ ㄧ ㄓ ㄊㄡ ㄊㄡ ㄌㄧㄡ ㄐㄧㄣˋ ㄋㄨㄥˊ ㄔㄤˇ ㄊㄡ ㄔ ㄆㄨˊ ㄊㄠˊ。', meaning: '壞人互相勾結，一起做壞事。', hint: '兩個壞心腸的搭檔，聯手做壞事。', scene: '兩隻調皮的小狐狸，一隻在前面引開農夫的注意，另一隻偷偷溜進農場偷吃葡萄。', example: '兩個小偷狼狽為奸，最後還是被警察抓住了。', exampleZhuyin: 'ㄌㄧㄤˇ ㄍㄜ˙ ㄒㄧㄠˇ ㄊㄡ ㄌㄤˊ ㄅㄟˋ ㄨㄟˊ ㄐㄧㄢ，ㄗㄨㄟˋ ㄏㄡˋ ㄏㄞˊ ㄕˋ ㄅㄟˋ ㄐㄧㄥˇ ㄔㄚˊ ㄓㄨㄚ ㄓㄨˋ ㄌㄜ˙。', wrong: '我和同學互相幫忙整理教室，我們真是狼狽為奸。', wrongZhuyin: 'ㄨㄛˇ ㄏㄜˊ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄏㄨˋ ㄒㄧㄤ ㄅㄤ ㄇㄤˊ ㄓㄥˇ ㄌㄧˇ ㄐㄧㄠˋ ㄕˋ，ㄨㄛˇ ㄇㄣ˙ ㄓㄣ ㄕˋ ㄌㄤˊ ㄅㄟˋ ㄨㄟˊ ㄐㄧㄢ。', wrongWhy: '狼狽為奸是壞人串通做壞事；互相幫忙是好事。', wrongWhyZhuyin: 'ㄌㄤˊ ㄅㄟˋ ㄨㄟˊ ㄐㄧㄢ ㄕˋ ㄏㄨㄞˋ ㄖㄣˊ ㄔㄨㄢˋ ㄊㄨㄥ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ；ㄏㄨˋ ㄒㄧㄤ ㄅㄤ ㄇㄤˊ ㄕˋ ㄏㄠˇ ㄕˋ。', trait: 'bad', traitPhrase: '壞人聯手做壞事', traitPhraseZhuyin: 'ㄏㄨㄞˋ ㄖㄣˊ ㄌㄧㄢˊ ㄕㄡˇ ㄗㄨㄛˋ ㄏㄨㄞˋ ㄕˋ' },
+        { id: 'toujimogou', idiom: '偷雞摸狗', zhuyin: 'ㄊㄡ ㄐㄧ ㄇㄛ ㄍㄡˇ', choiceZhuyin: 'ㄗㄨㄛˋ ㄕˋ ㄍㄨㄟˇ ㄍㄨㄟˇ ㄙㄨㄟˋ ㄙㄨㄟˋ，ㄅㄨˋ ㄍㄢˇ ㄍㄨㄤ ㄇㄧㄥˊ ㄓㄥˋ ㄉㄚˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄔㄣˋ ㄌㄠˇ ㄕ ㄓㄨㄢˇ ㄊㄡˊ ㄒㄧㄝˇ ㄏㄟ ㄅㄢˇ ㄕˊ，ㄊㄡ ㄊㄡ ㄅㄚˇ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄑㄧㄢ ㄅㄧˇ ㄏㄜˊ ㄌㄧˇ ㄉㄜ˙ ㄒㄧㄤˋ ㄆㄧˊ ㄘㄚ ㄘㄤˊ ㄐㄧㄣˋ ㄗˋ ㄐㄧˇ ㄎㄡˇ ㄉㄞˋ，ㄓㄜˋ ㄓㄨㄥˇ ㄒㄧㄥˊ ㄨㄟˊ ㄈㄟ ㄔㄤˊ ㄅㄨˋ ㄎㄜˇ ㄑㄩˇ。', meaning: '做事鬼鬼祟祟，不敢光明正大。', hint: '專做見不得人的小壞事。', scene: '趁老師轉頭寫黑板時，偷偷把同學鉛筆盒裡的橡皮擦藏進自己口袋，這種行為非常不可取。', example: '做人做事要正大光明，千萬不能做那些偷雞摸狗的違規行為。', exampleZhuyin: 'ㄗㄨㄛˋ ㄖㄣˊ ㄗㄨㄛˋ ㄕˋ ㄧㄠˋ ㄓㄥˋ ㄉㄚˋ ㄍㄨㄤ ㄇㄧㄥˊ，ㄑㄧㄢ ㄨㄢˋ ㄅㄨˋ ㄋㄥˊ ㄗㄨㄛˋ ㄋㄚˋ ㄒㄧㄝ ㄊㄡ ㄐㄧ ㄇㄛ ㄍㄡˇ ㄉㄜ˙ ㄨㄟˊ ㄍㄨㄟ ㄒㄧㄥˊ ㄨㄟˊ。', wrong: '他光明正大地參加比賽，從不作弊，是個偷雞摸狗的人。', wrongZhuyin: 'ㄊㄚ ㄍㄨㄤ ㄇㄧㄥˊ ㄓㄥˋ ㄉㄚˋ ㄉㄜ˙ ㄘㄢ ㄐㄧㄚ ㄅㄧˇ ㄙㄞˋ，ㄘㄨㄥˊ ㄅㄨˋ ㄗㄨㄛˋ ㄅㄧˋ，ㄕˋ ㄍㄜ˙ ㄊㄡ ㄐㄧ ㄇㄛ ㄍㄡˇ ㄉㄜ˙ ㄖㄣˊ。', wrongWhy: '偷雞摸狗是鬼鬼祟祟、不光明正大；光明正大、不作弊不是。', wrongWhyZhuyin: 'ㄊㄡ ㄐㄧ ㄇㄛ ㄍㄡˇ ㄕˋ ㄍㄨㄟˇ ㄍㄨㄟˇ ㄙㄨㄟˋ ㄙㄨㄟˋ、ㄅㄨˋ ㄍㄨㄤ ㄇㄧㄥˊ ㄓㄥˋ ㄉㄚˋ；ㄍㄨㄤ ㄇㄧㄥˊ ㄓㄥˋ ㄉㄚˋ、ㄅㄨˋ ㄗㄨㄛˋ ㄅㄧˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '鬼鬼祟祟不光明正大', traitPhraseZhuyin: 'ㄍㄨㄟˇ ㄍㄨㄟˇ ㄙㄨㄟˋ ㄙㄨㄟˋ ㄅㄨˋ ㄍㄨㄤ ㄇㄧㄥˊ ㄓㄥˋ ㄉㄚˋ' },
+        { id: 'zhimibuwu', idiom: '執迷不悟', zhuyin: 'ㄓˊ ㄇㄧˊ ㄅㄨˋ ㄨˋ', choiceZhuyin: 'ㄇㄧㄥˊ ㄇㄧㄥˊ ㄗㄨㄛˋ ㄘㄨㄛˋ ㄌㄜ˙，ㄏㄞˊ ㄍㄨˋ ㄓˊ ㄉㄜ˙ ㄅㄨˋ ㄎㄣˇ ㄍㄞˇ ㄓㄥˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧ ㄕㄥ ㄐㄧㄠ ㄉㄞˋ ㄎㄜˊ ㄙㄡˋ ㄅㄨˋ ㄋㄥˊ ㄔ ㄅㄧㄥ，ㄊㄚ ㄑㄩㄝˋ ㄧㄥˋ ㄕㄨㄛ ㄔ ㄅㄧㄥ ㄎㄜˇ ㄧˇ ㄐㄧㄤˋ ㄏㄨㄛˇ ㄑㄧˋ，ㄊㄧㄢ ㄊㄧㄢ ㄊㄡ ㄔ，ㄐㄧㄝˊ ㄍㄨㄛˇ ㄎㄜˊ ㄉㄜ˙ ㄍㄥˋ ㄧㄢˊ ㄓㄨㄥˋ ㄌㄜ˙。', meaning: '明明做錯了，還固執地不肯改正。', hint: '別人怎麼勸都聽不進去。', scene: '醫生交代咳嗽不能吃冰，他卻硬說吃冰可以降火氣，天天偷吃，結果咳得更嚴重了。', example: '做錯事情只要誠心改正就好，如果執迷不悟，只會讓問題越來越嚴重。', exampleZhuyin: 'ㄗㄨㄛˋ ㄘㄨㄛˋ ㄕˋ ㄑㄧㄥˊ ㄓˇ ㄧㄠˋ ㄔㄥˊ ㄒㄧㄣ ㄍㄞˇ ㄓㄥˋ ㄐㄧㄡˋ ㄏㄠˇ，ㄖㄨˊ ㄍㄨㄛˇ ㄓˊ ㄇㄧˊ ㄅㄨˋ ㄨˋ，ㄓˇ ㄏㄨㄟˋ ㄖㄤˋ ㄨㄣˋ ㄊㄧˊ ㄩㄝˋ ㄌㄞˊ ㄩㄝˋ ㄧㄢˊ ㄓㄨㄥˋ。', wrong: '老師一勸他，他馬上知道自己錯了，真是執迷不悟。', wrongZhuyin: 'ㄌㄠˇ ㄕ ㄧ ㄑㄩㄢˋ ㄊㄚ，ㄊㄚ ㄇㄚˇ ㄕㄤˋ ㄓ ㄉㄠˋ ㄗˋ ㄐㄧˇ ㄘㄨㄛˋ ㄌㄜ˙，ㄓㄣ ㄕˋ ㄓˊ ㄇㄧˊ ㄅㄨˋ ㄨˋ。', wrongWhy: '執迷不悟是知道錯了還不肯改；馬上改正不是。', wrongWhyZhuyin: 'ㄓˊ ㄇㄧˊ ㄅㄨˋ ㄨˋ ㄕˋ ㄓ ㄉㄠˋ ㄘㄨㄛˋ ㄌㄜ˙ ㄏㄞˊ ㄅㄨˋ ㄎㄣˇ ㄍㄞˇ；ㄇㄚˇ ㄕㄤˋ ㄍㄞˇ ㄓㄥˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '做錯了還不肯改', traitPhraseZhuyin: 'ㄗㄨㄛˋ ㄘㄨㄛˋ ㄌㄜ˙ ㄏㄞˊ ㄅㄨˋ ㄎㄣˇ ㄍㄞˇ' }
+      ],
+      9: [
+        { id: 'qingtongshouzu', idiom: '情同手足', zhuyin: 'ㄑㄧㄥˊ ㄊㄨㄥˊ ㄕㄡˇ ㄗㄨˊ', choiceZhuyin: 'ㄆㄥˊ ㄧㄡˇ ㄍㄢˇ ㄑㄧㄥˊ ㄏㄣˇ ㄏㄠˇ，ㄑㄧㄣ ㄇㄧˋ ㄉㄜ˙ ㄒㄧㄤˋ ㄑㄧㄣ ㄒㄩㄥ ㄉㄧˋ ㄐㄧㄝˇ ㄇㄟˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄨㄛˇ ㄏㄜˊ ㄒㄧㄠˇ ㄇㄧㄥˊ ㄘㄨㄥˊ ㄒㄧㄠˇ ㄧ ㄑㄧˇ ㄓㄤˇ ㄉㄚˋ，ㄧㄡˇ ㄏㄠˇ ㄎㄢˋ ㄉㄜ˙ ㄍㄨˋ ㄕˋ ㄕㄨ ㄏㄨˋ ㄒㄧㄤ ㄈㄣ ㄒㄧㄤˇ，ㄋㄢˊ ㄍㄨㄛˋ ㄕˊ ㄏㄨˋ ㄒㄧㄤ ㄢ ㄨㄟˋ，ㄐㄧㄡˋ ㄒㄧㄤˋ ㄑㄧㄣ ㄒㄩㄥ ㄉㄧˋ ㄧ ㄧㄤˋ ㄏㄠˇ。', meaning: '朋友感情很好，親密得像親兄弟姐妹。', hint: '不是家人，卻像家人一樣親。', scene: '我和小明從小一起長大，有好看的故事書互相分享，難過時互相安慰，就像親兄弟一樣好。', example: '我和小華從小就是鄰居，彼此情同手足，常常形影不離。', exampleZhuyin: 'ㄨㄛˇ ㄏㄜˊ ㄒㄧㄠˇ ㄏㄨㄚˊ ㄘㄨㄥˊ ㄒㄧㄠˇ ㄐㄧㄡˋ ㄕˋ ㄌㄧㄣˊ ㄐㄩ，ㄅㄧˇ ㄘˇ ㄑㄧㄥˊ ㄊㄨㄥˊ ㄕㄡˇ ㄗㄨˊ，ㄔㄤˊ ㄔㄤˊ ㄒㄧㄥˊ ㄧㄥˇ ㄅㄨˋ ㄌㄧˊ。', wrong: '我和小明天天吵架、互相不理，我們真是情同手足。', wrongZhuyin: 'ㄨㄛˇ ㄏㄜˊ ㄒㄧㄠˇ ㄇㄧㄥˊ ㄊㄧㄢ ㄊㄧㄢ ㄔㄠˇ ㄐㄧㄚˋ、ㄏㄨˋ ㄒㄧㄤ ㄅㄨˋ ㄌㄧˇ，ㄨㄛˇ ㄇㄣ˙ ㄓㄣ ㄕˋ ㄑㄧㄥˊ ㄊㄨㄥˊ ㄕㄡˇ ㄗㄨˊ。', wrongWhy: '情同手足是感情很好、像親兄弟；天天吵架不理人不是。', wrongWhyZhuyin: 'ㄑㄧㄥˊ ㄊㄨㄥˊ ㄕㄡˇ ㄗㄨˊ ㄕˋ ㄍㄢˇ ㄑㄧㄥˊ ㄏㄣˇ ㄏㄠˇ、ㄒㄧㄤˋ ㄑㄧㄣ ㄒㄩㄥ ㄉㄧˋ；ㄊㄧㄢ ㄊㄧㄢ ㄔㄠˇ ㄐㄧㄚˋ ㄅㄨˋ ㄌㄧˇ ㄖㄣˊ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '好朋友像親兄弟', traitPhraseZhuyin: 'ㄏㄠˇ ㄆㄥˊ ㄧㄡˇ ㄒㄧㄤˋ ㄑㄧㄣ ㄒㄩㄥ ㄉㄧˋ' },
+        { id: 'lizhiqizhuang', idiom: '理直氣壯', zhuyin: 'ㄌㄧˇ ㄓˊ ㄑㄧˋ ㄓㄨㄤˋ', choiceZhuyin: 'ㄗˋ ㄐㄧˇ ㄧㄡˇ ㄉㄠˋ ㄌㄧˇ，ㄙㄨㄛˇ ㄧˇ ㄕㄨㄛ ㄏㄨㄚˋ ㄧㄡˇ ㄉㄧˇ ㄑㄧˋ，ㄧ ㄉㄧㄢˇ ㄧㄝˇ ㄅㄨˋ ㄒㄧㄣ ㄒㄩ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄇㄟˇ ㄩㄥˋ ㄌㄧㄥˊ ㄩㄥˋ ㄑㄧㄢˊ ㄇㄞˇ ㄉㄜ˙ ㄊㄧㄝ ㄓˇ ㄅㄟˋ ㄨˋ ㄏㄨㄟˋ ㄕˋ ㄊㄡ ㄋㄚˊ ㄅㄧㄝˊ ㄖㄣˊ ㄉㄜ˙，ㄊㄚ ㄋㄚˊ ㄔㄨ ㄕㄡ ㄐㄩˋ ㄩㄥˇ ㄍㄢˇ ㄕㄨㄛ ㄑㄧㄥ ㄔㄨˇ，ㄊㄞˋ ㄉㄨˋ ㄐㄧㄢ ㄉㄧㄥˋ ㄅㄨˋ ㄏㄞˋ ㄆㄚˋ。', meaning: '自己有道理，所以說話有底氣，一點也不心虛。', hint: '沒做錯，所以一點也不害怕。', scene: '小美用零用錢買的貼紙被誤會是偷拿別人的，她拿出收據勇敢說清楚，態度堅定不害怕。', example: '只要自己沒有做錯事，就可以理直氣壯地把事情經過說明白。', exampleZhuyin: 'ㄓˇ ㄧㄠˋ ㄗˋ ㄐㄧˇ ㄇㄟˊ ㄧㄡˇ ㄗㄨㄛˋ ㄘㄨㄛˋ ㄕˋ，ㄐㄧㄡˋ ㄎㄜˇ ㄧˇ ㄌㄧˇ ㄓˊ ㄑㄧˋ ㄓㄨㄤˋ ㄉㄜ˙ ㄅㄚˇ ㄕˋ ㄑㄧㄥˊ ㄐㄧㄥ ㄍㄨㄛˋ ㄕㄨㄛ ㄇㄧㄥˊ ㄅㄞˊ。', wrong: '他做錯事被發現，低著頭不敢說話，真是理直氣壯。', wrongZhuyin: 'ㄊㄚ ㄗㄨㄛˋ ㄘㄨㄛˋ ㄕˋ ㄅㄟˋ ㄈㄚ ㄒㄧㄢˋ，ㄉㄧ ㄓㄜ˙ ㄊㄡˊ ㄅㄨˋ ㄍㄢˇ ㄕㄨㄛ ㄏㄨㄚˋ，ㄓㄣ ㄕˋ ㄌㄧˇ ㄓˊ ㄑㄧˋ ㄓㄨㄤˋ。', wrongWhy: '理直氣壯是有道理、不心虛；低著頭不敢說話是心虛。', wrongWhyZhuyin: 'ㄌㄧˇ ㄓˊ ㄑㄧˋ ㄓㄨㄤˋ ㄕˋ ㄧㄡˇ ㄉㄠˋ ㄌㄧˇ、ㄅㄨˋ ㄒㄧㄣ ㄒㄩ；ㄉㄧ ㄓㄜ˙ ㄊㄡˊ ㄅㄨˋ ㄍㄢˇ ㄕㄨㄛ ㄏㄨㄚˋ ㄕˋ ㄒㄧㄣ ㄒㄩ。' },
+        { id: 'shengqilingren', idiom: '盛氣凌人', zhuyin: 'ㄕㄥˋ ㄑㄧˋ ㄌㄧㄥˊ ㄖㄣˊ', choiceZhuyin: 'ㄅㄞˇ ㄔㄨ ㄐㄧㄠ ㄠˋ ㄉㄜ˙ ㄧㄤˋ ㄗ˙，ㄩㄥˋ ㄒㄩㄥ ㄅㄚ ㄅㄚ ㄉㄜ˙ ㄑㄧˋ ㄕˋ ㄧㄚ ㄆㄛˋ ㄅㄧㄝˊ ㄖㄣˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄨㄢˊ ㄈㄣ ㄗㄨˇ ㄧㄡˊ ㄒㄧˋ ㄕˊ，ㄧㄡˇ ㄖㄣˊ ㄕㄨㄤ ㄕㄡˇ ㄔㄚ ㄧㄠ、ㄊㄞˊ ㄍㄠ ㄒㄧㄚˋ ㄅㄚ，ㄉㄨㄟˋ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄉㄚˋ ㄏㄨ ㄒㄧㄠˇ ㄐㄧㄠˋ，ㄧㄠˋ ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄊㄧㄥ ㄊㄚ ㄉㄜ˙，ㄖㄤˋ ㄖㄣˊ ㄏㄣˇ ㄅㄨˋ ㄕㄨ ㄈㄨˊ。', meaning: '擺出驕傲的樣子，用兇巴巴的氣勢壓迫別人。', hint: '說話大聲、態度高傲，讓人不舒服。', scene: '玩分組遊戲時，有人雙手插腰、抬高下巴，對同學大呼小叫，要大家都聽他的，讓人很不舒服。', example: '與同學相處要謙虛有禮貌，不能擺出一副盛氣凌人的樣子。', exampleZhuyin: 'ㄩˇ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄒㄧㄤ ㄔㄨˋ ㄧㄠˋ ㄑㄧㄢ ㄒㄩ ㄧㄡˇ ㄌㄧˇ ㄇㄠˋ，ㄅㄨˋ ㄋㄥˊ ㄅㄞˇ ㄔㄨ ㄧ ㄈㄨˋ ㄕㄥˋ ㄑㄧˋ ㄌㄧㄥˊ ㄖㄣˊ ㄉㄜ˙ ㄧㄤˋ ㄗ˙。', wrong: '小華說話輕聲細語、很有禮貌，真是盛氣凌人。', wrongZhuyin: 'ㄒㄧㄠˇ ㄏㄨㄚˊ ㄕㄨㄛ ㄏㄨㄚˋ ㄑㄧㄥ ㄕㄥ ㄒㄧˋ ㄩˇ、ㄏㄣˇ ㄧㄡˇ ㄌㄧˇ ㄇㄠˋ，ㄓㄣ ㄕˋ ㄕㄥˋ ㄑㄧˋ ㄌㄧㄥˊ ㄖㄣˊ。', wrongWhy: '盛氣凌人是態度驕傲、用氣勢壓人；有禮貌不是。', wrongWhyZhuyin: 'ㄕㄥˋ ㄑㄧˋ ㄌㄧㄥˊ ㄖㄣˊ ㄕˋ ㄊㄞˋ ㄉㄨˋ ㄐㄧㄠ ㄠˋ、ㄩㄥˋ ㄑㄧˋ ㄕˋ ㄧㄚ ㄖㄣˊ；ㄧㄡˇ ㄌㄧˇ ㄇㄠˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '驕傲兇巴巴壓人', traitPhraseZhuyin: 'ㄐㄧㄠ ㄠˋ ㄒㄩㄥ ㄅㄚ ㄅㄚ ㄧㄚ ㄖㄣˊ' },
+        { id: 'xuezhongsongtan', idiom: '雪中送炭', zhuyin: 'ㄒㄩㄝˇ ㄓㄨㄥ ㄙㄨㄥˋ ㄊㄢˋ', choiceZhuyin: 'ㄗㄞˋ ㄅㄧㄝˊ ㄖㄣˊ ㄗㄨㄟˋ ㄒㄩ ㄧㄠˋ ㄅㄤ ㄓㄨˋ ㄉㄜ˙ ㄕˊ ㄏㄡˋ，ㄓㄨˇ ㄉㄨㄥˋ ㄙㄨㄥˋ ㄕㄤˋ ㄨㄣ ㄋㄨㄢˇ ㄏㄜˊ ㄒㄧㄝˊ ㄓㄨˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄚˋ ㄉㄚˋ ㄩˇ ㄕˊ，ㄒㄧㄠˇ ㄢ ㄨㄤˋ ㄌㄜ˙ ㄉㄞˋ ㄩˇ ㄙㄢˇ，ㄓㄥˋ ㄐㄧˊ ㄉㄜ˙ ㄎㄨㄞˋ ㄎㄨ ㄔㄨ ㄌㄞˊ，ㄊㄨㄥˊ ㄒㄩㄝˊ ㄓㄨˇ ㄉㄨㄥˋ ㄔㄥ ㄎㄞ ㄉㄚˋ ㄙㄢˇ ㄕㄨㄛ：「ㄨㄛˇ ㄇㄣ˙ ㄧ ㄑㄧˇ ㄗㄡˇ ㄏㄨㄟˊ ㄐㄧㄚ ㄅㄚ˙！」ㄊㄚ ㄒㄧㄣ ㄌㄧˇ ㄉㄨㄣˋ ㄕˊ ㄏㄠˇ ㄨㄣ ㄋㄨㄢˇ。', meaning: '在別人最需要幫助的時候，主動送上溫暖和協助。', hint: '別人最冷、最需要幫忙時，及時伸出援手。', scene: '下大雨時，小安忘了帶雨傘，正急得快哭出來，同學主動撐開大傘說：「我們一起走回家吧！」她心裡頓時好溫暖。', example: '我忘了帶彩色筆，同桌借我一枝，真是雪中送炭。', exampleZhuyin: 'ㄨㄛˇ ㄨㄤˋ ㄌㄜ˙ ㄉㄞˋ ㄘㄞˇ ㄙㄜˋ ㄅㄧˇ，ㄊㄨㄥˊ ㄓㄨㄛ ㄐㄧㄝˋ ㄨㄛˇ ㄧ ㄓ，ㄓㄣ ㄕˋ ㄒㄩㄝˇ ㄓㄨㄥ ㄙㄨㄥˋ ㄊㄢˋ。', wrong: '我已經有十枝鉛筆了，朋友又送我一枝，真是雪中送炭。', wrongZhuyin: 'ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄧㄡˇ ㄕˊ ㄓ ㄑㄧㄢ ㄅㄧˇ ㄌㄜ˙，ㄆㄥˊ ㄧㄡˇ ㄧㄡˋ ㄙㄨㄥˋ ㄨㄛˇ ㄧ ㄓ，ㄓㄣ ㄕˋ ㄒㄩㄝˇ ㄓㄨㄥ ㄙㄨㄥˋ ㄊㄢˋ。', wrongWhy: '雪中送炭是在別人最需要時幫忙；我已經有很多支，不是最需要。', wrongWhyZhuyin: 'ㄒㄩㄝˇ ㄓㄨㄥ ㄙㄨㄥˋ ㄊㄢˋ ㄕˋ ㄗㄞˋ ㄅㄧㄝˊ ㄖㄣˊ ㄗㄨㄟˋ ㄒㄩ ㄧㄠˋ ㄕˊ ㄅㄤ ㄇㄤˊ；ㄨㄛˇ ㄧˇ ㄐㄧㄥ ㄧㄡˇ ㄏㄣˇ ㄉㄨㄛ ㄓ，ㄅㄨˋ ㄕˋ ㄗㄨㄟˋ ㄒㄩ ㄧㄠˋ。', trait: 'good', traitPhrase: '別人最需要時送幫助', traitPhraseZhuyin: 'ㄅㄧㄝˊ ㄖㄣˊ ㄗㄨㄟˋ ㄒㄩ ㄧㄠˋ ㄕˊ ㄙㄨㄥˋ ㄅㄤ ㄓㄨˋ' },
+        { id: 'sangjintianliang', idiom: '喪盡天良', zhuyin: 'ㄙㄤˋ ㄐㄧㄣˋ ㄊㄧㄢ ㄌㄧㄤˊ', choiceZhuyin: 'ㄒㄧㄣ ㄉㄧˋ ㄏㄨㄞˋ ㄊㄡˋ ㄌㄜ˙，ㄧ ㄉㄧㄢˇ ㄕㄢˋ ㄌㄧㄤˊ ㄏㄜˊ ㄊㄨㄥˊ ㄑㄧㄥˊ ㄒㄧㄣ ㄉㄡ ㄇㄟˊ ㄧㄡˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄍㄨˋ ㄕˋ ㄌㄧˇ ㄉㄜ˙ ㄏㄨㄞˋ ㄨ ㄆㄛˊ ㄍㄨˋ ㄧˋ ㄅㄚˇ ㄨˊ ㄐㄧㄚ ㄎㄜˇ ㄍㄨㄟ ㄉㄜ˙ ㄒㄧㄠˇ ㄉㄨㄥˋ ㄨˋ ㄆㄧㄢˋ ㄐㄧㄣˋ ㄒㄧㄢˋ ㄐㄧㄥˇ ㄑㄧ ㄈㄨˋ ㄊㄚ ㄇㄣ˙，ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄐㄩㄝˊ ㄉㄜ˙ ㄊㄚ ㄊㄞˋ ㄏㄣˇ ㄉㄨˊ ㄌㄜ˙。', meaning: '心地壞透了，一點善良和同情心都沒有。', hint: '壞到沒有一點好心腸。', scene: '故事裡的壞巫婆故意把無家可歸的小動物騙進陷阱欺負牠們，大家都覺得她太狠毒了。', example: '童話故事中的大反派竟然狠心破壞森林的家園，真是喪盡天良。', exampleZhuyin: 'ㄊㄨㄥˊ ㄏㄨㄚˋ ㄍㄨˋ ㄕˋ ㄓㄨㄥ ㄉㄜ˙ ㄉㄚˋ ㄈㄢˇ ㄆㄞˋ ㄐㄧㄥˋ ㄖㄢˊ ㄏㄣˇ ㄒㄧㄣ ㄆㄛˋ ㄏㄨㄞˋ ㄙㄣ ㄌㄧㄣˊ ㄉㄜ˙ ㄐㄧㄚ ㄩㄢˊ，ㄓㄣ ㄕˋ ㄙㄤˋ ㄐㄧㄣˋ ㄊㄧㄢ ㄌㄧㄤˊ。', wrong: '他撿到錢馬上交給老師，真是喪盡天良。', wrongZhuyin: 'ㄊㄚ ㄐㄧㄢˇ ㄉㄠˋ ㄑㄧㄢˊ ㄇㄚˇ ㄕㄤˋ ㄐㄧㄠ ㄍㄟˇ ㄌㄠˇ ㄕ，ㄓㄣ ㄕˋ ㄙㄤˋ ㄐㄧㄣˋ ㄊㄧㄢ ㄌㄧㄤˊ。', wrongWhy: '喪盡天良是壞透了；撿到錢交給老師是好事。', wrongWhyZhuyin: 'ㄙㄤˋ ㄐㄧㄣˋ ㄊㄧㄢ ㄌㄧㄤˊ ㄕˋ ㄏㄨㄞˋ ㄊㄡˋ ㄌㄜ˙；ㄐㄧㄢˇ ㄉㄠˋ ㄑㄧㄢˊ ㄐㄧㄠ ㄍㄟˇ ㄌㄠˇ ㄕ ㄕˋ ㄏㄠˇ ㄕˋ。', trait: 'bad', traitPhrase: '壞到沒有一點好心腸', traitPhraseZhuyin: 'ㄏㄨㄞˋ ㄉㄠˋ ㄇㄟˊ ㄧㄡˇ ㄧ ㄉㄧㄢˇ ㄏㄠˇ ㄒㄧㄣ ㄔㄤˊ' },
+        { id: 'danqiangpima', idiom: '單槍匹馬', zhuyin: 'ㄉㄢ ㄑㄧㄤ ㄆㄧˇ ㄇㄚˇ', choiceZhuyin: 'ㄓˇ ㄎㄠˋ ㄗˋ ㄐㄧˇ ㄧ ㄍㄜ˙ ㄖㄣˊ ㄑㄩˋ ㄇㄧㄢˋ ㄉㄨㄟˋ ㄊㄧㄠ ㄓㄢˋ，ㄇㄟˊ ㄧㄡˇ ㄅㄤ ㄕㄡˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄍㄤ ㄧ ㄍㄜ˙ ㄖㄣˊ ㄗㄡˇ ㄕㄤˋ ㄎㄨㄥ ㄉㄤˋ ㄉㄤˋ ㄉㄜ˙ ㄉㄚˋ ㄌㄧˇ ㄊㄤˊ ㄐㄧㄤˇ ㄊㄞˊ ㄈㄚ ㄅㄧㄠˇ ㄧㄥ ㄨㄣˊ ㄧㄢˇ ㄕㄨㄛ，ㄙㄨㄟ ㄖㄢˊ ㄇㄟˊ ㄧㄡˇ ㄐㄧㄚ ㄖㄣˊ ㄗㄞˋ ㄆㄤˊ ㄅㄧㄢ ㄆㄟˊ ㄓㄜ˙，ㄊㄚ ㄏㄞˊ ㄕˋ ㄊㄞˊ ㄊㄡˊ ㄊㄧㄥˇ ㄒㄩㄥ ㄨㄢˊ ㄔㄥˊ ㄌㄜ˙ ㄧㄢˇ ㄐㄧㄤˇ。', meaning: '只靠自己一個人去面對挑戰，沒有幫手。', hint: '一個人出發，身邊沒有幫手。', scene: '小剛一個人走上空蕩蕩的大禮堂講台發表英文演說，雖然沒有家人在旁邊陪著，他還是抬頭挺胸完成了演講。', example: '雖然只有我單槍匹馬代表班上參加說故事比賽，我也會全力以赴。', exampleZhuyin: 'ㄙㄨㄟ ㄖㄢˊ ㄓˇ ㄧㄡˇ ㄨㄛˇ ㄉㄢ ㄑㄧㄤ ㄆㄧˇ ㄇㄚˇ ㄉㄞˋ ㄅㄧㄠˇ ㄅㄢ ㄕㄤˋ ㄘㄢ ㄐㄧㄚ ㄕㄨㄛ ㄍㄨˋ ㄕˋ ㄅㄧˇ ㄙㄞˋ，ㄨㄛˇ ㄧㄝˇ ㄏㄨㄟˋ ㄑㄩㄢˊ ㄌㄧˋ ㄧˇ ㄈㄨˋ。', wrong: '全班單槍匹馬，一起合作完成壁報。', wrongZhuyin: 'ㄑㄩㄢˊ ㄅㄢ ㄉㄢ ㄑㄧㄤ ㄆㄧˇ ㄇㄚˇ，ㄧ ㄑㄧˇ ㄏㄜˊ ㄗㄨㄛˋ ㄨㄢˊ ㄔㄥˊ ㄅㄧˋ ㄅㄠˋ。', wrongWhy: '單槍匹馬是一個人、沒有幫手；全班合作不是。', wrongWhyZhuyin: 'ㄉㄢ ㄑㄧㄤ ㄆㄧˇ ㄇㄚˇ ㄕˋ ㄧ ㄍㄜ˙ ㄖㄣˊ、ㄇㄟˊ ㄧㄡˇ ㄅㄤ ㄕㄡˇ；ㄑㄩㄢˊ ㄅㄢ ㄏㄜˊ ㄗㄨㄛˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'tixindiaodan', idiom: '提心吊膽', zhuyin: 'ㄊㄧˊ ㄒㄧㄣ ㄉㄧㄠˋ ㄉㄢˇ', choiceZhuyin: 'ㄒㄧㄣ ㄌㄧˇ ㄈㄟ ㄔㄤˊ ㄏㄞˋ ㄆㄚˋ、ㄉㄢ ㄒㄧㄣ，ㄧ ㄓˊ ㄢ ㄉㄧㄥˋ ㄅㄨˋ ㄒㄧㄚˋ ㄌㄞˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄩˇ ㄅㄨˋ ㄒㄧㄠˇ ㄒㄧㄣ ㄅㄚˇ ㄎㄜˋ ㄊㄧㄥ ㄏㄨㄚ ㄆㄧㄥˊ ㄓㄨㄤˋ ㄔㄨ ㄧ ㄊㄧㄠˊ ㄌㄧㄝˋ ㄈㄥˋ，ㄏㄣˇ ㄉㄢ ㄒㄧㄣ ㄇㄚ ㄇㄚ ㄏㄨㄟˊ ㄐㄧㄚ ㄏㄨㄟˋ ㄈㄚ ㄒㄧㄢˋ，ㄓㄥˇ ㄊㄧㄢ ㄉㄡ ㄗㄨㄛˋ ㄌㄧˋ ㄋㄢˊ ㄢ。', meaning: '心裡非常害怕、擔心，一直安定不下來。', hint: '一直擔心會出事，坐立難安。', scene: '小宇不小心把客廳花瓶撞出一條裂縫，很擔心媽媽回家會發現，整天都坐立難安。', example: '走在又黑又安靜的巷子裡，我整路都提心吊膽，走得好快好快。', exampleZhuyin: 'ㄗㄡˇ ㄗㄞˋ ㄧㄡˋ ㄏㄟ ㄧㄡˋ ㄢ ㄐㄧㄥˋ ㄉㄜ˙ ㄒㄧㄤˋ ㄗ˙ ㄌㄧˇ，ㄨㄛˇ ㄓㄥˇ ㄌㄨˋ ㄉㄡ ㄊㄧˊ ㄒㄧㄣ ㄉㄧㄠˋ ㄉㄢˇ，ㄗㄡˇ ㄉㄜ˙ ㄏㄠˇ ㄎㄨㄞˋ ㄏㄠˇ ㄎㄨㄞˋ。', wrong: '躺在溫暖的床上，我心裡好平靜，真是提心吊膽。', wrongZhuyin: 'ㄊㄤˇ ㄗㄞˋ ㄨㄣ ㄋㄨㄢˇ ㄉㄜ˙ ㄔㄨㄤˊ ㄕㄤˋ，ㄨㄛˇ ㄒㄧㄣ ㄌㄧˇ ㄏㄠˇ ㄆㄧㄥˊ ㄐㄧㄥˋ，ㄓㄣ ㄕˋ ㄊㄧˊ ㄒㄧㄣ ㄉㄧㄠˋ ㄉㄢˇ。', wrongWhy: '提心吊膽是擔心害怕、安定不下來；心裡平靜不是。', wrongWhyZhuyin: 'ㄊㄧˊ ㄒㄧㄣ ㄉㄧㄠˋ ㄉㄢˇ ㄕˋ ㄉㄢ ㄒㄧㄣ ㄏㄞˋ ㄆㄚˋ、ㄢ ㄉㄧㄥˋ ㄅㄨˋ ㄒㄧㄚˋ ㄌㄞˊ；ㄒㄧㄣ ㄌㄧˇ ㄆㄧㄥˊ ㄐㄧㄥˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'zhaosanmusi', idiom: '朝三暮四', zhuyin: 'ㄓㄠ ㄙㄢ ㄇㄨˋ ㄙˋ', choiceZhuyin: 'ㄒㄧㄤˇ ㄈㄚˇ ㄧ ㄓˊ ㄍㄞˇ ㄅㄧㄢˋ，ㄓㄨˇ ㄧˋ ㄋㄚˊ ㄅㄨˋ ㄉㄧㄥˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄠˇ ㄇㄟˇ ㄒㄩㄢˇ ㄕㄥ ㄖˋ ㄌㄧˇ ㄨˋ，ㄧ ㄒㄧㄚˋ ㄕㄨㄛ ㄧㄠˋ ㄨㄚˊ ㄨㄚˊ，ㄧ ㄒㄧㄚˋ ㄕㄨㄛ ㄧㄠˋ ㄐㄧ ㄇㄨˋ，ㄍㄨㄛˋ ㄧ ㄏㄨㄟˇ ㄦ˙ ㄧㄡˋ ㄍㄞˇ ㄕㄨㄛ ㄧㄠˋ ㄍㄨˋ ㄕˋ ㄕㄨ，ㄗㄣˇ ㄇㄜ˙ ㄉㄡ ㄐㄩㄝˊ ㄉㄧㄥˋ ㄅㄨˋ ㄒㄧㄚˋ ㄌㄞˊ。', meaning: '想法一直改變，主意拿不定。', hint: '一下要這個，一下又要那個。', scene: '小美選生日禮物，一下說要娃娃，一下說要積木，過一會兒又改說要故事書，怎麼都決定不下來。', example: '選好了想要閱讀的書籍就要專心讀完，不要朝三暮四一直換來換去。', exampleZhuyin: 'ㄒㄩㄢˇ ㄏㄠˇ ㄌㄜ˙ ㄒㄧㄤˇ ㄧㄠˋ ㄩㄝˋ ㄉㄨˊ ㄉㄜ˙ ㄕㄨ ㄐㄧˊ ㄐㄧㄡˋ ㄧㄠˋ ㄓㄨㄢ ㄒㄧㄣ ㄉㄨˊ ㄨㄢˊ，ㄅㄨˋ ㄧㄠˋ ㄓㄠ ㄙㄢ ㄇㄨˋ ㄙˋ ㄧ ㄓˊ ㄏㄨㄢˋ ㄌㄞˊ ㄏㄨㄢˋ ㄑㄩˋ。', wrong: '他說要學鋼琴，就一直學下去，從不改變心意，真是朝三暮四。', wrongZhuyin: 'ㄊㄚ ㄕㄨㄛ ㄧㄠˋ ㄒㄩㄝˊ ㄍㄤ ㄑㄧㄣˊ，ㄐㄧㄡˋ ㄧ ㄓˊ ㄒㄩㄝˊ ㄒㄧㄚˋ ㄑㄩˋ，ㄘㄨㄥˊ ㄅㄨˋ ㄍㄞˇ ㄅㄧㄢˋ ㄒㄧㄣ ㄧˋ，ㄓㄣ ㄕˋ ㄓㄠ ㄙㄢ ㄇㄨˋ ㄙˋ。', wrongWhy: '朝三暮四是常常改變主意；從不改變不是。', wrongWhyZhuyin: 'ㄓㄠ ㄙㄢ ㄇㄨˋ ㄙˋ ㄕˋ ㄔㄤˊ ㄔㄤˊ ㄍㄞˇ ㄅㄧㄢˋ ㄓㄨˇ ㄧˋ；ㄘㄨㄥˊ ㄅㄨˋ ㄍㄞˇ ㄅㄧㄢˋ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '一直改變主意', traitPhraseZhuyin: 'ㄧ ㄓˊ ㄍㄞˇ ㄅㄧㄢˋ ㄓㄨˇ ㄧˋ' },
+        { id: 'wuzhongshengyou', idiom: '無中生有', zhuyin: 'ㄨˊ ㄓㄨㄥ ㄕㄥ ㄧㄡˇ', choiceZhuyin: 'ㄕˋ ㄑㄧㄥˊ ㄍㄣ ㄅㄣˇ ㄇㄟˊ ㄈㄚ ㄕㄥ ㄍㄨㄛˋ，ㄑㄩㄝˋ ㄆㄧㄥˊ ㄎㄨㄥ ㄅㄧㄢ ㄗㄠˋ ㄔㄨ ㄌㄞˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄇㄧㄥˊ ㄇㄧㄥˊ ㄇㄟˊ ㄎㄢˋ ㄉㄠˋ ㄊㄨㄥˊ ㄒㄩㄝˊ ㄓㄨㄤˋ ㄉㄠˇ ㄓㄨㄛ ㄗ˙，ㄑㄩㄝˋ ㄆㄠˇ ㄑㄩˋ ㄍㄣ ㄌㄠˇ ㄕ ㄕㄨㄛ ㄕˋ ㄊㄚ ㄓㄨㄤˋ ㄉㄜ˙，ㄓㄜˋ ㄕˋ ㄗˋ ㄐㄧˇ ㄅㄧㄢ ㄔㄨ ㄌㄞˊ ㄉㄜ˙ ㄐㄧㄚˇ ㄏㄨㄚˋ。', meaning: '事情根本沒發生過，卻憑空編造出來。', hint: '本來什麼都沒有，卻說得好像真的。', scene: '明明沒看到同學撞倒桌子，卻跑去跟老師說是他撞的，這是自己編出來的假話。', example: '我們說話要誠實，不能無中生有隨便冤枉別人。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄕㄨㄛ ㄏㄨㄚˋ ㄧㄠˋ ㄔㄥˊ ㄕˊ，ㄅㄨˋ ㄋㄥˊ ㄨˊ ㄓㄨㄥ ㄕㄥ ㄧㄡˇ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄩㄢ ㄨㄤˇ ㄅㄧㄝˊ ㄖㄣˊ。', wrong: '他把真正發生的事照實告訴老師，真是無中生有。', wrongZhuyin: 'ㄊㄚ ㄅㄚˇ ㄓㄣ ㄓㄥˋ ㄈㄚ ㄕㄥ ㄉㄜ˙ ㄕˋ ㄓㄠˋ ㄕˊ ㄍㄠˋ ㄙㄨˋ ㄌㄠˇ ㄕ，ㄓㄣ ㄕˋ ㄨˊ ㄓㄨㄥ ㄕㄥ ㄧㄡˇ。', wrongWhy: '無中生有是編造沒發生過的事；照實說不是。', wrongWhyZhuyin: 'ㄨˊ ㄓㄨㄥ ㄕㄥ ㄧㄡˇ ㄕˋ ㄅㄧㄢ ㄗㄠˋ ㄇㄟˊ ㄈㄚ ㄕㄥ ㄍㄨㄛˋ ㄉㄜ˙ ㄕˋ；ㄓㄠˋ ㄕˊ ㄕㄨㄛ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '亂編沒發生的事', traitPhraseZhuyin: 'ㄌㄨㄢˋ ㄅㄧㄢ ㄇㄟˊ ㄈㄚ ㄕㄥ ㄉㄜ˙ ㄕˋ' },
+        { id: 'wudongyuzhong', idiom: '無動於衷', zhuyin: 'ㄨˊ ㄉㄨㄥˋ ㄩˊ ㄓㄨㄥ', choiceZhuyin: 'ㄎㄢˋ ㄉㄠˋ ㄅㄧㄝˊ ㄖㄣˊ ㄋㄢˊ ㄍㄨㄛˋ ㄏㄨㄛˋ ㄧㄡˇ ㄎㄨㄣˋ ㄋㄢˊ，ㄒㄧㄣ ㄌㄧˇ ㄧ ㄉㄧㄢˇ ㄍㄢˇ ㄐㄩㄝˊ ㄧㄝˇ ㄇㄟˊ ㄧㄡˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄌㄠˇ ㄧㄝˊ ㄧㄝˊ ㄊㄧˊ ㄓㄜ˙ ㄏㄣˇ ㄓㄨㄥˋ ㄉㄜ˙ ㄘㄞˋ ㄌㄢˊ ㄕㄤˋ ㄍㄨㄥ ㄔㄜ，ㄆㄤˊ ㄅㄧㄢ ㄉㄜ˙ ㄋㄧㄢˊ ㄑㄧㄥ ㄖㄣˊ ㄑㄩㄝˋ ㄉㄧ ㄊㄡˊ ㄏㄨㄚˊ ㄕㄡˇ ㄐㄧ，ㄨㄢˊ ㄑㄩㄢˊ ㄅㄨˋ ㄩㄢˋ ㄧˋ ㄅㄤ ㄇㄤˊ ㄖㄤˋ ㄗㄨㄛˋ。', meaning: '看到別人難過或有困難，心裡一點感覺也沒有。', hint: '心冷冷的，完全沒有反應。', scene: '老爺爺提著很重的菜籃上公車，旁邊的年輕人卻低頭滑手機，完全不願意幫忙讓座。', example: '看到路邊受傷的小鳥在發抖，大家都很心疼，沒有人能無動於衷。', exampleZhuyin: 'ㄎㄢˋ ㄉㄠˋ ㄌㄨˋ ㄅㄧㄢ ㄕㄡˋ ㄕㄤ ㄉㄜ˙ ㄒㄧㄠˇ ㄋㄧㄠˇ ㄗㄞˋ ㄈㄚ ㄉㄡˇ，ㄉㄚˋ ㄐㄧㄚ ㄉㄡ ㄏㄣˇ ㄒㄧㄣ ㄊㄥˊ，ㄇㄟˊ ㄧㄡˇ ㄖㄣˊ ㄋㄥˊ ㄨˊ ㄉㄨㄥˋ ㄩˊ ㄓㄨㄥ。', wrong: '看到小狗受傷，他難過得馬上抱去看醫生，真是無動於衷。', wrongZhuyin: 'ㄎㄢˋ ㄉㄠˋ ㄒㄧㄠˇ ㄍㄡˇ ㄕㄡˋ ㄕㄤ，ㄊㄚ ㄋㄢˊ ㄍㄨㄛˋ ㄉㄜ˙ ㄇㄚˇ ㄕㄤˋ ㄅㄠˋ ㄑㄩˋ ㄎㄢˋ ㄧ ㄕㄥ，ㄓㄣ ㄕˋ ㄨˊ ㄉㄨㄥˋ ㄩˊ ㄓㄨㄥ。', wrongWhy: '無動於衷是一點感覺也沒有；他很難過、馬上幫忙不是。', wrongWhyZhuyin: 'ㄨˊ ㄉㄨㄥˋ ㄩˊ ㄓㄨㄥ ㄕˋ ㄧ ㄉㄧㄢˇ ㄍㄢˇ ㄐㄩㄝˊ ㄧㄝˇ ㄇㄟˊ ㄧㄡˇ；ㄊㄚ ㄏㄣˇ ㄋㄢˊ ㄍㄨㄛˋ、ㄇㄚˇ ㄕㄤˋ ㄅㄤ ㄇㄤˊ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '看到別人難過沒感覺', traitPhraseZhuyin: 'ㄎㄢˋ ㄉㄠˋ ㄅㄧㄝˊ ㄖㄣˊ ㄋㄢˊ ㄍㄨㄛˋ ㄇㄟˊ ㄍㄢˇ ㄐㄩㄝˊ' }
+      ],
+      10: [
+        { id: 'tonggaiqianfei', idiom: '痛改前非', zhuyin: 'ㄊㄨㄥˋ ㄍㄞˇ ㄑㄧㄢˊ ㄈㄟ', choiceZhuyin: 'ㄒㄧㄚˋ ㄉㄧㄥˋ ㄐㄩㄝˊ ㄒㄧㄣ，ㄔㄜˋ ㄉㄧˇ ㄍㄞˇ ㄉㄧㄠˋ ㄧˇ ㄑㄧㄢˊ ㄉㄜ˙ ㄍㄨㄛˋ ㄘㄨㄛˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧˇ ㄑㄧㄢˊ ㄔㄤˊ ㄔˊ ㄉㄠˋ、ㄅㄨˋ ㄒㄧㄝˇ ㄗㄨㄛˋ ㄧㄝˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄒㄩㄥˊ，ㄖㄣˋ ㄓㄣ ㄍㄣ ㄌㄠˇ ㄕ ㄅㄠˇ ㄓㄥˋ ㄧㄠˋ ㄍㄞˇ ㄍㄨㄛˋ，ㄇㄟˇ ㄊㄧㄢ ㄗㄠˇ ㄕㄨㄟˋ ㄗㄠˇ ㄑㄧˇ，ㄅㄨˋ ㄗㄞˋ ㄊㄨㄛ ㄊㄨㄛ ㄌㄚ ㄌㄚ。', meaning: '下定決心，徹底改掉以前的過錯。', hint: '決心把以前的壞習慣全部改掉。', scene: '以前常遲到、不寫作業的小熊，認真跟老師保證要改過，每天早睡早起，不再拖拖拉拉。', example: '小明決定痛改前非，每天回家第一件事就是專心把功課寫完。', exampleZhuyin: 'ㄒㄧㄠˇ ㄇㄧㄥˊ ㄐㄩㄝˊ ㄉㄧㄥˋ ㄊㄨㄥˋ ㄍㄞˇ ㄑㄧㄢˊ ㄈㄟ，ㄇㄟˇ ㄊㄧㄢ ㄏㄨㄟˊ ㄐㄧㄚ ㄉㄧˋ ㄧ ㄐㄧㄢˋ ㄕˋ ㄐㄧㄡˋ ㄕˋ ㄓㄨㄢ ㄒㄧㄣ ㄅㄚˇ ㄍㄨㄥ ㄎㄜˋ ㄒㄧㄝˇ ㄨㄢˊ。', wrong: '他一直都很守規矩，從來沒犯過錯，真是痛改前非。', wrongZhuyin: 'ㄊㄚ ㄧ ㄓˊ ㄉㄡ ㄏㄣˇ ㄕㄡˇ ㄍㄨㄟ ㄐㄩˇ，ㄘㄨㄥˊ ㄌㄞˊ ㄇㄟˊ ㄈㄢˋ ㄍㄨㄛˋ ㄘㄨㄛˋ，ㄓㄣ ㄕˋ ㄊㄨㄥˋ ㄍㄞˇ ㄑㄧㄢˊ ㄈㄟ。', wrongWhy: '痛改前非是以前做錯、下決心改掉；從沒犯錯就不用改。', wrongWhyZhuyin: 'ㄊㄨㄥˋ ㄍㄞˇ ㄑㄧㄢˊ ㄈㄟ ㄕˋ ㄧˇ ㄑㄧㄢˊ ㄗㄨㄛˋ ㄘㄨㄛˋ、ㄒㄧㄚˋ ㄐㄩㄝˊ ㄒㄧㄣ ㄍㄞˇ ㄉㄧㄠˋ；ㄘㄨㄥˊ ㄇㄟˊ ㄈㄢˋ ㄘㄨㄛˋ ㄐㄧㄡˋ ㄅㄨˋ ㄩㄥˋ ㄍㄞˇ。', trait: 'good', traitPhrase: '決心改掉以前的錯', traitPhraseZhuyin: 'ㄐㄩㄝˊ ㄒㄧㄣ ㄍㄞˇ ㄉㄧㄠˋ ㄧˇ ㄑㄧㄢˊ ㄉㄜ˙ ㄘㄨㄛˋ' },
+        { id: 'yugongyishan', idiom: '愚公移山', zhuyin: 'ㄩˊ ㄍㄨㄥ ㄧˊ ㄕㄢ', choiceZhuyin: 'ㄓˇ ㄧㄠˋ ㄧㄡˇ ㄏㄥˊ ㄒㄧㄣ，ㄊㄧㄢ ㄊㄧㄢ ㄋㄨˇ ㄌㄧˋ ㄅㄨˋ ㄈㄤˋ ㄑㄧˋ，ㄗㄞˋ ㄋㄢˊ ㄉㄜ˙ ㄕˋ ㄧㄝˇ ㄋㄥˊ ㄨㄢˊ ㄔㄥˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄧㄠˋ ㄅㄟˋ ㄨㄢˊ ㄧ ㄓㄥˇ ㄅㄣˇ ㄏㄡˋ ㄏㄡˋ ㄉㄜ˙ ㄧㄥ ㄨㄣˊ ㄉㄢ ㄗˋ ㄕㄨ ㄎㄢˋ ㄑㄧˇ ㄌㄞˊ ㄏㄠˇ ㄋㄢˊ，ㄉㄢˋ ㄇㄟˇ ㄊㄧㄢ ㄐㄧㄢ ㄔˊ ㄅㄟˋ ㄙㄢ ㄍㄜ˙，ㄕˊ ㄐㄧㄢ ㄧ ㄐㄧㄡˇ，ㄅㄨˋ ㄓ ㄅㄨˋ ㄐㄩㄝˊ ㄐㄧㄡˋ ㄑㄩㄢˊ ㄒㄩㄝˊ ㄏㄨㄟˋ ㄌㄜ˙。', meaning: '只要有恆心，天天努力不放棄，再難的事也能完成。', hint: '再難的事，只要堅持就能成功。', scene: '要背完一整本厚厚的英文單字書看起來好難，但每天堅持背三個，時間一久，不知不覺就全學會了。', example: '只要我們拿出愚公移山的精神天天練習跳繩，總有一天能跳過一百下。', exampleZhuyin: 'ㄓˇ ㄧㄠˋ ㄨㄛˇ ㄇㄣ˙ ㄋㄚˊ ㄔㄨ ㄩˊ ㄍㄨㄥ ㄧˊ ㄕㄢ ㄉㄜ˙ ㄐㄧㄥ ㄕㄣˊ ㄊㄧㄢ ㄊㄧㄢ ㄌㄧㄢˋ ㄒㄧˊ ㄊㄧㄠˋ ㄕㄥˊ，ㄗㄨㄥˇ ㄧㄡˇ ㄧ ㄊㄧㄢ ㄋㄥˊ ㄊㄧㄠˋ ㄍㄨㄛˋ ㄧ ㄅㄞˇ ㄒㄧㄚˋ。', wrong: '他才做了一天就嫌累放棄了，真有愚公移山的精神。', wrongZhuyin: 'ㄊㄚ ㄘㄞˊ ㄗㄨㄛˋ ㄌㄜ˙ ㄧ ㄊㄧㄢ ㄐㄧㄡˋ ㄒㄧㄢˊ ㄌㄟˋ ㄈㄤˋ ㄑㄧˋ ㄌㄜ˙，ㄓㄣ ㄧㄡˇ ㄩˊ ㄍㄨㄥ ㄧˊ ㄕㄢ ㄉㄜ˙ ㄐㄧㄥ ㄕㄣˊ。', wrongWhy: '愚公移山是堅持不放棄；一天就放棄不是。', wrongWhyZhuyin: 'ㄩˊ ㄍㄨㄥ ㄧˊ ㄕㄢ ㄕˋ ㄐㄧㄢ ㄔˊ ㄅㄨˋ ㄈㄤˋ ㄑㄧˋ；ㄧ ㄊㄧㄢ ㄐㄧㄡˋ ㄈㄤˋ ㄑㄧˋ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '堅持不放棄就能成功', traitPhraseZhuyin: 'ㄐㄧㄢ ㄔˊ ㄅㄨˋ ㄈㄤˋ ㄑㄧˋ ㄐㄧㄡˋ ㄋㄥˊ ㄔㄥˊ ㄍㄨㄥ' },
+        { id: 'aiwujiwu', idiom: '愛屋及烏', zhuyin: 'ㄞˋ ㄨ ㄐㄧˊ ㄨ', choiceZhuyin: 'ㄧㄣ ㄨㄟˋ ㄒㄧˇ ㄏㄨㄢ ㄧ ㄍㄜ˙ ㄖㄣˊ，ㄌㄧㄢˊ ㄊㄚ ㄕㄣ ㄅㄧㄢ ㄉㄜ˙ ㄖㄣˊ ㄏㄜˊ ㄉㄨㄥ ㄒㄧ ㄧㄝˇ ㄧ ㄑㄧˇ ㄒㄧˇ ㄏㄨㄢ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄨㄛˇ ㄏㄣˇ ㄒㄧˇ ㄏㄨㄢ ㄏㄠˇ ㄆㄥˊ ㄧㄡˇ ㄒㄧㄠˇ ㄇㄟˇ，ㄙㄨㄛˇ ㄧˇ ㄒㄧㄠˇ ㄇㄟˇ ㄉㄞˋ ㄒㄧㄣ ㄞˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄘㄤ ㄕㄨˇ ㄌㄞˊ ㄨㄛˇ ㄐㄧㄚ ㄨㄢˊ ㄕˊ，ㄨㄛˇ ㄧㄝˇ ㄊㄜˋ ㄅㄧㄝˊ ㄨㄣ ㄖㄡˊ、ㄒㄧˋ ㄒㄧㄣ ㄉㄜ˙ ㄓㄠˋ ㄍㄨˋ ㄋㄚˋ ㄓ ㄒㄧㄠˇ ㄘㄤ ㄕㄨˇ。', meaning: '因為喜歡一個人，連他身邊的人和東西也一起喜歡。', hint: '喜歡一個人，連他的寵物也跟著疼愛。', scene: '我很喜歡好朋友小美，所以小美帶心愛的小倉鼠來我家玩時，我也特別溫柔、細心地照顧那隻小倉鼠。', example: '奶奶疼愛小表弟，愛屋及烏，連他的玩具也收得好好的。', exampleZhuyin: 'ㄋㄞˇ ㄋㄞˇ ㄊㄥˊ ㄞˋ ㄒㄧㄠˇ ㄅㄧㄠˇ ㄉㄧˋ，ㄞˋ ㄨ ㄐㄧˊ ㄨ，ㄌㄧㄢˊ ㄊㄚ ㄉㄜ˙ ㄨㄢˊ ㄐㄩˋ ㄧㄝˇ ㄕㄡ ㄉㄜ˙ ㄏㄠˇ ㄏㄠˇ ㄉㄜ˙。', wrong: '我很討厭小明，連他的小狗也討厭，這就是愛屋及烏。', wrongZhuyin: 'ㄨㄛˇ ㄏㄣˇ ㄊㄠˇ ㄧㄢˋ ㄒㄧㄠˇ ㄇㄧㄥˊ，ㄌㄧㄢˊ ㄊㄚ ㄉㄜ˙ ㄒㄧㄠˇ ㄍㄡˇ ㄧㄝˇ ㄊㄠˇ ㄧㄢˋ，ㄓㄜˋ ㄐㄧㄡˋ ㄕˋ ㄞˋ ㄨ ㄐㄧˊ ㄨ。', wrongWhy: '愛屋及烏是喜歡一個人、連他的東西也喜歡；討厭不是。', wrongWhyZhuyin: 'ㄞˋ ㄨ ㄐㄧˊ ㄨ ㄕˋ ㄒㄧˇ ㄏㄨㄢ ㄧ ㄍㄜ˙ ㄖㄣˊ、ㄌㄧㄢˊ ㄊㄚ ㄉㄜ˙ ㄉㄨㄥ ㄒㄧ ㄧㄝˇ ㄒㄧˇ ㄏㄨㄢ；ㄊㄠˇ ㄧㄢˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'dangrenburang', idiom: '當仁不讓', zhuyin: 'ㄉㄤ ㄖㄣˊ ㄅㄨˋ ㄖㄤˋ', choiceZhuyin: 'ㄩˋ ㄉㄠˋ ㄍㄞ ㄗㄨㄛˋ ㄉㄜ˙ ㄏㄠˇ ㄕˋ，ㄓㄨˇ ㄉㄨㄥˋ ㄓㄢˋ ㄔㄨ ㄌㄞˊ ㄔㄥˊ ㄉㄢ，ㄅㄨˋ ㄊㄨㄟ ㄍㄟˇ ㄅㄧㄝˊ ㄖㄣˊ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄌㄠˇ ㄕ ㄨㄣˋ ㄧㄡˇ ㄕㄟˊ ㄩㄢˋ ㄧˋ ㄉㄞˋ ㄅㄧㄠˇ ㄅㄢ ㄕㄤˋ ㄘㄢ ㄐㄧㄚ ㄌㄤˇ ㄉㄨˊ ㄅㄧˇ ㄙㄞˋ，ㄆㄧㄥˊ ㄔㄤˊ ㄏㄣˇ ㄩㄥˋ ㄍㄨㄥ ㄌㄧㄢˋ ㄒㄧˊ ㄉㄜ˙ ㄒㄧㄠˇ ㄢ ㄌㄧˋ ㄎㄜˋ ㄐㄩˇ ㄕㄡˇ ㄕㄨㄛ：「ㄌㄠˇ ㄕ，ㄖㄤˋ ㄨㄛˇ ㄌㄞˊ ㄕˋ ㄕˋ ㄎㄢˋ！」', meaning: '遇到該做的好事，主動站出來承擔，不推給別人。', hint: '該做的事情，自己勇敢第一個舉手。', scene: '老師問有誰願意代表班上參加朗讀比賽，平常很用功練習的小安立刻舉手說：「老師，讓我來試試看！」', example: '走廊有垃圾，我當仁不讓地撿起來丟掉。', exampleZhuyin: 'ㄗㄡˇ ㄌㄤˊ ㄧㄡˇ ㄌㄜˋ ㄙㄜˋ，ㄨㄛˇ ㄉㄤ ㄖㄣˊ ㄅㄨˋ ㄖㄤˋ ㄉㄜ˙ ㄐㄧㄢˇ ㄑㄧˇ ㄌㄞˊ ㄉㄧㄡ ㄉㄧㄠˋ。', wrong: '老師問誰願意幫忙，他躲在後面假裝沒聽到，真是當仁不讓。', wrongZhuyin: 'ㄌㄠˇ ㄕ ㄨㄣˋ ㄕㄟˊ ㄩㄢˋ ㄧˋ ㄅㄤ ㄇㄤˊ，ㄊㄚ ㄉㄨㄛˇ ㄗㄞˋ ㄏㄡˋ ㄇㄧㄢˋ ㄐㄧㄚˇ ㄓㄨㄤ ㄇㄟˊ ㄊㄧㄥ ㄉㄠˋ，ㄓㄣ ㄕˋ ㄉㄤ ㄖㄣˊ ㄅㄨˋ ㄖㄤˋ。', wrongWhy: '當仁不讓是主動站出來做；躲起來不是。', wrongWhyZhuyin: 'ㄉㄤ ㄖㄣˊ ㄅㄨˋ ㄖㄤˋ ㄕˋ ㄓㄨˇ ㄉㄨㄥˋ ㄓㄢˋ ㄔㄨ ㄌㄞˊ ㄗㄨㄛˋ；ㄉㄨㄛˇ ㄑㄧˇ ㄌㄞˊ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '該做的事主動去做', traitPhraseZhuyin: 'ㄍㄞ ㄗㄨㄛˋ ㄉㄜ˙ ㄕˋ ㄓㄨˇ ㄉㄨㄥˋ ㄑㄩˋ ㄗㄨㄛˋ' },
+        { id: 'dangtoubanghe', idiom: '當頭棒喝', zhuyin: 'ㄉㄤ ㄊㄡˊ ㄅㄤˋ ㄏㄜˋ', choiceZhuyin: 'ㄧ ㄐㄩˋ ㄧㄢˊ ㄙㄨˋ ㄉㄜ˙ ㄊㄧˊ ㄒㄧㄥˇ，ㄖㄤˋ ㄖㄣˊ ㄌㄧˋ ㄎㄜˋ ㄒㄧㄥˇ ㄍㄨㄛˋ ㄌㄞˊ、ㄇㄧㄥˊ ㄅㄞˊ ㄗˋ ㄐㄧˇ ㄘㄨㄛˋ ㄌㄜ˙。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄉㄧˋ ㄉㄧ˙ ㄧ ㄓˊ ㄔㄣˊ ㄇㄧˊ ㄉㄚˇ ㄉㄧㄢˋ ㄉㄨㄥˋ ㄅㄨˋ ㄔ ㄨㄢˇ ㄈㄢˋ，ㄊㄧㄥ ㄉㄠˋ ㄇㄚ ㄇㄚ ㄧㄢˊ ㄙㄨˋ ㄉㄜ˙ ㄕㄨㄛ ㄧㄢˇ ㄐㄧㄥ ㄏㄨㄞˋ ㄉㄧㄠˋ ㄐㄧㄡˋ ㄅㄨˋ ㄋㄥˊ ㄉㄚˇ ㄑㄧㄡˊ ㄌㄜ˙，ㄒㄧㄚˋ ㄉㄜ˙ ㄌㄧˋ ㄎㄜˋ ㄅㄚˇ ㄆㄧㄥˊ ㄅㄢˇ ㄕㄡ ㄑㄧˇ ㄌㄞˊ。', meaning: '一句嚴肅的提醒，讓人立刻醒過來、明白自己錯了。', hint: '像被輕輕敲了一下，馬上清醒。', scene: '弟弟一直沉迷打電動不吃晚飯，聽到媽媽嚴肅地說眼睛壞掉就不能打球了，嚇得立刻把平板收起來。', example: '老師的話有如當頭棒喝，讓我不再浪費時間。', exampleZhuyin: 'ㄌㄠˇ ㄕ ㄉㄜ˙ ㄏㄨㄚˋ ㄧㄡˇ ㄖㄨˊ ㄉㄤ ㄊㄡˊ ㄅㄤˋ ㄏㄜˋ，ㄖㄤˋ ㄨㄛˇ ㄅㄨˋ ㄗㄞˋ ㄌㄤˋ ㄈㄟˋ ㄕˊ ㄐㄧㄢ。', wrong: '老師稱讚我今天畫得很漂亮，我好開心，真是當頭棒喝。', wrongZhuyin: 'ㄌㄠˇ ㄕ ㄔㄥ ㄗㄢˋ ㄨㄛˇ ㄐㄧㄣ ㄊㄧㄢ ㄏㄨㄚˋ ㄉㄜ˙ ㄏㄣˇ ㄆㄧㄠˋ ㄌㄧㄤˋ，ㄨㄛˇ ㄏㄠˇ ㄎㄞ ㄒㄧㄣ，ㄓㄣ ㄕˋ ㄉㄤ ㄊㄡˊ ㄅㄤˋ ㄏㄜˋ。', wrongWhy: '當頭棒喝是嚴肅的提醒、讓人醒悟自己錯了；被稱讚不是。', wrongWhyZhuyin: 'ㄉㄤ ㄊㄡˊ ㄅㄤˋ ㄏㄜˋ ㄕˋ ㄧㄢˊ ㄙㄨˋ ㄉㄜ˙ ㄊㄧˊ ㄒㄧㄥˇ、ㄖㄤˋ ㄖㄣˊ ㄒㄧㄥˇ ㄨˋ ㄗˋ ㄐㄧˇ ㄘㄨㄛˋ ㄌㄜ˙；ㄅㄟˋ ㄔㄥ ㄗㄢˋ ㄅㄨˋ ㄕˋ。' },
+        { id: 'jiaotashidi', idiom: '腳踏實地', zhuyin: 'ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ', choiceZhuyin: 'ㄗㄨㄛˋ ㄕˋ ㄧ ㄅㄨˋ ㄧ ㄅㄨˋ ㄖㄣˋ ㄓㄣ ㄧㄡˋ ㄨㄣˇ ㄉㄤ，ㄅㄨˋ ㄊㄡ ㄌㄢˇ、ㄅㄨˋ ㄊㄡˊ ㄐㄧ ㄑㄩˇ ㄑㄧㄠˇ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄒㄧㄤˇ ㄎㄠˇ ㄏㄠˇ ㄔㄥˊ ㄐㄧ，ㄅㄨˋ ㄕˋ ㄎㄠˋ ㄎㄠˇ ㄕˋ ㄕˊ ㄊㄡ ㄎㄢˋ ㄍㄜˊ ㄅㄧˋ ㄊㄨㄥˊ ㄒㄩㄝˊ，ㄦˊ ㄕˋ ㄇㄟˇ ㄊㄧㄢ ㄏㄨㄟˊ ㄐㄧㄚ ㄍㄨㄞ ㄍㄨㄞ ㄒㄧㄝˇ ㄕㄥ ㄗˋ、ㄈㄨˋ ㄒㄧˊ ㄎㄜˋ ㄨㄣˊ，ㄅㄚˇ ㄐㄧ ㄔㄨˇ ㄉㄚˇ ㄏㄠˇ。', meaning: '做事一步一步認真又穩當，不偷懶、不投機取巧。', hint: '不偷懶、不走捷徑，慢慢累積。', scene: '想考好成績，不是靠考試時偷看隔壁同學，而是每天回家乖乖寫生字、複習課文，把基礎打好。', example: '學習任何本領都要腳踏實地，才能學得扎實又穩固。', exampleZhuyin: 'ㄒㄩㄝˊ ㄒㄧˊ ㄖㄣˋ ㄏㄜˊ ㄅㄣˇ ㄌㄧㄥˇ ㄉㄡ ㄧㄠˋ ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ，ㄘㄞˊ ㄋㄥˊ ㄒㄩㄝˊ ㄉㄜ˙ ㄓㄚ ㄕˊ ㄧㄡˋ ㄨㄣˇ ㄍㄨˋ。', wrong: '他不讀書，每天只想靠運氣考滿分，真是腳踏實地。', wrongZhuyin: 'ㄊㄚ ㄅㄨˋ ㄉㄨˊ ㄕㄨ，ㄇㄟˇ ㄊㄧㄢ ㄓˇ ㄒㄧㄤˇ ㄎㄠˋ ㄩㄣˋ ㄑㄧˋ ㄎㄠˇ ㄇㄢˇ ㄈㄣ，ㄓㄣ ㄕˋ ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ。', wrongWhy: '腳踏實地是一步一步認真做；靠運氣、不讀書不是。', wrongWhyZhuyin: 'ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ ㄕˋ ㄧ ㄅㄨˋ ㄧ ㄅㄨˋ ㄖㄣˋ ㄓㄣ ㄗㄨㄛˋ；ㄎㄠˋ ㄩㄣˋ ㄑㄧˋ、ㄅㄨˋ ㄉㄨˊ ㄕㄨ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '一步一步認真做', traitPhraseZhuyin: 'ㄧ ㄅㄨˋ ㄧ ㄅㄨˋ ㄖㄣˋ ㄓㄣ ㄗㄨㄛˋ' },
+        { id: 'daotingtushuo', idiom: '道聽塗說', zhuyin: 'ㄉㄠˋ ㄊㄧㄥ ㄊㄨˊ ㄕㄨㄛ', choiceZhuyin: 'ㄇㄟˊ ㄧㄡˇ ㄑㄧㄣ ㄧㄢˇ ㄎㄢˋ ㄉㄠˋ、ㄧㄝˇ ㄇㄟˊ ㄧㄡˇ ㄔㄚˊ ㄓㄥˋ，ㄊㄧㄥ ㄉㄠˋ ㄐㄧㄡˋ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄌㄨㄢˋ ㄔㄨㄢˊ ㄉㄜ˙ ㄏㄨㄚˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄊㄧㄥ ㄅㄧㄝˊ ㄖㄣˊ ㄕㄨㄛ ㄒㄩㄝˊ ㄒㄧㄠˋ ㄉㄧˋ ㄒㄧㄚˋ ㄕˋ ㄧㄡˇ ㄧㄡ ㄌㄧㄥˊ，ㄉㄚˋ ㄐㄧㄚ ㄐㄧㄡˋ ㄒㄧㄚˋ ㄉㄜ˙ ㄅㄨˋ ㄍㄢˇ ㄑㄩˋ ㄕㄤˋ ㄘㄜˋ ㄙㄨㄛˇ，ㄏㄡˋ ㄌㄞˊ ㄌㄠˇ ㄕ ㄉㄞˋ ㄉㄚˋ ㄐㄧㄚ ㄑㄩˋ ㄎㄢˋ，ㄘㄞˊ ㄈㄚ ㄒㄧㄢˋ ㄓˇ ㄕˋ ㄐㄧㄡˋ ㄈㄥ ㄕㄢˋ ㄓㄨㄢˋ ㄉㄨㄥˋ ㄉㄜ˙ ㄕㄥ ㄧㄣ。', meaning: '沒有親眼看到、也沒有查證，聽到就隨便亂傳的話。', hint: '在路上隨便聽到的話，不一定是真的。', scene: '聽別人說學校地下室有幽靈，大家就嚇得不敢去上廁所，後來老師帶大家去看，才發現只是舊風扇轉動的聲音。', example: '我們說話要有事實根據，不能道聽塗說隨便相信謠言。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄕㄨㄛ ㄏㄨㄚˋ ㄧㄠˋ ㄧㄡˇ ㄕˋ ㄕˊ ㄍㄣ ㄐㄩˋ，ㄅㄨˋ ㄋㄥˊ ㄉㄠˋ ㄊㄧㄥ ㄊㄨˊ ㄕㄨㄛ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄒㄧㄤ ㄒㄧㄣˋ ㄧㄠˊ ㄧㄢˊ。', wrong: '這件事是我親眼看到的，所以是道聽塗說。', wrongZhuyin: 'ㄓㄜˋ ㄐㄧㄢˋ ㄕˋ ㄕˋ ㄨㄛˇ ㄑㄧㄣ ㄧㄢˇ ㄎㄢˋ ㄉㄠˋ ㄉㄜ˙，ㄙㄨㄛˇ ㄧˇ ㄕˋ ㄉㄠˋ ㄊㄧㄥ ㄊㄨˊ ㄕㄨㄛ。', wrongWhy: '道聽塗說是沒有證實、隨便聽來的話；親眼看到的不是。', wrongWhyZhuyin: 'ㄉㄠˋ ㄊㄧㄥ ㄊㄨˊ ㄕㄨㄛ ㄕˋ ㄇㄟˊ ㄧㄡˇ ㄓㄥˋ ㄕˊ、ㄙㄨㄟˊ ㄅㄧㄢˋ ㄊㄧㄥ ㄌㄞˊ ㄉㄜ˙ ㄏㄨㄚˋ；ㄑㄧㄣ ㄧㄢˇ ㄎㄢˋ ㄉㄠˋ ㄉㄜ˙ ㄅㄨˋ ㄕˋ。', trait: 'bad', traitPhrase: '沒查證就亂傳的話', traitPhraseZhuyin: 'ㄇㄟˊ ㄔㄚˊ ㄓㄥˋ ㄐㄧㄡˋ ㄌㄨㄢˋ ㄔㄨㄢˊ ㄉㄜ˙ ㄏㄨㄚˋ' },
+        { id: 'geqiangyouer', idiom: '隔牆有耳', zhuyin: 'ㄍㄜˊ ㄑㄧㄤˊ ㄧㄡˇ ㄦˇ', choiceZhuyin: 'ㄕㄨㄛ ㄇㄧˋ ㄇㄧˋ ㄕˊ ㄧㄠˋ ㄒㄧㄠˇ ㄒㄧㄣ，ㄎㄜˇ ㄋㄥˊ ㄧㄡˇ ㄖㄣˊ ㄗㄞˋ ㄆㄤˊ ㄅㄧㄢ ㄊㄡ ㄊㄧㄥ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄗㄞˋ ㄊㄠˇ ㄌㄨㄣˋ ㄅㄤ ㄇㄚ ㄇㄚ ㄑㄧㄥˋ ㄕㄥ ㄉㄜ˙ ㄇㄧˋ ㄇㄧˋ ㄐㄧˋ ㄏㄨㄚˋ，ㄈㄚ ㄒㄧㄢˋ ㄇㄟˋ ㄇㄟˋ ㄅㄚˇ ㄦˇ ㄉㄨㄛˇ ㄊㄧㄝ ㄗㄞˋ ㄈㄤˊ ㄇㄣˊ ㄕㄤˋ ㄊㄡ ㄊㄧㄥ，ㄉㄚˋ ㄐㄧㄚ ㄍㄢˇ ㄐㄧㄣˇ ㄧㄚ ㄉㄧ ㄕㄥ ㄧㄣ。', meaning: '說秘密時要小心，可能有人在旁邊偷聽。', hint: '說悄悄話的時候，小心有人偷聽。', scene: '我們在討論幫媽媽慶生的秘密計畫，發現妹妹把耳朵貼在房門上偷聽，大家趕緊壓低聲音。', example: '我們說悄悄話時聲音要放小一點，小心隔牆有耳，秘密就被發現了。', exampleZhuyin: 'ㄨㄛˇ ㄇㄣ˙ ㄕㄨㄛ ㄑㄧㄠ ㄑㄧㄠ ㄏㄨㄚˋ ㄕˊ ㄕㄥ ㄧㄣ ㄧㄠˋ ㄈㄤˋ ㄒㄧㄠˇ ㄧ ㄉㄧㄢˇ，ㄒㄧㄠˇ ㄒㄧㄣ ㄍㄜˊ ㄑㄧㄤˊ ㄧㄡˇ ㄦˇ，ㄇㄧˋ ㄇㄧˋ ㄐㄧㄡˋ ㄅㄟˋ ㄈㄚ ㄒㄧㄢˋ ㄌㄜ˙。', wrong: '妹妹的耳朵長得很大，同學都說她隔牆有耳。', wrongZhuyin: 'ㄇㄟˋ ㄇㄟˋ ㄉㄜ˙ ㄦˇ ㄉㄨㄛˇ ㄓㄤˇ ㄉㄜ˙ ㄏㄣˇ ㄉㄚˋ，ㄊㄨㄥˊ ㄒㄩㄝˊ ㄉㄡ ㄕㄨㄛ ㄊㄚ ㄍㄜˊ ㄑㄧㄤˊ ㄧㄡˇ ㄦˇ。', wrongWhy: '隔牆有耳是提醒說秘密要小心被偷聽，不是形容耳朵大。', wrongWhyZhuyin: 'ㄍㄜˊ ㄑㄧㄤˊ ㄧㄡˇ ㄦˇ ㄕˋ ㄊㄧˊ ㄒㄧㄥˇ ㄕㄨㄛ ㄇㄧˋ ㄇㄧˋ ㄧㄠˋ ㄒㄧㄠˇ ㄒㄧㄣ ㄅㄟˋ ㄊㄡ ㄊㄧㄥ，ㄅㄨˋ ㄕˋ ㄒㄧㄥˊ ㄖㄨㄥˊ ㄦˇ ㄉㄨㄛˇ ㄉㄚˋ。' },
+        { id: 'ningquewulan', idiom: '寧缺勿濫', zhuyin: 'ㄋㄧㄥˋ ㄑㄩㄝ ㄨˋ ㄌㄢˋ', choiceZhuyin: 'ㄑㄧㄥˊ ㄩㄢˋ ㄕㄠˇ ㄧ ㄉㄧㄢˇ、ㄇㄟˊ ㄧㄡˇ ㄧㄝˇ ㄨˊ ㄙㄨㄛˇ ㄨㄟˋ，ㄅㄨˋ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄋㄚˊ ㄅㄨˋ ㄏㄠˇ ㄉㄜ˙ ㄌㄞˊ ㄘㄡˋ ㄕㄨˋ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄊㄧㄠ ㄕㄥ ㄖˋ ㄎㄚˇ ㄆㄧㄢˋ ㄙㄨㄥˋ ㄏㄠˇ ㄆㄥˊ ㄧㄡˇ ㄕˊ，ㄒㄧㄠˇ ㄑㄧˊ ㄑㄧㄥˊ ㄩㄢˋ ㄉㄨㄛ ㄏㄨㄚ ㄕˊ ㄐㄧㄢ ㄇㄢˋ ㄇㄢˋ ㄓㄠˇ ㄧ ㄓㄤ ㄗㄨㄟˋ ㄐㄧㄥ ㄇㄟˇ、ㄗㄨㄟˋ ㄩㄥˋ ㄒㄧㄣ ㄉㄜ˙，ㄧㄝˇ ㄅㄨˋ ㄙㄨㄟˊ ㄅㄧㄢˋ ㄇㄞˇ ㄧ ㄓㄤ ㄆㄛˋ ㄐㄧㄡˋ ㄉㄜ˙ ㄎㄚˇ ㄆㄧㄢˋ。', meaning: '情願少一點、沒有也無所謂，不隨便拿不好的來湊數。', hint: '品質比數量更重要。', scene: '挑生日卡片送好朋友時，小琪情願多花時間慢慢找一張最精美、最用心的，也不隨便買一張破舊的卡片。', example: '交朋友要抱持寧缺勿濫的原則，選擇品格善良、互相鼓勵的好夥伴。', exampleZhuyin: 'ㄐㄧㄠ ㄆㄥˊ ㄧㄡˇ ㄧㄠˋ ㄅㄠˋ ㄔˊ ㄋㄧㄥˋ ㄑㄩㄝ ㄨˋ ㄌㄢˋ ㄉㄜ˙ ㄩㄢˊ ㄗㄜˊ，ㄒㄩㄢˇ ㄗㄜˊ ㄆㄧㄣˇ ㄍㄜˊ ㄕㄢˋ ㄌㄧㄤˊ、ㄏㄨˋ ㄒㄧㄤ ㄍㄨˇ ㄌㄧˋ ㄉㄜ˙ ㄏㄠˇ ㄏㄨㄛˇ ㄅㄢˋ。', wrong: '他看到什麼都想買，亂買了一大堆，真是寧缺勿濫。', wrongZhuyin: 'ㄊㄚ ㄎㄢˋ ㄉㄠˋ ㄕㄣˊ ㄇㄜ˙ ㄉㄡ ㄒㄧㄤˇ ㄇㄞˇ，ㄌㄨㄢˋ ㄇㄞˇ ㄌㄜ˙ ㄧ ㄉㄚˋ ㄉㄨㄟ，ㄓㄣ ㄕˋ ㄋㄧㄥˋ ㄑㄩㄝ ㄨˋ ㄌㄢˋ。', wrongWhy: '寧缺勿濫是寧可少一點、也不亂湊數；亂買一大堆不是。', wrongWhyZhuyin: 'ㄋㄧㄥˋ ㄑㄩㄝ ㄨˋ ㄌㄢˋ ㄕˋ ㄋㄧㄥˊ ㄎㄜˇ ㄕㄠˇ ㄧ ㄉㄧㄢˇ、ㄧㄝˇ ㄅㄨˋ ㄌㄨㄢˋ ㄘㄡˋ ㄕㄨˋ；ㄌㄨㄢˋ ㄇㄞˇ ㄧ ㄉㄚˋ ㄉㄨㄟ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '寧可少也不亂湊數', traitPhraseZhuyin: 'ㄋㄧㄥˊ ㄎㄜˇ ㄕㄠˇ ㄧㄝˇ ㄅㄨˋ ㄌㄨㄢˋ ㄘㄡˋ ㄕㄨˋ' },
+        { id: 'jiechangbuduan', idiom: '截長補短', zhuyin: 'ㄐㄧㄝˊ ㄔㄤˊ ㄅㄨˇ ㄉㄨㄢˇ', choiceZhuyin: 'ㄋㄚˊ ㄉㄨㄛ ㄔㄨ ㄌㄞˊ ㄉㄜ˙ ㄧㄡ ㄉㄧㄢˇ，ㄑㄩˋ ㄅㄤ ㄇㄤˊ ㄊㄧㄢˊ ㄇㄢˇ ㄅㄨˋ ㄗㄨˊ ㄉㄜ˙ ㄉㄧˋ ㄈㄤ。ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', sceneZhuyin: 'ㄈㄣ ㄗㄨˇ ㄗㄨㄛˋ ㄅㄧˋ ㄅㄠˋ ㄕˊ，ㄏㄨㄚˋ ㄏㄨㄚˋ ㄌㄧˋ ㄏㄞˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄇㄟˇ ㄈㄨˋ ㄗㄜˊ ㄏㄨㄚˋ ㄔㄚ ㄊㄨˊ，ㄗˋ ㄒㄧㄝˇ ㄉㄜ˙ ㄆㄧㄠˋ ㄌㄧㄤˋ ㄉㄜ˙ ㄒㄧㄠˇ ㄑㄧㄤˊ ㄈㄨˋ ㄗㄜˊ ㄒㄧㄝˇ ㄉㄚˋ ㄅㄧㄠ ㄊㄧˊ，ㄌㄧㄤˇ ㄍㄜ˙ ㄖㄣˊ ㄏㄜˊ ㄗㄨㄛˋ ㄅㄚˇ ㄏㄞˇ ㄅㄠˋ ㄗㄨㄛˋ ㄉㄜ˙ ㄧㄡˋ ㄎㄨㄞˋ ㄧㄡˋ ㄏㄠˇ。', meaning: '拿多出來的優點，去幫忙填滿不足的地方。', hint: '你的優點，幫我的不足。', scene: '分組做壁報時，畫畫厲害的小美負責畫插圖，字寫得漂亮的小強負責寫大標題，兩個人合作把海報做得又快又好。', example: '同學之間互相學習、截長補短，大家就能一起進步。', exampleZhuyin: 'ㄊㄨㄥˊ ㄒㄩㄝˊ ㄓ ㄐㄧㄢ ㄏㄨˋ ㄒㄧㄤ ㄒㄩㄝˊ ㄒㄧˊ、ㄐㄧㄝˊ ㄔㄤˊ ㄅㄨˇ ㄉㄨㄢˇ，ㄉㄚˋ ㄐㄧㄚ ㄐㄧㄡˋ ㄋㄥˊ ㄧ ㄑㄧˇ ㄐㄧㄣˋ ㄅㄨˋ。', wrong: '兩個人都只做自己會的事，不肯互相幫忙，真是截長補短。', wrongZhuyin: 'ㄌㄧㄤˇ ㄍㄜ˙ ㄖㄣˊ ㄉㄡ ㄓˇ ㄗㄨㄛˋ ㄗˋ ㄐㄧˇ ㄏㄨㄟˋ ㄉㄜ˙ ㄕˋ，ㄅㄨˋ ㄎㄣˇ ㄏㄨˋ ㄒㄧㄤ ㄅㄤ ㄇㄤˊ，ㄓㄣ ㄕˋ ㄐㄧㄝˊ ㄔㄤˊ ㄅㄨˇ ㄉㄨㄢˇ。', wrongWhy: '截長補短是用自己的優點補別人的不足；不肯幫忙不是。', wrongWhyZhuyin: 'ㄐㄧㄝˊ ㄔㄤˊ ㄅㄨˇ ㄉㄨㄢˇ ㄕˋ ㄩㄥˋ ㄗˋ ㄐㄧˇ ㄉㄜ˙ ㄧㄡ ㄉㄧㄢˇ ㄅㄨˇ ㄅㄧㄝˊ ㄖㄣˊ ㄉㄜ˙ ㄅㄨˋ ㄗㄨˊ；ㄅㄨˋ ㄎㄣˇ ㄅㄤ ㄇㄤˊ ㄅㄨˋ ㄕˋ。', trait: 'good', traitPhrase: '互相幫忙補足不夠的', traitPhraseZhuyin: 'ㄏㄨˋ ㄒㄧㄤ ㄅㄤ ㄇㄤˊ ㄅㄨˇ ㄗㄨˊ ㄅㄨˋ ㄍㄡˋ ㄉㄜ˙' }
       ]
     };
 
@@ -997,6 +1323,15 @@
           ...idiomLibraries[3],
           ...idiomLibraries[4],
           ...idiomLibraries[5]
+        ];
+      }
+      if (volumeKey === 'all2') {
+        return [
+          ...idiomLibraries[6],
+          ...idiomLibraries[7],
+          ...idiomLibraries[8],
+          ...idiomLibraries[9],
+          ...idiomLibraries[10]
         ];
       }
       return idiomLibraries[volumeKey] || idiomLibraries[2];
@@ -1206,7 +1541,9 @@
       timerId: null,
       challengeStartedAt: 0,
       challengeElapsedMs: 0,
-      promptText: ''
+      promptText: '',
+      binaryItems: [],
+      binaryAnswer: null
     };
 
     const $ = (id) => document.getElementById(id);
@@ -1225,7 +1562,13 @@
       if (key === '3') return '第三輯 (W5.6)';
       if (key === '4') return '第四輯 (W7.8)';
       if (key === '5') return '第五輯 (W9.10)';
-      return '🌟 全輯挑戰';
+      if (key === '6') return '第六輯 (W11.12)';
+      if (key === '7') return '第七輯 (W13.14)';
+      if (key === '8') return '第八輯 (W15.16)';
+      if (key === '9') return '第九輯 (W17.18)';
+      if (key === '10') return '第十輯 (W19.20)';
+      if (key === 'all2') return '🌟 全輯挑戰 (6–10輯)';
+      return '🌟 全輯挑戰 (1–5輯)';
     }
 
     function updateSeatUI() {
@@ -1285,6 +1628,7 @@
     }
 
     function setScreen(id) {
+      if (id !== 'whack-screen' && window.__whackStop) window.__whackStop();
       document.querySelectorAll('.screen').forEach((screen) => screen.classList.toggle('active', screen.id === id));
       state.screen = id;
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1311,10 +1655,704 @@
       $('mode-character-name').textContent = `${state.character.emoji} ${state.character.name}`;
       $('mode-character-emoji').textContent = state.character.emoji;
       $('mode-volume-label').textContent = volumeLabel(state.selectedVolume);
+      $('group-card').style.display = isNewSet() ? '' : 'none';
     }
 
     function renderPracticeMenu() {
       $('practice-character-emoji').textContent = state.character.emoji;
+      $('judge-card').style.display = isNewSet() ? '' : 'none';
+      $('whack-card').style.display = isNewSet() ? '' : 'none';
+      $('sort-card').style.display = isSortSet() ? '' : 'none';
+    }
+
+    /* =========================================================
+       成語圖鑑：每輯一張成語卡；一個成語答對 2 次學會；依學會數量升級
+       ========================================================= */
+    const ALBUM_ART = {"一朝一夕": "⏳🌙", "一落千丈": "📉⛰️", "一舉兩得": "🏹🐦", "七零八落": "👕👟", "人小鬼大": "👶💡", "力挽狂瀾": "🌊💪", "十惡不赦": "😈🚫", "三頭六臂": "🐙✨", "亡羊補牢": "🐑🔧", "千載難逢": "🌈✨", "口不擇言": "🗣️💥", "大逆不道": "⚠️👿", "大顯身手": "🤸🌟", "寸步難行": "🐢🚧", "山窮水盡": "🏔️💧", "不求上進": "😴🛋️", "不屈不撓": "🌱{stone}", "不期而遇": "🚶✨", "予取予求": "🍬🛒", "允文允武": "📖⚔️", "分門別類": "🗂️🔤", "天真爛漫": "🌼👧", "天經地義": "⚖️✅", "心甘情願": "😊🤝", "心血來潮": "💡🌊", "心曠神怡": "🌄😌", "手忙腳亂": "🤹💦", "水火不容": "💧🔥", "水落石出": "🌊{stone}", "火冒三丈": "😡🔥", "仗勢欺人": "💪😢", "出人意表": "🎁😲", "出人頭地": "🏆🌟", "半途而廢": "🚶🚧", "失而復得": "🔑🎉", "失魂落魄": "👻😱", "任勞任怨": "🐂💪", "光宗耀祖": "🏅🏠", "光明磊落": "☀️🕊️", "各顯神通": "🎪✨", "同病相憐": "🤒🤝", "名列前茅": "🥇📋", "回心轉意": "💭↩️", "宅心仁厚": "🏡❤️", "守株待兔": "🌳🐰", "有恃無恐": "🛡️😎", "羊入虎口": "🐑🐯", "老奸巨猾": "🦊👴", "老當益壯": "👴💪", "自告奮勇": "🙋💪", "自相殘殺": "⚔️👥", "自討沒趣": "😳💦", "衣冠楚楚": "👔✨", "似懂非懂": "🤔❓", "吹毛求疵": "🔍😒", "快馬加鞭": "🐎💨", "我行我素": "🙉🕶️", "改邪歸正": "😈😇", "束手無策": "🤷❓", "良師益友": "📚🤝", "和藹可親": "😊🤗", "所向無敵": "🛡️🏆", "易如反掌": "🖐️🍰", "欣欣向榮": "🌳🌷", "盲人摸象": "🐘🤲", "直接了當": "➡️🎯", "空前絕後": "🌠✨", "虎頭蛇尾": "🐯🐍", "門庭若市": "🏪👥", "信口開河": "🗣️🌊", "怨天尤人": "😤☁️", "指鹿為馬": "🦌🐴", "眉開眼笑": "😄🎉", "迫不及待": "⏰🏃", "倒吃甘蔗": "🎋🍬", "弱不禁風": "🌬️🤒", "海底撈針": "🌊{needle}", "狼狽為奸": "🐺😈", "偷雞摸狗": "🐔🕵️", "執迷不悟": "⛔🙉", "情同手足": "👬🤝", "理直氣壯": "📢✅", "盛氣凌人": "😤👆", "雪中送炭": "❄️🔥", "喪盡天良": "🖤💔", "單槍匹馬": "🐎🚶", "提心吊膽": "😰💓", "朝三暮四": "🐒🍌", "無中生有": "🎩✨", "無動於衷": "😐❄️", "痛改前非": "😔🚮", "愚公移山": "⛰️👴", "愛屋及烏": "🏠🐦", "當仁不讓": "🙋✨", "當頭棒喝": "🔔💡", "腳踏實地": "👣🌱", "道聽塗說": "👂🛣️", "隔牆有耳": "🏠👂", "寧缺勿濫": "💎✨", "截長補短": "✂️📏"};
+    const ALBUM_NEED = 2;
+    const ALBUM_WK = ['', 'W1.2', 'W3.4', 'W5.6', 'W7.8', 'W9.10', 'W11.12', 'W13.14', 'W15.16', 'W17.18', 'W19.20'];
+    const ALBUM_NUM = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+    const ALBUM_COL = ['', '#ffd9d9', '#ffe6c7', '#fff3b8', '#d9f2c4', '#c7f0e3', '#cfe8ff', '#d9d9ff', '#ecd4ff', '#ffc9b8', '#d5f0f5'];
+    const ALBUM_GUARD = ['🐰', '🐻', '🦊', '🐼', '🐱', '🐿️'];
+    const ALBUM_LEVEL_NAME = { locked: '未點亮', lit: '點亮', silver: '銀邊', gold: '金邊' };
+    const ALBUM_STARS = { locked: 0, lit: 1, silver: 2, gold: 3 };
+    const ALBUM_STONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 Q2 9 8 6 Q14 3 19 7 Q23 11 21 17 Q19 21 12 21 Q5 21 3 17Z" fill="#a3a9b3" stroke="#6b7280" stroke-width="1.2"/><path d="M8 10 Q11 7.5 14 8.5" stroke="#d6dae1" fill="none" stroke-width="1.6" stroke-linecap="round"/></svg>';
+    const ALBUM_NEEDLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="20" x2="19" y2="5" stroke="#8a93a3" stroke-width="2" stroke-linecap="round"/><ellipse cx="19" cy="5" rx="1.6" ry="2.8" transform="rotate(45 19 5)" fill="none" stroke="#8a93a3" stroke-width="1.3"/></svg>';
+    const albumState = { counts: {}, key: 'guest', sync: 'guest', saveTimer: null };
+
+    function albumKey() {
+      return state.seatNumber ? `seat-${String(state.seatNumber).padStart(2, '0')}` : 'guest';
+    }
+
+    function albumArtHtml(art) {
+      return (art || '').replace('{stone}', ALBUM_STONE).replace('{needle}', ALBUM_NEEDLE);
+    }
+
+    function albumEntries(vol) {
+      return idiomLibraries[vol] || [];
+    }
+
+    function albumVolumeOf(id) {
+      for (let v = 1; v <= 10; v++) {
+        if (albumEntries(v).some((e) => e.id === id)) return v;
+      }
+      return 0;
+    }
+
+    function albumFind(id) {
+      for (let v = 1; v <= 10; v++) {
+        const hit = albumEntries(v).find((e) => e.id === id);
+        if (hit) return hit;
+      }
+      return null;
+    }
+
+    function albumLearned(vol) {
+      return albumEntries(vol).filter((e) => (albumState.counts[e.id] || 0) >= ALBUM_NEED).length;
+    }
+
+    function albumTotalLearned() {
+      let n = 0;
+      for (let v = 1; v <= 10; v++) n += albumLearned(v);
+      return n;
+    }
+
+    function albumLevel(n) {
+      return n >= 10 ? 'gold' : n >= 6 ? 'silver' : n >= 3 ? 'lit' : 'locked';
+    }
+
+    function albumReadLocal(key) {
+      try { return JSON.parse(localStorage.getItem(`idiom_album_${key}`) || '{}') || {}; } catch (e) { return {}; }
+    }
+
+    function albumSaveLocal() {
+      try { localStorage.setItem(`idiom_album_${albumState.key}`, JSON.stringify(albumState.counts)); } catch (e) { /* 儲存空間滿了也不影響遊戲 */ }
+    }
+
+    function albumMerge(a, b) {
+      const out = { ...a };
+      Object.keys(b || {}).forEach((k) => { out[k] = Math.max(out[k] || 0, b[k] || 0); });
+      return out;
+    }
+
+    function albumRefresh() {
+      $('album-count').textContent = `${albumTotalLearned()}/100`;
+      if ($('album-screen').classList.contains('active')) renderAlbum();
+    }
+
+    function albumLoad() {
+      albumState.key = albumKey();
+      albumState.counts = albumReadLocal(albumState.key);
+      albumState.sync = state.seatNumber ? (db ? 'syncing' : 'local') : 'guest';
+      albumRefresh();
+      if (!state.seatNumber || !db) return;
+      const key = albumState.key;
+      db.collection('idiom_album').doc(key).get().then((snap) => {
+        if (albumState.key !== key) return;
+        const remote = snap.exists ? (snap.data().counts || {}) : {};
+        albumState.counts = albumMerge(albumState.counts, remote);
+        albumSaveLocal();
+        albumState.sync = 'synced';
+        albumRefresh();
+        albumPushRemote(true);
+      }).catch(() => {
+        if (albumState.key === key) { albumState.sync = 'error'; albumRefresh(); }
+      });
+    }
+
+    function albumPushRemote(immediate) {
+      if (!state.seatNumber || !db) return;
+      clearTimeout(albumState.saveTimer);
+      const key = albumState.key;
+      const counts = { ...albumState.counts };
+      const run = () => {
+        db.collection('idiom_album').doc(key).set({
+          seat: Number(key.slice(5)),
+          counts,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).then(() => {
+          if (albumState.key === key) { albumState.sync = 'synced'; albumRefresh(); }
+        }).catch(() => {
+          if (albumState.key === key) { albumState.sync = 'error'; albumRefresh(); }
+        });
+      };
+      if (immediate) run(); else albumState.saveTimer = setTimeout(run, 1200);
+    }
+
+    function albumToast(text, big) {
+      const box = $('album-toasts');
+      const el = document.createElement('div');
+      el.className = `album-toast${big ? ' big' : ''}`;
+      el.textContent = text;
+      box.appendChild(el);
+      setTimeout(() => el.remove(), big ? 3600 : 2600);
+    }
+
+    /* 每次答對呼叫：累計次數，第 2 次蓋章，卡片升級時慶祝 */
+    function albumRecord(idiom) {
+      if (!idiom || !idiom.id) return;
+      const vol = albumVolumeOf(idiom.id);
+      if (!vol) return;
+      const before = albumLearned(vol);
+      const prev = albumState.counts[idiom.id] || 0;
+      albumState.counts[idiom.id] = Math.min(prev + 1, 99);
+      albumSaveLocal();
+      albumPushRemote(false);
+      if (prev + 1 === ALBUM_NEED) {
+        const lvBefore = albumLevel(before);
+        const lvAfter = albumLevel(before + 1);
+        albumToast(`✅ 學會新成語：${idiom.idiom}`);
+        sound.star();
+        if (lvBefore !== lvAfter) {
+          const name = lvAfter === 'lit' ? '點亮了！' : `升級為${ALBUM_LEVEL_NAME[lvAfter]}！`;
+          albumToast(`🏅 第${ALBUM_NUM[vol]}輯成語卡 ${name}`, true);
+          setTimeout(() => { sound.victory(); triggerConfetti(60); }, 350);
+        }
+      }
+      albumRefresh();
+    }
+
+    function albumRecordById(id) {
+      albumRecord(albumFind(id));
+    }
+
+    function albumCardHtml(vol) {
+      const learned = albumLearned(vol);
+      const lv = albumLevel(learned);
+      const stars = '★'.repeat(ALBUM_STARS[lv]) + `<span style="color:#c9c8d6">${'★'.repeat(3 - ALBUM_STARS[lv])}</span>`;
+      const stamps = albumEntries(vol).map((e) => {
+        const c = albumState.counts[e.id] || 0;
+        if (c >= ALBUM_NEED) {
+          return `<button class="stamp learned" data-action="album-stamp" data-id="${e.id}"><span class="stamp-art">${albumArtHtml(ALBUM_ART[e.idiom])}</span><span class="stamp-name">${e.idiom}</span></button>`;
+        }
+        return `<button class="stamp" data-action="album-stamp" data-id="${e.id}"><span class="stamp-q">？</span>${c > 0 ? `<span class="stamp-prog">${c}/${ALBUM_NEED}</span>` : ''}</button>`;
+      }).join('');
+      return `<div class="album-card lv-${lv}" style="--vc:${lv === 'locked' ? '#d4d3df' : ALBUM_COL[vol]}">
+        <div class="album-head"><span>第${ALBUM_NUM[vol]}輯 · ${ALBUM_WK[vol]}</span><span class="album-chip">${ALBUM_LEVEL_NAME[lv]}</span></div>
+        <div class="album-body">
+          <div class="album-title">第${ALBUM_NUM[vol]}輯成語卡</div>
+          <div class="album-stamps">${stamps}</div>
+          <div class="album-count">學會 ${learned}／10 個成語</div>
+        </div>
+        <div class="album-foot"><span>${ALBUM_GUARD[(vol - 1) % 6]} 守護者</span><span class="album-stars">${stars}</span></div>
+      </div>`;
+    }
+
+    function renderAlbum() {
+      let lit = 0;
+      for (let v = 1; v <= 10; v++) if (albumLearned(v) >= 3) lit += 1;
+      const seat = state.seatNumber ? `${String(state.seatNumber).padStart(2, '0')} 號` : '訪客';
+      const syncText = {
+        synced: `☁️ 已同步到 ${seat}`,
+        syncing: '☁️ 同步中…',
+        local: '📱 只存在這台裝置',
+        guest: '📱 訪客的圖鑑只存在這台裝置，選座號才能在其他裝置看到',
+        error: '⚠️ 暫時無法同步，已先存在這台裝置'
+      }[albumState.sync];
+      $('album-summary').innerHTML = `<div><strong>${albumTotalLearned()} / 100</strong> 個成語已學會　<strong>${lit} / 10</strong> 張卡點亮</div><div class="album-sync">${seat}　${syncText}</div>`;
+      $('album-grid').innerHTML = Array.from({ length: 10 }, (_, i) => albumCardHtml(i + 1)).join('');
+    }
+
+    function albumDetail(id) {
+      const e = albumFind(id);
+      if (!e) return;
+      const c = albumState.counts[e.id] || 0;
+      const learned = c >= ALBUM_NEED;
+      $('album-detail-body').innerHTML = learned
+        ? `<div class="album-detail-art">${albumArtHtml(ALBUM_ART[e.idiom])}</div>
+           <div class="album-detail-name">${e.idiom}</div>
+           <div class="zhuyin" style="text-align:center;">${e.zhuyin || ''}</div>
+           <p class="album-detail-line"><strong>意思：</strong>${e.meaning}</p>
+           <p class="album-detail-line"><strong>造句：</strong>${e.example}</p>
+           <p class="album-detail-line" style="color:var(--muted);">✅ 已學會（答對 ${c} 次）</p>`
+        : `<div class="album-detail-art" style="opacity:.35;">？</div>
+           <div class="album-detail-name">？？？？</div>
+           <p class="album-detail-line" style="text-align:center;">再答對 <strong>${ALBUM_NEED - c}</strong> 次就能學會！</p>
+           <p class="album-detail-line"><strong>小提示：</strong>${e.hint}</p>`;
+      $('album-detail').classList.add('open');
+    }
+
+    /* =========================================================
+       第六～十輯新玩法：用對了嗎、品格分類箱、打地鼠、團體模式
+       ========================================================= */
+    function isNewSet() {
+      const v = String(state.selectedVolume);
+      return v === 'all2' || Number(v) >= 6;
+    }
+
+    function isSortSet() {
+      return String(state.selectedVolume) === 'all2';
+    }
+
+    function isBinaryType(type) {
+      return type === 'judge' || type === 'sort';
+    }
+
+    function spreadAdjacent(items) {
+      let result = shuffle(items);
+      for (let attempt = 0; attempt < 30; attempt++) {
+        if (!result.some((item, i) => i > 0 && item.idiom.id === result[i - 1].idiom.id)) break;
+        result = shuffle(items);
+      }
+      return result;
+    }
+
+    /* 用對了嗎：一半正確句、一半錯誤句 */
+    function buildJudgeItems(count) {
+      const pool = state.currentIdioms;
+      let items;
+      if (pool.length >= count) {
+        const half = Math.floor(count / 2);
+        items = shuffle(pool).slice(0, count).map((idiom, i) => ({ idiom, correct: i >= half }));
+      } else {
+        const trues = shuffle(pool).slice(0, Math.ceil(count / 2)).map((idiom) => ({ idiom, correct: true }));
+        const falses = shuffle(pool).slice(0, Math.floor(count / 2)).map((idiom) => ({ idiom, correct: false }));
+        items = [...trues, ...falses];
+      }
+      return spreadAdjacent(items);
+    }
+
+    /* 品格分類箱：一半 👍、一半 👎（只取老師確認過分類的成語） */
+    function buildSortItems(count) {
+      const pool = state.currentIdioms.filter((idiom) => idiom.trait);
+      const half = Math.floor(count / 2);
+      const goods = shuffle(pool.filter((idiom) => idiom.trait === 'good')).slice(0, count - half);
+      const bads = shuffle(pool.filter((idiom) => idiom.trait === 'bad')).slice(0, half);
+      return spreadAdjacent([
+        ...goods.map((idiom) => ({ idiom, trait: 'good' })),
+        ...bads.map((idiom) => ({ idiom, trait: 'bad' }))
+      ]);
+    }
+
+    function highlightIdiom(sentence, idiom) {
+      return sentence.replace(idiom, `<span class="idiom-hl">${idiom}</span>`);
+    }
+
+    function plainMeaningZhuyin(idiom) {
+      return (idiom.choiceZhuyin || '').replace('ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', '');
+    }
+
+    function zhuyinLine(show, text) {
+      return show && text ? `<div class="zhuyin">${text}</div>` : '';
+    }
+
+    const BINARY_GAMES = {
+      judge: {
+        label: '⭕❌ 用對了嗎？',
+        note: '這句話裡的成語，用得對不對？',
+        buttons: [
+          { ans: 'yes', cls: 'yes', icon: '⭕', text: '用對了' },
+          { ans: 'no', cls: 'no', icon: '❌', text: '用錯了' }
+        ],
+        build: (count) => buildJudgeItems(count),
+        view(item) {
+          const idm = item.idiom;
+          const sentence = item.correct ? idm.example : idm.wrong;
+          return {
+            html: highlightIdiom(sentence, idm.idiom),
+            zhuyin: item.correct ? idm.exampleZhuyin : idm.wrongZhuyin,
+            speak: sentence,
+            hint: `想一想：「${idm.idiom}」的意思是${idm.meaning}`
+          };
+        },
+        isRight: (item, ans) => (ans === 'yes') === item.correct,
+        reveal(item, ans, showZhuyin) {
+          const idm = item.idiom;
+          const right = this.isRight(item, ans);
+          const head = right
+            ? '<div class="judge-verdict ok">🎉 答對了！</div>'
+            : '<div class="judge-verdict no">💭 這題答錯了，沒關係，一起看看：</div>';
+          if (item.correct) {
+            return `${head}<div class="judge-reason"><strong>✅ 這句話的成語用對了。</strong>
+              <p>「${idm.idiom}」的意思：${idm.meaning}</p>${zhuyinLine(showZhuyin, plainMeaningZhuyin(idm))}</div>`;
+          }
+          return `${head}<div class="judge-reason"><strong>❌ 這句話的成語用錯了。</strong>
+            <p>${idm.wrongWhy}</p>${zhuyinLine(showZhuyin, idm.wrongWhyZhuyin)}
+            <p>✅ 正確的用法：${highlightIdiom(idm.example, idm.idiom)}</p>${zhuyinLine(showZhuyin, idm.exampleZhuyin)}</div>`;
+        }
+      },
+      sort: {
+        label: '📦 品格分類箱',
+        note: '這個成語是好品格，還是需要改進的行為？',
+        buttons: [
+          { ans: 'good', cls: 'yes', icon: '👍', text: '值得學習' },
+          { ans: 'bad', cls: 'no', icon: '👎', text: '需要改進' }
+        ],
+        build: (count) => buildSortItems(count),
+        view(item) {
+          const idm = item.idiom;
+          return {
+            html: `<span class="sort-idiom">${idm.idiom}</span><span class="sort-phrase">${idm.traitPhrase}</span>`,
+            zhuyin: `${idm.zhuyin}　${idm.traitPhraseZhuyin}`,
+            speak: `${idm.idiom}，${idm.traitPhrase}`,
+            hint: `想一想：「${idm.idiom}」的意思是${idm.meaning}`
+          };
+        },
+        isRight: (item, ans) => ans === item.trait,
+        reveal(item, ans, showZhuyin) {
+          const idm = item.idiom;
+          const right = this.isRight(item, ans);
+          const head = right
+            ? '<div class="judge-verdict ok">🎉 放對了！</div>'
+            : '<div class="judge-verdict no">💭 再想想，正確的箱子是：</div>';
+          const box = item.trait === 'good' ? '👍 值得學習' : '👎 需要改進';
+          return `${head}<div class="judge-reason"><strong>「${idm.idiom}」要放進：${box}</strong>
+            <p>意思：${idm.meaning}</p>${zhuyinLine(showZhuyin, plainMeaningZhuyin(idm))}</div>`;
+        }
+      }
+    };
+
+    function binaryButtonsHtml(game, answer, action) {
+      const big = action === 'group-answer';
+      const cls = big ? 'judge-buttons big' : 'judge-buttons';
+      const buttons = BINARY_GAMES[game].buttons.map((b) => {
+        if (!answer) {
+          return `<button class="judge-btn ${b.cls}" data-action="${action}" data-ans="${b.ans}"><span>${b.icon}</span>${b.text}</button>`;
+        }
+        const mark = answer.ans === b.ans ? ` chosen ${answer.right ? 'right' : 'wrong'}` : '';
+        return `<button class="judge-btn ${b.cls}${mark}" disabled><span>${b.icon}</span>${b.text}</button>`;
+      });
+      return `<div class="${cls}">${buttons.join('')}</div>`;
+    }
+
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-TW';
+        utterance.rate = 0.86;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /* ---- 個人版（練習 / 挑戰）---- */
+    function renderBinary() {
+      const game = currentType();
+      const g = BINARY_GAMES[game];
+      const item = state.binaryItems[state.index];
+      state.current = item.idiom;
+      const v = g.view(item);
+      const config = { questionZhuyin: v.zhuyin, speakText: v.speak, hintText: v.hint };
+      $('question-area').innerHTML = baseQuestion(g.label, v.html, g.note, config);
+      const answer = state.binaryAnswer;
+      let html = binaryButtonsHtml(game, answer, 'binary-answer');
+      if (answer) {
+        const last = state.index + 1 >= state.total;
+        html += `<div class="judge-result">${g.reveal(item, answer.ans, state.showZhuyin)}</div>
+          <div class="button-row" style="margin-top:14px;"><button class="primary-button" data-action="binary-next">${last ? '看成績 🏆' : '下一題 ➜'}</button></div>`;
+      }
+      $('dynamic-area').innerHTML = html;
+    }
+
+    function answerBinary(ans) {
+      if (state.locked || state.binaryAnswer) return;
+      const g = BINARY_GAMES[currentType()];
+      const item = state.binaryItems[state.index];
+      const right = g.isRight(item, ans);
+      state.binaryAnswer = { ans, right };
+      state.locked = true;
+      if (right) { state.score += 1; albumRecord(item.idiom); sound.correct(); triggerConfetti(20); } else { sound.wrong(); }
+      $('score-pill').textContent = `⭐ ${state.score}`;
+      renderBinary();
+      const box = document.querySelector('.judge-result');
+      if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    /* ---- 團體模式 ---- */
+    const groupState = { n: 2, game: 'judge', teams: [], items: [], index: 0, total: 12, answer: null, showZhuyin: false };
+
+    function teamChipsHtml(teams, activeIndex) {
+      return teams.map((t, i) => `<div class="team-chip${i === activeIndex ? ' active' : ''}">
+        <span class="team-emoji">${t.emoji}</span><span class="team-name">${t.name}</span><span class="team-score">${t.score}</span></div>`).join('');
+    }
+
+    function makeTeams() {
+      return animals.slice(0, groupState.n).map((a) => ({ emoji: a.emoji, name: `${a.name}隊`, score: 0 }));
+    }
+
+    function renderGroupSetup() {
+      document.querySelectorAll('[data-action="group-teams"]').forEach((btn) => {
+        btn.classList.toggle('active', Number(btn.dataset.n) === groupState.n);
+      });
+      $('group-volume-label').textContent = volumeLabel(state.selectedVolume);
+      $('group-sort-card').style.display = isSortSet() ? '' : 'none';
+      $('group-team-preview').innerHTML = animals.slice(0, groupState.n)
+        .map((a) => `<span class="team-chip-mini">${a.emoji} ${a.name}隊</span>`).join('');
+    }
+
+    function openGroupSetup() {
+      renderGroupSetup();
+      setScreen('group-setup-screen');
+    }
+
+    function startGroup(game) {
+      if (game === 'whack') { startGroupWhack(); return; }
+      const g = groupState;
+      g.game = game;
+      g.teams = makeTeams();
+      g.total = 12;
+      g.items = BINARY_GAMES[game].build(g.total);
+      g.index = 0;
+      g.answer = null;
+      g.showZhuyin = false;
+      setScreen('group-play-screen');
+      renderGroup();
+    }
+
+    function renderGroup() {
+      const g = groupState;
+      const game = BINARY_GAMES[g.game];
+      const item = g.items[g.index];
+      const turnIndex = g.index % g.n;
+      const team = g.teams[turnIndex];
+      const v = game.view(item);
+      $('group-board').innerHTML = teamChipsHtml(g.teams, turnIndex);
+      $('group-progress').textContent = `第 ${g.index + 1} 題／共 ${g.total} 題`;
+      $('group-progress-fill').style.width = `${((g.index + 1) / g.total) * 100}%`;
+      let actions = binaryButtonsHtml(g.game, g.answer, 'group-answer');
+      if (g.answer) {
+        const last = g.index + 1 >= g.total;
+        actions += `<div class="judge-result">${game.reveal(item, g.answer.ans, g.showZhuyin)}</div>
+          <div class="button-row" style="margin-top:14px;"><button class="primary-button" data-action="group-next">${last ? '看比賽結果 🏆' : '下一題 ➜'}</button></div>`;
+      }
+      $('group-area').innerHTML = `<div class="question-card">
+        <div class="question-label">${game.label}</div>
+        <div class="group-turn">輪到 <strong>${team.emoji} ${team.name}</strong> 回答</div>
+        <div class="question-text group-sentence">${v.html}</div>
+        ${g.showZhuyin && v.zhuyin ? `<div class="zhuyin">${v.zhuyin}</div>` : ''}
+        <div class="helper-row">
+          <button class="helper-button${g.showZhuyin ? ' active' : ''}" data-action="group-zhuyin">🔤 ${g.showZhuyin ? '收起注音' : '看注音'}</button>
+          <button class="helper-button" data-action="group-speak">🔊 聽一聽</button>
+        </div>
+        ${actions}
+      </div>`;
+    }
+
+    function answerGroup(ans) {
+      const g = groupState;
+      if (g.answer) return;
+      const item = g.items[g.index];
+      const right = BINARY_GAMES[g.game].isRight(item, ans);
+      g.answer = { ans, right };
+      if (right) { g.teams[g.index % g.n].score += 1; sound.correct(); triggerConfetti(25); } else { sound.wrong(); }
+      renderGroup();
+    }
+
+    function nextGroup() {
+      const g = groupState;
+      g.index += 1;
+      g.answer = null;
+      if (g.index >= g.total) showGroupResult(); else renderGroup();
+    }
+
+    function showGroupResult() {
+      const g = groupState;
+      const ranked = [...g.teams].sort((a, b) => b.score - a.score);
+      let rank = 0;
+      let prev = null;
+      const rows = ranked.map((t, i) => {
+        if (t.score !== prev) { rank = i + 1; prev = t.score; }
+        return { ...t, rank };
+      });
+      const winners = rows.filter((r) => r.rank === 1);
+      $('group-result-title').textContent = winners.length > 1
+        ? `平手！${winners.map((w) => `${w.emoji}${w.name}`).join('、')} 並列第一`
+        : `${winners[0].emoji} ${winners[0].name} 獲勝！`;
+      const medals = ['🥇', '🥈', '🥉'];
+      $('group-ranking').innerHTML = rows.map((r) => `<div class="rank-row rank-${r.rank}">
+        <span class="rank-medal">${medals[r.rank - 1] || r.rank}</span>
+        <span class="rank-team">${r.emoji} ${r.name}</span>
+        <span class="rank-score">${r.score} 分</span></div>`).join('');
+      sound.victory();
+      triggerConfetti(80);
+      setScreen('group-result-screen');
+    }
+
+    /* ---- 打地鼠：成語出洞（限時 30 秒）---- */
+    const whack = {
+      active: false, group: false, showZhuyin: false, seconds: 30, left: 0,
+      score: 0, hits: 0, misses: 0, combo: 0, bestCombo: 0,
+      target: null, moles: [], lastIds: [], waveMs: 5000,
+      waveTimer: null, tickTimer: null, onStart: null, onFinish: null
+    };
+
+    function whackStop() {
+      whack.active = false;
+      if (whack.waveTimer) { clearTimeout(whack.waveTimer); whack.waveTimer = null; }
+      if (whack.tickTimer) { clearInterval(whack.tickTimer); whack.tickTimer = null; }
+    }
+    window.__whackStop = whackStop;
+
+    function whackHud() {
+      $('whack-time').textContent = `⏱ ${Math.max(0, Math.ceil(whack.left - 0.0001))}`;
+      $('whack-time-fill').style.width = `${Math.max(0, (whack.left / whack.seconds) * 100)}%`;
+      $('whack-score').textContent = `⭐ ${whack.score}`;
+      const combo = $('whack-combo');
+      combo.hidden = whack.combo < 2;
+      combo.textContent = `🔥 連擊 ${whack.combo}`;
+    }
+
+    function whackReady(titleLine, onStart) {
+      whackStop();
+      Object.assign(whack, { left: whack.seconds, score: 0, hits: 0, misses: 0, combo: 0, bestCombo: 0, onStart });
+      whackHud();
+      $('whack-area').className = '';
+      $('whack-area').innerHTML = `<div class="question-card whack-ready">
+        <div class="question-label">🐹 打地鼠：成語出洞</div>
+        <h2>${titleLine || '準備好了嗎？'}</h2>
+        <p>上面會出現一句白話意思，<br>把洞裡對應的成語敲出來！<br>限時 ${whack.seconds} 秒，連續答對有連擊加分，敲錯不扣分。</p>
+        <button class="primary-button" data-action="whack-go">開始！</button>
+      </div>`;
+    }
+
+    function whackBegin(onFinish) {
+      whackStop();
+      Object.assign(whack, { active: true, left: whack.seconds, score: 0, hits: 0, misses: 0, combo: 0, bestCombo: 0, lastIds: [], onFinish });
+      whackHud();
+      whack.tickTimer = setInterval(() => {
+        whack.left -= 0.1;
+        whackHud();
+        if (whack.left <= 0) whackFinish();
+      }, 100);
+      whackNextWave();
+    }
+
+    function whackFinish() {
+      if (!whack.active) return;
+      const result = { score: whack.score, hits: whack.hits, misses: whack.misses, bestCombo: whack.bestCombo };
+      whackStop();
+      whack.left = 0;
+      whackHud();
+      if (whack.onFinish) whack.onFinish(result);
+    }
+
+    function whackNextWave() {
+      if (!whack.active) return;
+      if (whack.waveTimer) clearTimeout(whack.waveTimer);
+      const pool = state.currentIdioms;
+      let candidates = pool.filter((i) => !whack.lastIds.includes(i.id));
+      if (!candidates.length) candidates = pool;
+      const target = candidates[Math.floor(Math.random() * candidates.length)];
+      whack.lastIds = [...whack.lastIds, target.id].slice(-4);
+      const others = shuffle(pool.filter((i) => i.id !== target.id)).slice(0, 3);
+      const holes = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8]).slice(0, 1 + others.length);
+      whack.target = target;
+      whack.moles = shuffle([target, ...others]).map((idiom, k) => ({ hole: holes[k], idiom, correct: idiom.id === target.id, done: false }));
+      renderWhackBoard();
+      whack.waveTimer = setTimeout(() => {
+        if (!whack.active) return;
+        whack.combo = 0;
+        whackHud();
+        whackNextWave();
+      }, whack.waveMs);
+    }
+
+    function renderWhackBoard() {
+      const t = whack.target;
+      const cells = Array.from({ length: 9 }, (_, h) => {
+        const m = whack.moles.find((x) => x.hole === h);
+        if (!m) return '<div class="hole"><span class="mound"></span></div>';
+        return `<button class="hole has-mole" data-action="whack-hit" data-hole="${h}">
+          <span class="mole-emoji">🐹</span><span class="mole-label">${m.idiom.idiom}</span><span class="zy">${m.idiom.zhuyin}</span></button>`;
+      }).join('');
+      $('whack-area').className = whack.showZhuyin ? 'show-zy' : '';
+      $('whack-area').innerHTML = `<div class="question-card whack-prompt">
+        <div class="question-label">🐹 找出這個意思的成語</div>
+        <div class="question-text">${t.meaning}</div>
+        <div class="zy">${plainMeaningZhuyin(t)}</div>
+        <div class="helper-row">
+          <button class="helper-button${whack.showZhuyin ? ' active' : ''}" data-action="whack-zhuyin">🔤 注音</button>
+          <button class="helper-button" data-action="whack-speak">🔊 聽一聽</button>
+        </div>
+      </div>
+      <div class="whack-grid">${cells}</div>`;
+    }
+
+    function whackHit(h) {
+      if (!whack.active) return;
+      const m = whack.moles.find((x) => x.hole === h);
+      if (!m || m.done) return;
+      const btn = document.querySelector(`.hole[data-hole="${h}"]`);
+      m.done = true;
+      if (m.correct) {
+        whack.combo += 1;
+        whack.bestCombo = Math.max(whack.bestCombo, whack.combo);
+        whack.hits += 1;
+        albumRecord(m.idiom);
+        const pts = 10 + Math.min(whack.combo - 1, 5) * 2;
+        whack.score += pts;
+        sound.correct();
+        if (btn) { btn.classList.add('hit'); btn.insertAdjacentHTML('beforeend', `<span class="pts">+${pts}</span>`); }
+        whack.moles.forEach((x) => { x.done = true; });
+        if (whack.waveTimer) clearTimeout(whack.waveTimer);
+        whack.waveTimer = setTimeout(whackNextWave, 450);
+      } else {
+        whack.combo = 0;
+        whack.misses += 1;
+        sound.wrong();
+        if (btn) { btn.classList.add('miss'); btn.disabled = true; }
+      }
+      whackHud();
+    }
+
+    function whackStars(hits) {
+      const n = hits >= 12 ? 5 : hits >= 9 ? 4 : hits >= 6 ? 3 : hits >= 3 ? 2 : hits >= 1 ? 1 : 0;
+      return '⭐'.repeat(n) + '☆'.repeat(5 - n);
+    }
+
+    function startWhackPractice() {
+      stopChallengeTimer();
+      state.mode = 'practice';
+      state.practiceType = 'whack';
+      whack.group = false;
+      whack.showZhuyin = false;
+      $('whack-team').hidden = true;
+      setScreen('whack-screen');
+      whackReady(null, () => whackBegin(finishWhackPractice));
+    }
+
+    function finishWhackPractice(res) {
+      sound.victory();
+      triggerConfetti(50);
+      $('result-emoji').textContent = res.hits >= 8 ? '🎉' : '🌱';
+      $('result-title').textContent = res.hits >= 8 ? '你是打地鼠高手！' : '時間到！再玩一次會更棒！';
+      $('result-score').textContent = `${res.score} 分`;
+      $('result-stars').textContent = whackStars(res.hits);
+      $('result-time').hidden = true;
+      $('result-time').textContent = '';
+      $('result-message').textContent = `你敲對了 ${res.hits} 個成語，最高連擊 ${res.bestCombo}。想再挑戰，或換一種玩法吧！`;
+      setScreen('result-screen');
+    }
+
+    function startGroupWhack() {
+      const g = groupState;
+      g.game = 'whack';
+      g.teams = makeTeams();
+      g.index = 0;
+      whack.group = true;
+      whack.showZhuyin = false;
+      setScreen('whack-screen');
+      whackTeamReady();
+    }
+
+    function whackTeamReady() {
+      const g = groupState;
+      const team = g.teams[g.index];
+      $('whack-team').hidden = false;
+      $('whack-team').textContent = `${team.emoji} ${team.name}`;
+      whackReady(`輪到 ${team.emoji} ${team.name}（第 ${g.index + 1}／${g.n} 隊）`, () => whackBegin((res) => {
+        team.score += res.score;
+        sound.victory();
+        const last = g.index + 1 >= g.n;
+        $('whack-area').className = '';
+        $('whack-area').innerHTML = `<div class="question-card whack-ready">
+          <div class="question-label">⏰ 時間到！</div>
+          <h2>${team.emoji} ${team.name} 得 ${res.score} 分</h2>
+          <p>敲對 ${res.hits} 個成語，最高連擊 ${res.bestCombo}</p>
+          <div class="group-board">${teamChipsHtml(g.teams, g.index)}</div>
+          <button class="primary-button" data-action="whack-team-next">${last ? '看比賽結果 🏆' : '下一隊 ➜'}</button>
+        </div>`;
+      }));
     }
 
     function startPractice(type) {
@@ -1324,9 +2362,14 @@
       state.order = shuffle(state.currentIdioms);
       state.index = 0;
       state.score = 0;
-      state.total = type === 'match' ? (state.selectedVolume === 'all' ? 6 : 5) : Math.min(10, state.currentIdioms.length);
+      state.total = type === 'match' ? (String(state.selectedVolume).startsWith('all') ? 6 : 5) : Math.min(10, state.currentIdioms.length);
       state.matchRoundSize = 4;
       state.matchRounds = type === 'match' ? createMatchRounds() : [];
+      if (isBinaryType(type)) {
+        state.total = 10;
+        state.binaryItems = BINARY_GAMES[type].build(10);
+        state.order = state.binaryItems.map((item) => item.idiom);
+      }
       state.showZhuyin = false;
       state.showHint = false;
       state.locked = false;
@@ -1339,8 +2382,11 @@
       state.mode = 'challenge';
       state.practiceType = null;
       state.challengeOrder = shuffle(state.currentIdioms);
-      const types = ['choice', 'detective', 'scramble', 'match', 'choice', 'detective', 'scramble', 'choice', 'detective', 'scramble'];
+      const types = isNewSet()
+        ? ['choice', 'detective', 'scramble', 'match', 'judge', 'judge', 'choice', 'detective', 'scramble', 'judge']
+        : ['choice', 'detective', 'scramble', 'match', 'choice', 'detective', 'scramble', 'choice', 'detective', 'scramble'];
       state.challengeTypes = shuffle(types).slice(0, 10);
+      state.binaryItems = isNewSet() ? buildJudgeItems(10) : [];
       state.index = 0;
       state.score = 0;
       state.total = 10;
@@ -1362,11 +2408,13 @@
     }
 
     function currentIdiom() {
+      if (isBinaryType(currentType()) && state.binaryItems[state.index]) return state.binaryItems[state.index].idiom;
       return state.mode === 'challenge' ? state.challengeOrder[state.index % state.challengeOrder.length] : state.order[state.index];
     }
 
     function renderRound() {
       state.current = currentIdiom();
+      state.binaryAnswer = null;
       state.showZhuyin = false;
       state.showHint = false;
       state.locked = false;
@@ -1380,6 +2428,7 @@
       if (type === 'detective') renderDetective();
       if (type === 'scramble') renderScramble();
       if (type === 'match') renderMatch();
+      if (isBinaryType(type)) renderBinary();
     }
 
     function getQuestionConfig() {
@@ -1578,6 +2627,7 @@
           sound.correct();
           triggerConfetti(20);
           state.matchMatched.push(leftId);
+          albumRecordById(leftId);
           state.matchSelected = { left: null, right: null };
           if (state.matchMatched.length === state.matchRoundSize) {
             state.score += 1;
@@ -1603,6 +2653,7 @@
       if (state.locked) return;
       state.locked = true;
       state.score += 1;
+      albumRecord(state.current);
       $('score-pill').textContent = `⭐ ${state.score}`;
       setStatus(message, 'success');
       setTimeout(() => state.mode === 'practice' ? nextPracticeRound() : nextRound(), 650);
@@ -1650,9 +2701,9 @@
       if (state.mode === 'practice') {
         $('result-message').textContent = `本次${label}。想再練習一次，或換一種玩法試試看吧！`;
       } else if (state.score >= state.total) {
-        $('result-message').textContent = '你完成了四種玩法的綜合闖關，5 顆星滿分！成績已同步至班級排行榜！';
+        $('result-message').textContent = `你完成了${isNewSet() ? '五' : '四'}種玩法的綜合闖關，5 顆星滿分！成績已同步至班級排行榜！`;
       } else {
-        $('result-message').textContent = '你完成了四種玩法的綜合闖關，再試一次，目標是拿到 5 顆星並縮短時間！';
+        $('result-message').textContent = `你完成了${isNewSet() ? '五' : '四'}種玩法的綜合闖關，再試一次，目標是拿到 5 顆星並縮短時間！`;
       }
       setScreen('result-screen');
     }
@@ -1874,7 +2925,7 @@
       }
       if (action === 'mode') { renderModeScreen(); setScreen('mode-screen'); }
       if (action === 'practice-menu') { renderPracticeMenu(); setScreen('playmodes-screen'); }
-      if (action === 'practice-type') startPractice(target.dataset.type);
+      if (action === 'practice-type') { if (target.dataset.type === 'whack') startWhackPractice(); else startPractice(target.dataset.type); }
       if (action === 'challenge') startChallenge();
       if (action === 'play-back') {
         state.locked = true;
@@ -1883,7 +2934,11 @@
         setScreen(state.mode === 'practice' ? 'playmodes-screen' : 'mode-screen');
       }
       if (action === 'result-menu') { renderPracticeMenu(); setScreen(state.mode === 'practice' ? 'playmodes-screen' : 'mode-screen'); }
-      if (action === 'restart') state.mode === 'practice' ? startPractice(state.practiceType) : startChallenge();
+      if (action === 'restart') {
+        if (state.mode === 'practice' && state.practiceType === 'whack') startWhackPractice();
+        else if (state.mode === 'practice') startPractice(state.practiceType);
+        else startChallenge();
+      }
       if (action === 'choice') answerChoice(target.dataset.id);
       if (action === 'scramble-tile') selectScrambleTile(Number(target.dataset.index));
       if (action === 'scramble-slot') removeScramble(Number(target.dataset.index));
@@ -1893,6 +2948,29 @@
       if (action === 'zhuyin') { state.showZhuyin = !state.showZhuyin; renderRoundKeepingScramble(); }
       if (action === 'hint') { state.showHint = !state.showHint; renderRoundKeepingScramble(); }
       if (action === 'speak') speakCurrent();
+      if (action === 'open-album') { renderAlbum(); setScreen('album-screen'); }
+      if (action === 'album-stamp') albumDetail(target.dataset.id);
+      if (action === 'binary-answer') answerBinary(target.dataset.ans);
+      if (action === 'binary-next') { state.mode === 'practice' ? nextPracticeRound() : nextRound(); }
+      if (action === 'group') openGroupSetup();
+      if (action === 'group-teams') { groupState.n = Number(target.dataset.n); renderGroupSetup(); }
+      if (action === 'group-start') startGroup(target.dataset.game);
+      if (action === 'group-restart') startGroup(groupState.game);
+      if (action === 'group-answer') answerGroup(target.dataset.ans);
+      if (action === 'group-next') nextGroup();
+      if (action === 'group-zhuyin') { groupState.showZhuyin = !groupState.showZhuyin; renderGroup(); }
+      if (action === 'group-speak') speakText(BINARY_GAMES[groupState.game].view(groupState.items[groupState.index]).speak);
+      if (action === 'whack-go') { if (whack.onStart) whack.onStart(); }
+      if (action === 'whack-hit') whackHit(Number(target.dataset.hole));
+      if (action === 'whack-zhuyin') { whack.showZhuyin = !whack.showZhuyin; $('whack-area').classList.toggle('show-zy', whack.showZhuyin); target.classList.toggle('active', whack.showZhuyin); }
+      if (action === 'whack-speak') speakText(whack.target ? whack.target.meaning : '');
+      if (action === 'whack-team-next') { groupState.index += 1; if (groupState.index >= groupState.n) showGroupResult(); else whackTeamReady(); }
+      if (action === 'whack-exit') {
+        whackStop();
+        renderPracticeMenu();
+        renderModeScreen();
+        setScreen(whack.group ? 'mode-screen' : 'playmodes-screen');
+      }
 
       // 週次切換
       if (action === 'select-volume') {
@@ -1909,12 +2987,14 @@
         state.seatNumber = Number(target.dataset.seat);
         localStorage.setItem('idiom_seat_num', state.seatNumber);
         updateSeatUI();
+        albumLoad();
         closeModal();
       }
       if (action === 'set-guest-seat') {
         state.seatNumber = null;
         localStorage.removeItem('idiom_seat_num');
         updateSeatUI();
+        albumLoad();
         closeModal();
       }
 
@@ -1949,6 +3029,7 @@
 
     function renderRoundKeepingScramble() {
       const type = currentType();
+      if (isBinaryType(type)) { renderBinary(); return; }
       if (type === 'scramble') {
         const tiles = [...state.scrambleTiles];
         const picked = [...state.scramblePicked];
@@ -1980,6 +3061,7 @@
     updateSoundUI();
     updateDeviceUI();
     renderCharacters();
+    albumLoad();
   </script>
 </body>
 </html>
