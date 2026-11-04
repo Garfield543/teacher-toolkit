@@ -1,0 +1,11 @@
+# 回歸驗證
+
+在專案根目錄使用 PowerShell 執行：
+
+```powershell
+node .\tests\game-regression.cjs
+```
+
+需要已安裝 Node.js，無額外套件。測試讀取成語遊戲/index.html 目前的原始函式，不複製計分或同步實作。DOM、計時器、localStorage 與 Firestore 使用測試替身；不連網、不讀寫真實座號，不會更動 Firebase。
+
+涵蓋打地鼠連擊上限、錯答與重複點擊、圖鑑升級邊界、本機損壞資料、離線讀寫失敗與重新載入恢復。隔離測試不能取代瀏覽器完整流程、真實斷網、實體跨裝置與教師教材複核。
