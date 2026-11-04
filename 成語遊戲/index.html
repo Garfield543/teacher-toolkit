@@ -2706,7 +2706,7 @@
       if (state.mode === 'practice') {
         $('result-message').textContent = `本次${label}。想再練習一次，或換一種玩法試試看吧！`;
       } else if (state.score >= state.total) {
-        $('result-message').textContent = `你完成了${isNewSet() ? '五' : '四'}種玩法的綜合闖關，5 顆星滿分！成績已同步至班級排行榜！`;
+        $('result-message').textContent = `你完成了${isNewSet() ? '五' : '四'}種玩法的綜合闖關，5 顆星滿分！想再挑戰，或換一種玩法吧！`;
       } else {
         $('result-message').textContent = `你完成了${isNewSet() ? '五' : '四'}種玩法的綜合闖關，再試一次，目標是拿到 5 顆星並縮短時間！`;
       }
