@@ -4,7 +4,7 @@
 - 📋 **GDrive 工作區**：G:\我的雲端硬碟\teacher-toolkit\
 - 🐙 **GitHub Repo**：[Garfield543/teacher-toolkit](https://github.com/Garfield543/teacher-toolkit)
 - 📘 **Obsidian 工作筆記**：G:\我的雲端硬碟\secondbrain\teacher-toolkit\工作筆記.md
-- 🔥 **Firebase 專案**：my-teaching-tools（Firestore 資料庫）
+- 🔥 **Firebase 專案**：teacherstudy-12846（以成語遊戲目前 firebaseConfig 為準）
 
 ## 標準指令
 - **開工**：讀取 Obsidian 工作筆記、確認進度與下一步。

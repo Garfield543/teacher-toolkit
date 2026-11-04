@@ -299,6 +299,11 @@
     .group-turn { margin-bottom: 8px; font-size: clamp(1.1rem, 3vw, 1.5rem); }
     .group-sentence { max-width: 900px; line-height: 1.7; font-size: clamp(1.6rem, 4.2vw, 2.6rem) !important; }
     .judge-buttons.big { max-width: 820px; }
+    @media (max-width: 480px) {
+      .judge-buttons { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+      .judge-buttons .judge-btn { min-height: 72px; white-space: nowrap; }
+      .judge-buttons.big .judge-btn { min-height: 84px; font-size: clamp(1.25rem, 5vw, 1.6rem); }
+    }
     .judge-buttons.big .judge-btn { min-height: 110px; font-size: clamp(1.6rem, 4.5vw, 2.4rem); }
     .rank-row { display: flex; align-items: center; gap: 14px; max-width: 520px; margin: 10px auto; padding: 12px 18px; border: 2px solid #e2e2ef; border-radius: 18px; background: #fff; font-size: 1.4rem; font-weight: 900; }
     .rank-row.rank-1 { border-color: #f3c65a; background: var(--yellow); }
@@ -861,8 +866,8 @@
         </div>
 
         <div class="info-strip">
-          <div class="info-chip"><strong>🌱 練習版</strong>自選 4 種趣味玩法</div>
-          <div class="info-chip"><strong>🏆 挑戰版</strong>四種綜合闖關 + 計時</div>
+          <div class="info-chip"><strong>🌱 練習版</strong>最多 7 種玩法，依題庫開放</div>
+          <div class="info-chip"><strong>🏆 挑戰版</strong>每輪 10 關綜合挑戰 + 計時</div>
           <div class="info-chip"><strong>💡 小幫手</strong>注音、讀題、提示</div>
         </div>
       </div>
@@ -905,7 +910,7 @@
           <button class="mode-card challenge" data-action="challenge">
             <span class="mode-icon">🏆</span>
             <h3>挑戰版</h3>
-            <p>四種玩法綜合闖關，成績即時同步班級排行榜！</p>
+            <p>每輪 10 關，依題庫混合玩法；選座號可同步班級排行榜！</p>
             <span class="mode-button">開始挑戰</span>
           </button>
           <button class="mode-card group" id="group-card" data-action="group" style="display:none;">
