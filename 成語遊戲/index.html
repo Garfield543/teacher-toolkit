@@ -904,7 +904,7 @@
           <button class="mode-card practice" data-action="practice-menu">
             <span class="mode-icon">🌱</span>
             <h3>練習版</h3>
-            <p>10 題都玩同一種玩法，自由選擇與反覆練習。</p>
+            <p>自選單一玩法，依題型完成練習並反覆精熟。</p>
             <span class="mode-button">選擇玩法</span>
           </button>
           <button class="mode-card challenge" data-action="challenge">
@@ -1604,7 +1604,7 @@
     function createMatchRounds() {
       const pool = state.currentIdioms;
       let rounds; let used;
-      const numRounds = Math.min(5, Math.max(3, Math.ceil(pool.length / 2)));
+      const numRounds = state.total;
       do {
         rounds = Array.from({ length: numRounds }, () => shuffle(pool).slice(0, 4));
         used = new Set(rounds.flat().map((item) => item.id));

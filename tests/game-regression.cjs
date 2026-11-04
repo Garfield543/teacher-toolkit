@@ -83,5 +83,58 @@ const flush=()=>new Promise(resolve=>setImmediate(resolve));
   });
   const count=writes.length;ctx.state.seatNumber=null;ctx.albumState.counts={guestOnly:2};ctx.albumPushRemote(true);await flush();
   test('訪客圖鑑不寫入 Firestore',()=>assert.equal(writes.length,count));
+let shuffleOffset=0;
+ctx.shuffle=(items)=>{const offset=(shuffleOffset++*3)%items.length;return [...items.slice(offset),...items.slice(0,offset)];};
+ctx.stopChallengeTimer=()=>{};ctx.setScreen=()=>{};ctx.isBinaryType=t=>t==='judge'||t==='sort';
+ctx.BINARY_GAMES={judge:{build:n=>Array.from({length:n},(_,i)=>({idiom:{id:'q'+i}}))},sort:{build:n=>Array.from({length:n},(_,i)=>({idiom:{id:'q'+i}}))}};
+let renders=0,resultsShown=0;
+ctx.renderRound=()=>{renders++;ctx.state.locked=false;ctx.state.current=ctx.state.order?.[ctx.state.index];};
+ctx.showResult=()=>{resultsShown++;};ctx.setStatus=()=>{};ctx.triggerConfetti=()=>{};
+ctx.$=id=>{if(!elements.has(id))elements.set(id,{textContent:''});return elements.get(id);};
+for(const name of ['createMatchRounds','startPractice','correctRound','nextPracticeRound','checkScramble']) vm.runInContext(original(name),ctx);
+for(const type of ['choice','detective','scramble']){
+  test(type+' 完整練習十題、重複提交不重複加分、末題只結算一次',()=>{
+    ctx.state.currentIdioms=Array.from({length:10},(_,i)=>({id:'q'+i}));ctx.state.selectedVolume='6';
+    resultsShown=0;ctx.startPractice(type);assert.equal(ctx.state.total,10);
+    for(let i=0;i<10;i++){
+      timers.clear();ctx.correctRound('correct');ctx.correctRound('duplicate');
+      assert.equal(ctx.state.score,i+1);assert.equal(timers.size,1);
+      const callback=[...timers.values()][0];timers.clear();callback();
+    }
+    assert.equal(resultsShown,1);assert.equal(ctx.state.index,10);
+  });
+}
+test('重複中文字的衣冠楚楚可依序組合並計分',()=>{
+  timers.clear();ctx.state.current={id:'test',idiom:'衣冠楚楚'};ctx.state.scramblePicked=[...'衣冠楚楚'].map(char=>({char}));ctx.state.locked=false;ctx.state.score=0;
+  ctx.checkScramble();assert.equal(ctx.state.score,1);assert.equal(timers.size,1);
+});
+for(const volume of ['6','all','all2']){
+  test(volume+' 配對產生的回合數與可進行回合數一致，每回四組',()=>{
+    ctx.state.selectedVolume=volume;ctx.state.currentIdioms=Array.from({length:volume==='6'?10:50},(_,i)=>({id:'q'+i}));
+    ctx.startPractice('match');assert.equal(ctx.state.matchRounds.length,ctx.state.total);
+    for(const round of ctx.state.matchRounds)assert.equal(new Set(round.map(x=>x.id)).size,4);
+    assert.ok(new Set(ctx.state.matchRounds.flat().map(x=>x.id)).size>=10);
+  });
+}
+ctx.sound.flip=()=>{};ctx.renderMatchBoard=()=>{};ctx.albumRecordById=()=>{};
+vm.runInContext(original('selectMatch'),ctx);
+test('全輯配對實際完成六回、每回四組、重複配對不重複加分',()=>{
+  resultsShown=0;ctx.state.selectedVolume='all2';ctx.state.currentIdioms=Array.from({length:50},(_,i)=>({id:'q'+i}));ctx.startPractice('match');
+  for(let round=0;round<6;round++){
+    ctx.state.locked=false;ctx.state.matchMatched=[];ctx.state.matchSelected={left:null,right:null};timers.clear();
+    for(const item of ctx.state.matchRounds[round]){
+      ctx.selectMatch('left',item.id);ctx.selectMatch('right',item.id);
+      const score=ctx.state.score;ctx.selectMatch('left',item.id);assert.equal(ctx.state.score,score);
+    }
+    assert.equal(ctx.state.score,round+1);assert.equal(timers.size,1);
+    const callback=[...timers.values()][0];timers.clear();callback();
+  }
+  assert.equal(ctx.state.score,6);assert.equal(ctx.state.index,5);assert.equal(resultsShown,1);
+});
+test('字塊未滿四字或順序錯誤時可重試、不計分',()=>{
+  ctx.state.locked=false;ctx.state.score=0;ctx.state.current={id:'test',idiom:'衣冠楚楚'};timers.clear();
+  ctx.state.scramblePicked=[{char:'衣'}];ctx.checkScramble();assert.equal(ctx.state.score,0);assert.equal(ctx.state.locked,false);
+  ctx.state.scramblePicked=[...'楚衣冠楚'].map(char=>({char}));ctx.checkScramble();assert.equal(ctx.state.score,0);assert.equal(timers.size,0);
+});
   console.log(JSON.stringify({passed:results.length,tests:results,scope:'原始函式隔離測試；DOM、計時器、localStorage 與 Firestore 以測試替身提供；不連網、不寫學生資料。'},null,2));
 })().catch(e=>{console.error(e);process.exitCode=1;});
