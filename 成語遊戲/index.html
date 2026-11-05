@@ -2040,7 +2040,19 @@
       }
       const synth = window.speechSynthesis;
       if (!synth || typeof SpeechSynthesisUtterance !== 'function') {
-        status.textContent = '此瀏覽器無法朗讀，請改用 Safari 或 Chrome。';
+        if (/Android/i.test(navigator.userAgent)) {
+          status.textContent = '此瀏覽器無法朗讀。請用 Chrome 開啟，再點一次「聽一聽」。';
+          const link = document.createElement('a');
+          link.className = 'helper-button';
+          link.textContent = '用 Chrome 開啟';
+          link.href = 'intent://' + location.host + location.pathname + location.search
+            + '#Intent;scheme=https;package=com.android.chrome;end';
+          const hint = document.createElement('span');
+          hint.textContent = '若按鈕沒有反應，請從 LINE 右上角選單選擇「在瀏覽器開啟」，或複製連結貼到 Chrome。';
+          status.append(document.createElement('br'), link, document.createElement('br'), hint);
+        } else {
+          status.textContent = '此瀏覽器無法朗讀，請改用 Safari 或 Chrome。';
+        }
         return;
       }
       status.textContent = '正在準備朗讀…';
