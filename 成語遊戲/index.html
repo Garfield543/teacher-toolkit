@@ -682,6 +682,8 @@
     .result-score { margin: 12px 0; color: var(--purple-dark); font-size: clamp(2.2rem, 7vw, 4.2rem); font-weight: 1000; }
     .stars { min-height: 36px; color: #f2b83f; font-size: 2.2rem; letter-spacing: .15em; }
     .result-time { margin: 10px 0 0; color: var(--yellow-dark); font-size: 1.1rem; font-weight: 900; }
+    .speech-status { color: var(--muted); font-size: .9rem; margin: 8px 0; }
+    .speech-status:empty { display: none; }
     .result-message { max-width: 500px; margin: 12px auto 22px; color: var(--muted); line-height: 1.65; font-size: 1rem; }
 
     /* 彈跳視窗 Modal (排行榜 / 座號選擇) */
@@ -1866,7 +1868,7 @@
       $('album-detail-body').innerHTML = learned
         ? `<div class="album-detail-art">${albumArtHtml(ALBUM_ART[e.idiom])}</div>
            <div class="album-detail-name">${e.idiom}</div>
-           <div class="zhuyin" style="text-align:center;">${e.zhuyin || ''}</div>
+           <div class="zhuyin" style="text-align:center;">${horizontalZhuyin(e.zhuyin)}</div>
            <p class="album-detail-line"><strong>意思：</strong>${e.meaning}</p>
            <p class="album-detail-line"><strong>造句：</strong>${e.example}</p>
            <p class="album-detail-line" style="color:var(--muted);">✅ 已學會（答對 ${c} 次）</p>`
@@ -1937,8 +1939,12 @@
       return (idiom.choiceZhuyin || '').replace('ㄕˋ ㄋㄚˇ ㄧ ㄍㄜ˙ ㄔㄥˊ ㄩˇ？', '');
     }
 
+    function horizontalZhuyin(text = '') {
+      return text.replace(/([ㄅ-ㄩ]+)˙/g, '˙$1');
+    }
+
     function zhuyinLine(show, text) {
-      return show && text ? `<div class="zhuyin">${text}</div>` : '';
+      return show && text ? `<div class="zhuyin">${horizontalZhuyin(text)}</div>` : '';
     }
 
     const BINARY_GAMES = {
@@ -2020,13 +2026,57 @@
       return `<div class="${cls}">${buttons.join('')}</div>`;
     }
 
-    function speakText(text) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-TW';
-        utterance.rate = 0.86;
-        window.speechSynthesis.speak(utterance);
+    let activeSpeech;
+
+    function speakText(text, button) {
+      if (!text || !button) return;
+      const row = button.closest('.helper-row');
+      let status = row.nextElementSibling;
+      if (!status?.classList.contains('speech-status')) {
+        status = document.createElement('p');
+        status.className = 'speech-status';
+        status.setAttribute('role', 'status');
+        row.after(status);
+      }
+      const synth = window.speechSynthesis;
+      if (!synth || typeof SpeechSynthesisUtterance !== 'function') {
+        status.textContent = '此瀏覽器無法朗讀，請改用 Safari 或 Chrome。';
+        return;
+      }
+      status.textContent = '正在準備朗讀…';
+      const utterance = new SpeechSynthesisUtterance(text);
+      activeSpeech = utterance;
+      const voices = synth.getVoices();
+      const locale = voice => voice.lang.replace(/_/g, '-').toLowerCase();
+      const voice = voices.find(v => /^zh-(?:hant-)?tw$/.test(locale(v)))
+        || voices.find(v => /^(?:zh(?:-hans)?-cn|cmn(?:-|$)|zh$)/.test(locale(v)));
+      if (voice) utterance.voice = voice;
+      utterance.lang = voice?.lang || 'zh-TW';
+      utterance.rate = 0.86;
+      const unavailable = '無法開始朗讀，請確認媒體音量與裝置的中文語音，或改用 Safari／Chrome。';
+      const startTimer = setTimeout(() => {
+        if (activeSpeech === utterance) status.textContent = unavailable;
+      }, 5000);
+      utterance.onstart = () => {
+        clearTimeout(startTimer);
+        if (activeSpeech === utterance) status.textContent = '正在朗讀…';
+      };
+      const finish = message => {
+        clearTimeout(startTimer);
+        if (activeSpeech !== utterance) return;
+        activeSpeech = null;
+        status.textContent = message;
+      };
+      utterance.onend = () => finish('');
+      utterance.onerror = event => finish(
+        ['canceled', 'interrupted'].includes(event.error) ? '' : unavailable
+      );
+      try {
+        if (synth.speaking || synth.pending) synth.cancel();
+        if (synth.paused) synth.resume();
+        synth.speak(utterance);
+      } catch {
+        finish(unavailable);
       }
     }
 
@@ -2124,7 +2174,7 @@
         <div class="question-label">${game.label}</div>
         <div class="group-turn">輪到 <strong>${team.emoji} ${team.name}</strong> 回答</div>
         <div class="question-text group-sentence">${v.html}</div>
-        ${g.showZhuyin && v.zhuyin ? `<div class="zhuyin">${v.zhuyin}</div>` : ''}
+        ${g.showZhuyin && v.zhuyin ? `<div class="zhuyin">${horizontalZhuyin(v.zhuyin)}</div>` : ''}
         <div class="helper-row">
           <button class="helper-button${g.showZhuyin ? ' active' : ''}" data-action="group-zhuyin">🔤 ${g.showZhuyin ? '收起注音' : '看注音'}</button>
           <button class="helper-button" data-action="group-speak">🔊 聽一聽</button>
@@ -2258,13 +2308,13 @@
         const m = whack.moles.find((x) => x.hole === h);
         if (!m) return '<div class="hole"><span class="mound"></span></div>';
         return `<button class="hole has-mole" data-action="whack-hit" data-hole="${h}">
-          <span class="mole-emoji">🐹</span><span class="mole-label">${m.idiom.idiom}</span><span class="zy">${m.idiom.zhuyin}</span></button>`;
+          <span class="mole-emoji">🐹</span><span class="mole-label">${m.idiom.idiom}</span><span class="zy">${horizontalZhuyin(m.idiom.zhuyin)}</span></button>`;
       }).join('');
       $('whack-area').className = whack.showZhuyin ? 'show-zy' : '';
       $('whack-area').innerHTML = `<div class="question-card whack-prompt">
         <div class="question-label">🐹 找出這個意思的成語</div>
         <div class="question-text">${t.meaning}</div>
-        <div class="zy">${plainMeaningZhuyin(t)}</div>
+        <div class="zy">${horizontalZhuyin(plainMeaningZhuyin(t))}</div>
         <div class="helper-row">
           <button class="helper-button${whack.showZhuyin ? ' active' : ''}" data-action="whack-zhuyin">🔤 注音</button>
           <button class="helper-button" data-action="whack-speak">🔊 聽一聽</button>
@@ -2462,17 +2512,13 @@
       ${state.showHint ? `<div class="hint-box">💡 ${options.hintText || '仔細讀一讀題目，再試試看。'}</div>` : ''}`;
     }
 
-    function zhuyinLine(questionZhuyin = '') {
-      return state.showZhuyin && questionZhuyin ? `<div class="zhuyin">${questionZhuyin}</div>` : '';
-    }
-
     function baseQuestion(label, text, note = '', options = {}) {
       state.promptText = options.speakText || text;
       return `<div class="question-card">
         <div class="question-label">${label}</div>
         <div class="question-text">${text}</div>
         ${note ? `<div class="question-note">${note}</div>` : ''}
-        ${zhuyinLine(options.questionZhuyin)}
+        ${zhuyinLine(state.showZhuyin, options.questionZhuyin)}
         ${helperButtons(options)}
         <div id="dynamic-area"></div>
       </div>`;
@@ -2713,15 +2759,8 @@
       setScreen('result-screen');
     }
 
-    function speakCurrent() {
-      const text = state.promptText || '請讀一讀題目。';
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-TW';
-        utterance.rate = 0.86;
-        window.speechSynthesis.speak(utterance);
-      }
+    function speakCurrent(button) {
+      speakText(state.promptText || '請讀一讀題目。', button);
     }
 
     /* =========================================================
@@ -2952,7 +2991,7 @@
       if (action === 'match') selectMatch(target.dataset.side, target.dataset.id);
       if (action === 'zhuyin') { state.showZhuyin = !state.showZhuyin; renderRoundKeepingScramble(); }
       if (action === 'hint') { state.showHint = !state.showHint; renderRoundKeepingScramble(); }
-      if (action === 'speak') speakCurrent();
+      if (action === 'speak') speakCurrent(target);
       if (action === 'open-album') { renderAlbum(); setScreen('album-screen'); }
       if (action === 'album-stamp') albumDetail(target.dataset.id);
       if (action === 'binary-answer') answerBinary(target.dataset.ans);
@@ -2964,11 +3003,11 @@
       if (action === 'group-answer') answerGroup(target.dataset.ans);
       if (action === 'group-next') nextGroup();
       if (action === 'group-zhuyin') { groupState.showZhuyin = !groupState.showZhuyin; renderGroup(); }
-      if (action === 'group-speak') speakText(BINARY_GAMES[groupState.game].view(groupState.items[groupState.index]).speak);
+      if (action === 'group-speak') speakText(BINARY_GAMES[groupState.game].view(groupState.items[groupState.index]).speak, target);
       if (action === 'whack-go') { if (whack.onStart) whack.onStart(); }
       if (action === 'whack-hit') whackHit(Number(target.dataset.hole));
       if (action === 'whack-zhuyin') { whack.showZhuyin = !whack.showZhuyin; $('whack-area').classList.toggle('show-zy', whack.showZhuyin); target.classList.toggle('active', whack.showZhuyin); }
-      if (action === 'whack-speak') speakText(whack.target ? whack.target.meaning : '');
+      if (action === 'whack-speak') speakText(whack.target ? whack.target.meaning : '', target);
       if (action === 'whack-team-next') { groupState.index += 1; if (groupState.index >= groupState.n) showGroupResult(); else whackTeamReady(); }
       if (action === 'whack-exit') {
         whackStop();
